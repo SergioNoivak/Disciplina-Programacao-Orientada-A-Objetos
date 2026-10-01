@@ -1,0 +1,44 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+hide methods
+hide stereotypes
+
+class Pessoa {
+    nome : String
+    cpf : String
+    idade : int
+}
+
+class Endereco {
+    rua : String
+    numero : int
+    cidade : String
+    cep : String
+}
+
+class Produto {
+    codigo : String
+    nome : String
+    preco : double
+}
+
+class Pedido {
+    numero : String
+    data : Date
+    valorTotal : double
+}
+
+class Funcionario {
+    matricula : String
+    cargo : String
+    salario : double
+}
+
+class Empresa {
+    razaoSocial : String
+    cnpj : String
+    faturamentoAnual : double
+}
+
+@enduml

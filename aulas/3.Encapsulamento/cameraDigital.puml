@@ -1,0 +1,32 @@
+@startuml
+title Classe cameraDigital
+
+class cameraDigital {
+
+    '=========================
+    ' ATRIBUTOS (privados)
+    '=========================
+    - marca : String
+    - modelo : String
+    - resolucaoMP : double
+    - ligada : boolean
+    - armazenamentoGB : int
+    - fotosArmazenadas : int
+
+    '=========================
+    ' MÉTODOS (públicos)
+    '=========================
+    + cameraDigital(marca : String, modelo : String, resolucaoMP : double, armazenamentoGB : int)
+
+    + ligar() : void
+    + desligar() : void
+    + tirarFoto() : void
+    + excluirFoto() : void
+    + getMarca() : String
+    + getModelo() : String
+    + getResolucaoMP() : double
+    + getArmazenamentoGB() : int
+    + getFotosArmazenadas() : int
+}
+
+@enduml

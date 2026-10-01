@@ -1,0 +1,264 @@
+\documentclass[12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\definecolor{univBlue}{RGB}{0, 57, 145}
+\definecolor{univLightBlue}{RGB}{71, 115, 169}
+\definecolor{univSoftBlue}{RGB}{147, 172, 203}
+\definecolor{maincolor}{RGB}{0, 57, 145}
+
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{block}[1]{%
+  colback=univSoftBlue!10,  
+  colframe=maincolor,
+  coltitle=white,
+  title=#1,
+  fonttitle=\bfseries,
+  boxrule=1.5pt,
+  arc=3mm,
+  left=6pt,
+  right=6pt,
+  top=6pt,
+  bottom=6pt
+}
+
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.multipart}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{2pt}
+
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{maincolor}\leaders\hrule height \headrulewidth\hfill}}
+
+\renewcommand{\footrule}{\hbox to\headwidth{%
+  \color{maincolor}\leaders\hrule height \footrulewidth\hfill}}
+
+\setlength{\headheight}{52pt}
+
+\fancyhead[L]{%
+  \includegraphics[height=1.2cm]{universidade_logo_novo.png}
+}
+
+\fancyhead[R]{%
+  \raggedleft
+  \textcolor{maincolor}{%
+    \small
+    \textbf{Lista de Exercícios — Atributos e Métodos Estáticos}\\
+    Me.~Sergio Souza Novak\\
+    \textit{Faculdade de Engenharia de Software}
+  }
+}
+
+\fancyfoot[C]{%
+  \textcolor{maincolor}{\thepage}
+}
+
+% Estilo reutilizável para diagramas UML
+\tikzset{
+  uml/.style={
+    draw=maincolor,
+    rectangle split,
+    rectangle split parts=3,
+    fill=univSoftBlue!20,
+    minimum width=5cm,
+    font=\small\ttfamily,
+    align=left
+  },
+  heranca/.style={-{Triangle[open]}, thick, maincolor},
+  composicao/.style={-{Diamond[fill=maincolor]}, thick, maincolor}
+}
+
+\begin{document}
+
+\section*{Instruções}
+Implemente na linguagem Java todos os exercícios propostos, atentando-se ao uso correto dos modificadores \texttt{static}, \texttt{final}, e à aplicação de classes abstratas e concretas.
+
+\begin{block}{Instruções para Submissão}
+A entrega desta lista de exercícios deve ser feita através de um \textbf{único arquivo .zip}.
+Dentro deste arquivo, deve haver uma pasta estruturada para cada exercício (ex: \texttt{Exercicio1}, \texttt{Exercicio2}, \texttt{Exercicio3}, \texttt{Exercicio4}).
+\end{block}
+
+% ============================================================
+\section*{1) Gestão de Biblioteca — \texttt{static} e \texttt{final}}
+Implemente uma hierarquia para itens de uma biblioteca. A classe base deve ser \textbf{abstrata} e controlar globalmente o total de itens criados.
+
+\begin{center} 
+\begin{tikzpicture}[node distance=2cm and 0cm]
+
+\node[uml] (item) {
+    \textbf{\textit{ItemBiblioteca}}
+    \nodepart{second}
+    \# \underline{totalItens : int} \\
+    \# \textsf{final} id : int \\
+    \# titulo : String
+    \nodepart{third}
+    + \textit{exibirDetalhes()} : void \\
+    + \underline{getTotalItens()} : int
+};
+
+\node[uml, below left=of item, xshift=2cm] (livro) {
+    \textbf{Livro}
+    \nodepart{second}
+    - autor : String
+    \nodepart{third}
+    + exibirDetalhes() : void
+};
+
+\node[uml, below right=of item, xshift=-1.5cm] (revista) {
+    \textbf{Revista}
+    \nodepart{second}
+    - edicao : int
+    \nodepart{third}
+    + exibirDetalhes() : void
+};
+
+\draw[heranca] (livro.north) -- ++(0,0.5) -| (item.south);
+\draw[heranca] (revista.north) -- ++(0,0.5) -| (item.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item \textbf{Atributo Estático:} Declare o atributo \texttt{totalItens} como \texttt{static} na classe abstrata.
+    \item \textbf{Atributo Final:} Declare o atributo \texttt{id} como \texttt{final}. Ele deve ser atribuído no construtor da classe abstrata com base no valor atual de \texttt{totalItens}.
+    \item \textbf{Método Abstrato:} O método \texttt{exibirDetalhes()} deve ser \texttt{abstract} na classe base e implementado obrigatoriamente nas subclasses.
+    \item \textbf{Método Estático:} O método \texttt{getTotalItens()} deve ser \texttt{static} e retornar o valor atual do contador.
+    \item \textbf{Bloco Estático:} Implemente um bloco \texttt{static} para inicializar o nome da biblioteca em uma constante global (\texttt{static final}).
+\end{itemize}
+
+% ============================================================
+\section*{2) Transações Financeiras — Métodos Utilitários}
+Crie um sistema de transações onde a lógica de validação e taxas é centralizada em métodos estáticos.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and -0.5cm]
+
+\node[uml] (trans) {
+    \textbf{\textit{Transacao}}
+    \nodepart{second}
+    \# valor : double \\
+    \# \underline{taxaPadrao : double = 2.50}
+    \nodepart{third}
+    + \textit{processar()} : void \\
+    + \underline{calcularTaxa(v:double) : double}
+};
+
+\node[uml, below left=of trans, xshift=2cm] (dep) {
+    \textbf{Deposito}
+    \nodepart{second}
+    \nodepart{third}
+    + processar() : void
+};
+
+\node[uml, below right=of trans, xshift=0.5cm] (saq) {
+    \textbf{Saque}
+    \nodepart{second}
+    \nodepart{third}
+    + processar() : void
+};
+
+\draw[heranca] (dep.north) -- ++(0,0.5) -| (trans.south);
+\draw[heranca] (saq.north) -- ++(0,0.5) -| (trans.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item \textbf{Método Estático:} O método \texttt{calcularTaxa(valor)} deve ser marcado como \texttt{static} e utilizar o atributo \texttt{taxaPadrao} (também \texttt{static}).
+    \item \textbf{Método Abstrato:} O método \texttt{processar()} deve ser \texttt{abstract} e definido nas subclasses para realizar a lógica específica de depósito ou saque.
+    \item \textbf{Acumulador Estático:} A classe abstrata deve possuir um atributo \texttt{static} (ex: \texttt{volumeTotal}) para acumular o valor de todas as transações realizadas.
+    \item \textbf{Implementação:} Ao implementar \texttt{processar()}, as subclasses devem atualizar o acumulador estático da classe base.
+\end{itemize}
+
+% ============================================================
+\section*{3) Sistema de Configurações — \texttt{Static Nested Class}}
+Modele um sistema que utiliza uma classe aninhada estática para armazenar configurações imutáveis do ambiente.
+
+\begin{center}
+\begin{tikzpicture}
+\node[uml] (sistema) {
+    \textbf{Sistema}
+    \nodepart{second}
+    - nomeApp : String
+    \nodepart{third}
+    + iniciar() : void
+};
+
+\node[uml, right=2cm of sistema] (config) {
+    \textbf{Config (Static)}
+    \nodepart{second}
+    + \textsf{final} \underline{VERSAO : String} \\
+    + \textsf{final} \underline{URL\_DB : String}
+    \nodepart{third}
+    + \underline{reset()} : void
+};
+
+\draw[thick, dashed, maincolor] (config.west) -- (sistema.east) node[midway, above, font=\tiny] {Aninhada};
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item \textbf{Classe Aninhada Estática:} A classe \texttt{Config} deve ser definida como \texttt{static class} dentro de \texttt{Sistema}.
+    \item \textbf{Atributos Constantes:} Todos os atributos de \texttt{Config} (VERSAO, URL\_DB) devem ser \texttt{static} e \texttt{final}.
+    \item \textbf{Método Estático:} Implemente um método \texttt{static} chamado \texttt{reset()} dentro da classe \texttt{Config} que simule a restauração das configurações.
+    \item \textbf{Acesso:} No método \texttt{iniciar()} da classe externa, acesse os dados usando a sintaxe \texttt{Config.VERSAO}.
+\end{itemize}
+
+% ============================================================
+\section*{4) Controle de Frota — Métodos \texttt{final}}
+Modele um sistema de veículos onde certos comportamentos de segurança não podem ser alterados pelas subclasses.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and -1cm]
+
+\node[uml] (veiculo) {
+    \textbf{\textit{Veiculo}}
+    \nodepart{second}
+    \# \underline{precoCombustivel : double}
+    \nodepart{third}
+    + \textsf{final} realizarCheckup() : void \\
+    + \textit{mover()} : void \\
+    + \underline{setPreco(p:double)} : void
+};
+
+\node[uml, below left=of veiculo, xshift=1.5cm] (carro) {
+    \textbf{Carro}
+    \nodepart{third}
+    + mover() : void
+};
+
+\node[uml, below right=of veiculo, xshift=-0.5cm] (moto) {
+    \textbf{Moto}
+    \nodepart{third}
+    + mover() : void
+};
+
+\draw[heranca] (carro.north) -- ++(0,0.5) -| (veiculo.south);
+\draw[heranca] (moto.north) -- ++(0,0.5) -| (veiculo.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item \textbf{Método Final:} O método \texttt{realizarCheckup()} deve ser marcado como \texttt{final} na classe abstrata para impedir que qualquer subclasse o sobrescreva.
+    \item \textbf{Atributo Estático:} O atributo \texttt{precoCombustivel} deve ser \texttt{static}, pois seu valor é compartilhado por toda a frota.
+    \item \textbf{Método Estático:} Crie um método \texttt{static} chamado \texttt{setPreco(double p)} para atualizar o valor do combustível globalmente.
+    \item \textbf{Método Abstrato:} O método \texttt{mover()} deve ser \texttt{abstract}, exigindo implementação específica para \texttt{Carro} e \texttt{Moto}.
+\end{itemize}
+
+\end{document}

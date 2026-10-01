@@ -1,0 +1,600 @@
+\documentclass[12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\definecolor{univBlue}{RGB}{0, 57, 145}
+\definecolor{univLightBlue}{RGB}{71, 115, 169}
+\definecolor{univSoftBlue}{RGB}{147, 172, 203}
+\definecolor{maincolor}{RGB}{0, 57, 145}
+
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{block}[1]{%
+  colback=univSoftBlue!10,
+  colframe=maincolor,
+  coltitle=white,
+  title=#1,
+  fonttitle=\bfseries,
+  boxrule=1.5pt,
+  arc=3mm,
+  left=6pt,
+  right=6pt,
+  top=6pt,
+  bottom=6pt
+}
+
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.multipart}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{2pt}
+
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{maincolor}\leaders\hrule height \headrulewidth\hfill}}
+
+\renewcommand{\footrule}{\hbox to\headwidth{%
+  \color{maincolor}\leaders\hrule height \footrulewidth\hfill}}
+
+\setlength{\headheight}{52pt}
+
+\fancyhead[L]{%
+  \includegraphics[height=1.2cm]{universidade_logo_novo.png}
+}
+
+\fancyhead[R]{%
+  \raggedleft
+  \textcolor{maincolor}{%
+    \small
+    \textbf{Lista de Exercícios — Herança e Composição}\\
+    Me.~Sergio Souza Novak\\
+    \textit{Faculdade de Engenharia de Software}
+  }
+}
+
+\fancyfoot[C]{%
+  \textcolor{maincolor}{\thepage}
+}
+
+% Estilo reutilizável para diagramas UML
+\tikzset{
+  uml/.style={
+    draw=maincolor,
+    rectangle split,
+    rectangle split parts=3,
+    fill=univSoftBlue!20,
+    minimum width=5cm,
+    font=\small\ttfamily,
+    align=left
+  },
+  heranca/.style={-{Triangle[open]}, thick, maincolor},
+  composicao/.style={-{Diamond[fill=maincolor]}, thick, maincolor}
+}
+
+\begin{document}
+% ============================================================
+Lista de implementação de Herança e Composição. Implemente na linguagem Java todos os exercícios propostos.
+\section*{Formato de Entrega}
+
+
+\begin{block}{Instruções para Submissão}
+A entrega desta lista de exercícios deve ser feita através de um \textbf{único arquivo .zip}.
+Dentro deste arquivo, deve haver uma pasta estruturada para cada exercício (ex: \texttt{Exercicio1}, \texttt{Exercicio2}, ..., \texttt{Exercicio8}).
+
+\textbf{Atenção:} Certifique-se de que cada pasta contenha \textbf{todos} os arquivos necessários (\texttt{.java}) para a correta compilação e execução do respectivo exercício.
+\end{block}
+
+
+% ============================================================
+\section*{1) Herança — Veículos de Transporte}
+Implemente uma hierarquia de classes para representar veículos de transporte. A superclasse \texttt{Veiculo} possui atributos e métodos comuns, e as subclasses especializam o comportamento.
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.8cm and 0cm]
+
+\node[uml] (veiculo) {
+    \textbf{Veiculo}
+    \nodepart{second}
+    \# placa : String \\
+    \# velocidadeMax : double \\
+    \# kmRodados : double
+    \nodepart{third}
+    + getPlaca() : String \\
+    + setPlaca(p:String) : void \\
+    + getVelocidadeMax() : double \\
+    + setVelocidadeMax(v:double) : void \\
+    + getKmRodados() : double \\
+    + setKmRodados(k:double) : void \\
+    + acelerar(km:double) : void
+};
+
+\node[uml, below left=of veiculo, xshift=2cm] (carro) {
+    \textbf{Carro}
+    \nodepart{second}
+    - numPassageiros : int
+    \nodepart{third}
+    + getNumPassageiros() : int \\
+    + setNumPassageiros(n:int) : void \\
+    + acelerar(km:double) : void
+};
+
+\node[uml, below right=of veiculo, xshift=-1.5cm] (caminhao) {
+    \textbf{Caminhao}
+    \nodepart{second}
+    - cargaMaxTon : double
+    \nodepart{third}
+    + getCargaMaxTon() : double \\
+    + setCargaMaxTon(c:double) : void \\
+    + acelerar(km:double) : void
+};
+
+\draw[heranca] (carro.north) -- ++(0,0.5) -| (veiculo.south);
+\draw[heranca] (caminhao.north) -- ++(0,0.5) -| (veiculo.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item A classe \texttt{Veiculo} deve possuir o método \texttt{acelerar(km)} que incrementa \texttt{kmRodados}.
+    \item \texttt{Carro} sobrescreve \texttt{acelerar()} usando \texttt{super} e adiciona uma verificação de limite de velocidade.
+    \item \texttt{Caminhao} sobrescreve \texttt{acelerar()} reduzindo a eficiência em 30\% se a carga estiver acima de 80\% da capacidade.
+    \item Crie uma classe \texttt{Main} que instancie ambos os veículos e teste os métodos.
+\end{itemize}
+
+% ============================================================
+\section*{2) Herança — Funcionários de uma Empresa}
+Modele um sistema de folha de pagamento com uma superclasse \texttt{Funcionario} e duas subclasses que calculam o salário de formas diferentes.
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.8cm and -0.5cm]
+
+\node[uml] (func) {
+    \textbf{Funcionario}
+    \nodepart{second}
+    \# nome : String \\
+    \# salarioBase : double
+    \nodepart{third}
+    + getNome() : String \\
+    + setNome(n:String) : void \\
+    + getSalarioBase() : double \\
+    + setSalarioBase(s:double) : void \\
+    + calcularSalario() : double
+};
+
+\node[uml, below left=of func, xshift=2cm] (gerente) {
+    \textbf{Gerente}
+    \nodepart{second}
+    - bonus : double
+    \nodepart{third}
+    + getBonus() : double \\
+    + setBonus(b:double) : void \\
+    + calcularSalario() : double
+};
+
+\node[uml, below right=of func, xshift=0.5cm] (estagiario) {
+    \textbf{Estagiario}
+    \nodepart{second}
+    - horasTrabalhadas : int
+    \nodepart{third}
+    + getHorasTrabalhadas() : int \\
+    + setHorasTrabalhadas(h:int) : void \\
+    + calcularSalario() : double
+};
+
+\draw[heranca] (gerente.north) -- ++(0,0.5) -| (func.south);
+\draw[heranca] (estagiario.north) -- ++(0,0.5) -| (func.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item \texttt{Gerente} calcula o salário como \texttt{salarioBase + bonus}.
+    \item \texttt{Estagiario} calcula o salário com base nas horas trabalhadas multiplicadas por um valor fixo por hora (ex: R\$ 15,00).
+    \item Utilize \texttt{super()} para inicializar os atributos da superclasse nos construtores.
+    \item Crie um \texttt{Main} que imprima o salário de cada tipo de funcionário.
+\end{itemize}
+
+% ============================================================
+\section*{3) Herança — Equipamentos Médicos}
+Modele uma hierarquia de classes de equipamentos médicos de raio-X. A superclasse define o comportamento básico de emissão de radiação.
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.8cm and -1cm]
+
+\node[uml] (raiox) {
+    \textbf{EquipamentoRaioX}
+    \nodepart{second}
+    \# modelo : String \\
+    \# fabricante : String
+    \nodepart{third}
+    + getModelo() : String \\
+    + setModelo(m:String) : void \\
+    + getFabricante() : String \\
+    + setFabricante(f:String) : void \\
+    + ligar() : void \\
+    + emitirRadiacao() : void
+};
+
+\node[uml, below left=of raiox, xshift=-1cm] (tomo) {
+    \textbf{Tomografo}
+    \nodepart{second}
+    - numCortes : int
+    \nodepart{third}
+    + getNumCortes() : int \\
+    + setNumCortes(n:int) : void \\
+    + emitirRadiacao() : void \\
+    + reconstruir3D() : void
+};
+
+\node[uml, below=of raiox] (mamo) {
+    \textbf{Mamografo}
+    \nodepart{second}
+    - pressao : double
+    \nodepart{third}
+    + getPressao() : double \\
+    + setPressao(p:double) : void \\
+    + emitirRadiacao() : void \\
+    + comprimir() : void
+};
+
+\node[uml, below right=of raiox, xshift=1cm] (densito) {
+    \textbf{Densitometro}
+    \nodepart{second}
+    \nodepart{third}
+    + emitirRadiacao() : void \\
+    + calcularTScore() : double
+};
+
+\draw[heranca] (tomo.north) -- ++(0,0.5) -| (raiox.south);
+\draw[heranca] (mamo.north) -- (raiox.south);
+\draw[heranca] (densito.north) -- ++(0,0.5) -| (raiox.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Cada subclasse deve sobrescrever \texttt{emitirRadiacao()} chamando \texttt{super.emitirRadiacao()} e adicionando comportamento específico.
+    \item \texttt{Tomografo} imprime a quantidade de cortes realizados.
+    \item \texttt{Mamografo} imprime a pressão de compressão aplicada.
+    \item \texttt{Densitometro} calcula e retorna um T-Score fictício.
+    \item Teste todos os equipamentos em um \texttt{Main}.
+\end{itemize}
+
+% ============================================================
+\section*{4) Composição — Computador e seus Componentes}
+Implemente um sistema onde um \texttt{Computador} é composto por um \texttt{Processador} e uma \texttt{MemoriaRAM}. Sem o computador, as partes não existem.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and -2.5cm]
+
+\node[uml] (pc) {
+    \textbf{Computador}
+    \nodepart{second}
+    - marca : String \\
+    - processador : Processador \\
+    - memoria : MemoriaRAM
+    \nodepart{third}
+    + getMarca() : String \\
+    + setMarca(m:String) : void \\
+    + getProcessador() : Processador \\
+    + setProcessador(p:Processador) : void \\
+    + getMemoria() : MemoriaRAM \\
+    + setMemoria(m:MemoriaRAM) : void \\
+    + ligar() : void \\
+    + desligar() : void
+};
+
+\node[uml, below left=of pc] (proc) {
+    \textbf{Processador}
+    \nodepart{second}
+    - modelo : String \\
+    - nucleos : int \\
+    - frequenciaGHz : double
+    \nodepart{third}
+    + getModelo() : String \\
+    + setModelo(m:String) : void \\
+    + getNucleos() : int \\
+    + setNucleos(n:int) : void \\
+    + getFrequenciaGHz() : double \\
+    + setFrequenciaGHz(f:double) : void \\
+    + processar() : void
+};
+
+\node[uml, below right=of pc] (ram) {
+    \textbf{MemoriaRAM}
+    \nodepart{second}
+    - capacidadeGB : int \\
+    - tipo : String
+    \nodepart{third}
+    + getCapacidadeGB() : int \\
+    + setCapacidadeGB(c:int) : void \\
+    + getTipo() : String \\
+    + setTipo(t:String) : void \\
+    + armazenar() : void
+};
+
+\draw[composicao] (proc.north) -- ++(0,0.5) -| (pc.south);
+\draw[composicao] (ram.north) -- ++(0,0.5) -| (pc.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item O \texttt{Computador} deve criar os objetos \texttt{Processador} e \texttt{MemoriaRAM} internamente (composição forte).
+    \item O método \texttt{ligar()} deve delegar para \texttt{processador.processar()} e \texttt{memoria.armazenar()}.
+    \item Todos os atributos devem ser privados com acesso via métodos.
+    \item Crie um \texttt{Main} demonstrando a criação e o uso do computador.
+\end{itemize}
+
+% ============================================================
+\section*{5) Composição — Casa Inteligente}
+Modele uma \texttt{CasaInteligente} composta por um \texttt{SistemaSeguranca} e um \texttt{SistemaIluminacao}. A casa gerencia os subsistemas.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and -4cm]
+
+\node[uml] (casa) {
+    \textbf{CasaInteligente}
+    \nodepart{second}
+    - endereco : String \\
+    - seguranca : SistemaSeguranca \\
+    - iluminacao : SistemaIluminacao
+    \nodepart{third}
+    + getEndereco() : String \\
+    + setEndereco(e:String) : void \\
+    + getSeguranca() : SistemaSeguranca \\
+    + setSeguranca(s:SistemaSeguranca) : void \\
+    + getIluminacao() : SistemaIluminacao \\
+    + setIluminacao(i:SistemaIluminacao) : void \\
+    + ativarModoNoturno() : void \\
+    + ativarModoAusente() : void
+};
+
+\node[uml, below left=of casa] (seg) {
+    \textbf{SistemaSeguranca}
+    \nodepart{second}
+    - ativo : boolean \\
+    - alarmeDisparado : boolean
+    \nodepart{third}
+    + isAtivo() : boolean \\
+    + setAtivo(a:boolean) : void \\
+    + isAlarmeDisparado() : boolean \\
+    + setAlarmeDisparado(a:boolean) : void \\
+    + ativar() : void \\
+    + desativar() : void \\
+    + dispararAlarme() : void
+};
+
+\node[uml, below right=of casa] (luz) {
+    \textbf{SistemaIluminacao}
+    \nodepart{second}
+    - intensidade : int \\
+    - ligado : boolean
+    \nodepart{third}
+    + getIntensidade() : int \\
+    + setIntensidade(i:int) : void \\
+    + isLigado() : boolean \\
+    + setLigado(l:boolean) : void \\
+    + ligar() : void \\
+    + desligar() : void \\
+    + ajustarIntensidade(v:int) : void
+};
+
+\draw[composicao] (seg.north) -- ++(0,0.5) -| (casa.south);
+\draw[composicao] (luz.north) -- ++(0,0.5) -| (casa.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item \texttt{ativarModoNoturno()} deve ligar a segurança e reduzir a iluminação para 20\%.
+    \item \texttt{ativarModoAusente()} deve ativar a segurança e desligar a iluminação.
+    \item Demonstre a delegação de responsabilidades no \texttt{Main}.
+\end{itemize}
+
+% ============================================================
+\section*{6) Herança + Composição — Universidade}
+Combine herança e composição. Uma \texttt{Universidade} possui (composição) vários \texttt{Curso}s. \texttt{Curso} é superclasse de \texttt{CursoPresencial} e \texttt{CursoEAD}.
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.8cm and -2cm]
+
+\node[uml] (univ) {
+    \textbf{Universidade}
+    \nodepart{second}
+    - nome : String \\
+    - cursos : Curso[]
+    \nodepart{third}
+    + getNome() : String \\
+    + setNome(n:String) : void \\
+    + getCursos() : Curso[] \\
+    + setCursos(c:Curso[]) : void \\
+    + adicionarCurso(c:Curso) : void \\
+    + listarCursos() : void
+};
+
+\node[uml, below=2.5cm of univ] (curso) {
+    \textbf{Curso}
+    \nodepart{second}
+    \# nome : String \\
+    \# duracaoSemestres : int
+    \nodepart{third}
+    + getNome() : String \\
+    + setNome(n:String) : void \\
+    + getDuracaoSemestres() : int \\
+    + setDuracaoSemestres(d:int) : void \\
+    + getInfo() : String
+};
+
+\node[uml, below left=of curso, xshift=-0.5cm] (presencial) {
+    \textbf{CursoPresencial}
+    \nodepart{second}
+    - campus : String
+    \nodepart{third}
+    + getCampus() : String \\
+    + setCampus(c:String) : void \\
+    + getInfo() : String
+};
+
+\node[uml, below right=of curso, xshift=0.5cm] (ead) {
+    \textbf{CursoEAD}
+    \nodepart{second}
+    - plataforma : String
+    \nodepart{third}
+    + getPlataforma() : String \\
+    + setPlataforma(p:String) : void \\
+    + getInfo() : String
+};
+
+
+\draw[composicao] (curso.north) -- (univ.south);
+\draw[heranca] (presencial.north) -- ++(0,0.5) -| (curso.south);
+\draw[heranca] (ead.north) -- ++(0,0.5) -| (curso.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item \texttt{CursoPresencial} inclui o campus no \texttt{getInfo()}.
+    \item \texttt{CursoEAD} inclui a plataforma no \texttt{getInfo()}.
+    \item A \texttt{Universidade} deve ser capaz de listar todos os cursos com suas informações específicas.
+    \item Utilize \texttt{super.getInfo()} para reaproveitar a lógica da superclasse.
+\end{itemize}
+
+% ============================================================
+\section*{7) Herança — Contas Bancárias}
+Modele um sistema bancário com uma superclasse \texttt{ContaBancaria} e duas subclasses com regras de saque distintas.
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.8cm and -1.5cm]
+
+\node[uml] (conta) {
+    \textbf{ContaBancaria}
+    \nodepart{second}
+    \# titular : String \\
+    \# saldo : double
+    \nodepart{third}
+    + getTitular() : String \\
+    + setTitular(t:String) : void \\
+    + getSaldo() : double \\
+    + setSaldo(s:double) : void \\
+    + depositar(valor:double) : void \\
+    + sacar(valor:double) : boolean \\
+    + getSaldo() : double
+};
+
+\node[uml, below left=of conta, xshift=2cm] (corrente) {
+    \textbf{ContaCorrente}
+    \nodepart{second}
+    - limiteEspecial : double
+    \nodepart{third}
+    + getLimiteEspecial() : double \\
+    + setLimiteEspecial(l:double) : void \\
+    + sacar(valor:double) : boolean
+};
+
+\node[uml, below right=of conta, xshift=-1.5cm] (poupanca) {
+    \textbf{ContaPoupanca}
+    \nodepart{second}
+    - taxaRendimento : double
+    \nodepart{third}
+    + getTaxaRendimento() : double \\
+    + setTaxaRendimento(t:double) : void \\
+    + sacar(valor:double) : boolean \\
+    + aplicarRendimento() : void
+};
+
+\draw[heranca] (corrente.north) -- ++(0,0.5) -| (conta.south);
+\draw[heranca] (poupanca.north) -- ++(0,0.5) -| (conta.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item \texttt{ContaCorrente} permite saque até \texttt{saldo + limiteEspecial}.
+    \item \texttt{ContaPoupanca} só permite saque se o saldo permanecer positivo (sem limite especial).
+    \item O método \texttt{aplicarRendimento()} incrementa o saldo com base na \texttt{taxaRendimento}.
+    \item Utilize \texttt{super()} nos construtores e \texttt{super.sacar()} onde fizer sentido.
+\end{itemize}
+
+% ============================================================
+\section*{8) Composição — Pedido de Restaurante}
+Modele um sistema de pedidos onde um \texttt{Pedido} é composto por vários \texttt{ItemPedido}s. Cada item referencia um \texttt{Produto}.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and -1cm]
+
+\node[uml] (pedido) {
+    \textbf{Pedido}
+    \nodepart{second}
+    - numero : int \\
+    - itens : ItemPedido[] \\
+    - cliente : String
+    \nodepart{third}
+    + getNumero() : int \\
+    + setNumero(n:int) : void \\
+    + getItens() : ItemPedido[] \\
+    + setItens(i:ItemPedido[]) : void \\
+    + getCliente() : String \\
+    + setCliente(c:String) : void \\
+    + adicionarItem(i:ItemPedido) : void \\
+    + calcularTotal() : double \\
+    + imprimirResumo() : void
+};
+
+\node[uml, below left=of pedido, xshift=1.5cm] (item) {
+    \textbf{ItemPedido}
+    \nodepart{second}
+    - produto : Produto \\
+    - quantidade : int
+    \nodepart{third}
+    + getProduto() : Produto \\
+    + setProduto(p:Produto) : void \\
+    + getQuantidade() : int \\
+    + setQuantidade(q:int) : void \\
+    + getSubtotal() : double
+};
+
+\node[uml, below right=of pedido, xshift=-0.5cm] (produto) {
+    \textbf{Produto}
+    \nodepart{second}
+    - nome : String \\
+    - preco : double
+    \nodepart{third}
+    + getNome() : String \\
+    + setNome(n:String) : void \\
+    + getPreco() : double \\
+    + setPreco(p:double) : void
+};
+
+\draw[composicao] (item.north) -- ++(0,0.5) -| (pedido.south);
+\draw[composicao] (produto.north) -- ++(0,0.5) -| (pedido.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item O \texttt{Pedido} gerencia a lista de itens e calcula o total somando os subtotais.
+    \item \texttt{ItemPedido} calcula o subtotal como \texttt{produto.getPreco() * quantidade}.
+    \item \texttt{imprimirResumo()} deve listar todos os itens com nome, quantidade, subtotal e o total geral.
+    \item Crie um \texttt{Main} que monte um pedido com pelo menos 3 itens e imprima o resumo.
+\end{itemize}
+
+
+\end{document}

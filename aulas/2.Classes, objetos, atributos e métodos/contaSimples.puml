@@ -1,0 +1,12 @@
+@startuml
+class ContaSimples {
+    + titular : String
+    + saldo : double
+
+    --
+    + ContaSimples(titular : String)
+    + depositar(valor : double) : void
+    + sacar(valor : double) : void
+    + exibirSaldo() : void
+}
+@enduml

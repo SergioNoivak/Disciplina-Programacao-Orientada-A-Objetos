@@ -1,0 +1,30 @@
+@startuml
+
+' =========================
+' Classe
+' =========================
+class ContaBancaria {
+    - numero : String
+    - titular : String
+    - saldo : double
+    --
+    + depositar(valor : double)
+    + sacar(valor : double)
+    + consultarSaldo() : double
+}
+
+' =========================
+' Objetos representados por bolas
+' =========================
+circle "conta1" as c1
+circle "conta2" as c2
+circle "conta3" as c3
+
+' =========================
+' Relação classe -> objetos
+' =========================
+ContaBancaria ..> c1 : instancia
+ContaBancaria ..> c2 : instancia
+ContaBancaria ..> c3 : instancia
+
+@enduml

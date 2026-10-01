@@ -1,0 +1,29 @@
+# Diretório de notas e avaliações (dados sensíveis/privados)
+notas/
+
+# Arquivos temporários e de compilação LaTeX
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.nav
+*.out
+*.snm
+*.toc
+*.vrb
+*.vrb~
+__latexindent_temp_*
+indent.log
+
+# Arquivos compilados de Java e IDEs
+*.class
+bin/
+out/
+.idea/
+.vscode/
+*.swp
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db

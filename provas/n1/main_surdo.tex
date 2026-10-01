@@ -1,0 +1,467 @@
+\documentclass[12pt,a4paper]{article}
+
+% ------------------------------------------------
+% Pacotes
+% ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{mathptmx} % Times New Roman
+\usepackage{enumitem}\usepackage{amsfonts}
+\usepackage{amsmath} % Recomendado para o comando \text{}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric}
+\usepackage{listings}
+
+\lstset{
+    language=Java,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries,
+    showstringspaces=false,
+    breaklines=true,
+    frame=none,
+    numbers=none,
+    tabsize=2,
+    commentstyle=\itshape\color{gray},
+    morekeywords={this}
+}
+
+% TikZ Styles for ER Diagrams
+\tikzset{
+    block/.style={rectangle, draw, thick, minimum width=2cm, minimum height=1cm, fill=white},
+    diamond_node/.style={diamond, draw, thick, minimum width=2cm, minimum height=1cm, fill=white, aspect=2},
+    attribute/.style={ellipse, draw, thin, minimum width=1.5cm, minimum height=0.6cm, fill=white, font=\scriptsize},
+    line/.style={draw, thick}, 
+}
+% ------------------------------------------------ 
+% Configuração de página
+% ------------------------------------------------
+\geometry{
+    a4paper,
+    left=2cm,
+    right=2cm,
+    top=2cm,
+    bottom=2cm,
+    headheight=15pt % Adicione isso
+}% Caixa para resposta discursiva
+\newcommand{\resposta}[1]{
+\noindent
+\framebox[\textwidth]{
+\begin{minipage}{0.98\textwidth}
+\vspace{#1}
+\end{minipage}
+}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\setlength{\parindent}{0pt}
+
+% ------------------------------------------------
+% Comandos auxiliares
+% ------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ------------------------------------------------
+% Documento
+% ------------------------------------------------
+\begin{document}
+
+% ------------------------------------------------
+% Cabeçalho - Corrigido para evitar aninhamento problemático
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{@{} L{4cm} X @{}}
+    \raisebox{-0.5cm}{\includegraphics[width=4cm]{Universidade_de_Rio_Verde.jpg}} &
+    \hfill
+    \begin{tabular}{|>{\centering\arraybackslash}m{10cm}|>{\raggedright\arraybackslash}p{1.8cm}|}
+        \hline
+        \cellcolor{black}\color{white}\rule{0pt}{1.2cm}\textbf{AVALIAÇÃO 1 (ADAPTADA)} 
+        & 
+        \scriptsize Nota \tabularnewline
+        \hline
+    \end{tabular} 
+\end{tabularx}
+\vspace{0.3cm}
+
+% ------------------------------------------------  
+% Tabela principal - Estrutura limpa
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{|X|L{2cm}|}
+\hline
+\textbf{Curso} & \textbf{Campus} \\
+\textit{Engenharia de Software} & \textit{Rio Verde} \\
+\hline
+\multicolumn{2}{|l|}{ \textit{Programação Orientada a Objetos}} \\
+\hline
+\textbf{Nome do(a) acadêmico(a)} & \textbf{Valor} \\
+& 7,0 \\
+\hline
+\textbf{Professor} & \textbf{Turma} \\
+\textit{ Sergio Souza Novak} & \textit{B} \\
+\hline
+\textbf{Data da Avaliação} & \textbf{Código} \\
+\textit{20/03/2026} & \textit{ESW448} \\
+\hline
+\end{tabularx}
+ 
+% ------------------------------------------------
+% Barra de Atenção
+% ------------------------------------------------
+\vspace{0.2cm}
+
+\begin{tabularx}{\textwidth}{|X|}
+\hline
+\cellcolor{black}\color{white}
+\centering \textbf{ATENÇÃO:} Somente serão passíveis de \textbf{REVISÃO} avaliações resolvidas à \textbf{TINTA}. \tabularnewline
+\hline
+\end{tabularx}
+
+\vspace{0.3cm}
+
+\textbf{ORIENTAÇÕES PARA A RESOLUÇÃO}  
+
+\begin{itemize}
+    \item A avaliação é individual, sem consulta;
+    \item A interpretação de texto faz parte da avaliação;
+\end{itemize}
+
+\vspace{0.5cm}
+
+\begin{center}
+    \rule{\textwidth}{0.4pt}
+    \textbf{QUESTÕES}
+\end{center}
+
+\vspace{0.5cm} 
+
+\begin{enumerate}
+    \item \textbf{(ENADE 2017)}: O encapsulamento é um mecanismo da programação orientada a objetos no qual os membros de uma classe (atributos e métodos) constituem uma caixa preta. O nível de visibilidade dos membros pode ser definido pelos modificadores de visibilidade "privado", "público" e "protegido". Com relação ao comportamento gerado pelos modificadores de visibilidade, assinale a opção correta. 
+    \begin{enumerate}[label=\Alph*)]
+        \item Um atributo privado pode ser acessado pelos métodos privados da própria classe e pelos métodos protegidos das suas classes descendentes.
+        \item Um atributo privado pode ser acessado pelos métodos públicos da própria classe e pelos métodos públicos das suas classes descendentes.
+        \item Um membro público é visível na classe à qual ele pertence, mas não é visível nas suas classes descendentes.
+        \item Um método protegido não pode acessar os atributos privados e declarados na própria classe.
+        \item Um membro protegido é visível na classe à qual pertence e em suas classes descendentes.
+    \end{enumerate}
+
+    \item \textbf{Encapsulamento:} Observe o diagrama da classe \textbf{ContaBancaria} abaixo. Assinale a alternativa que apresenta a implementação correta em Java, respeitando o encapsulamento e a lógica dos métodos.
+
+    \begin{center} 
+    \begin{tikzpicture}[node distance=0cm, outer sep=0pt, every node/.style={draw, rectangle, minimum height=0.6cm, font=\small\ttfamily, anchor=north west}]
+        \node (header) [fill=white, minimum width=9cm, font=\small\bfseries] at (0,0) {ContaBancaria};
+        
+        \node (attrs) [minimum width=9cm, align=left] at (0,-0.6cm) {
+            - saldo : double \\
+            + depositar(valor: double) : void \\
+            + sacar(valor: double) : void \\
+            + getSaldo() : double
+        };
+    \end{tikzpicture}
+    \end{center}
+
+    \begin{enumerate}[label=\Alph*)]
+        \item \begin{lstlisting}
+public class ContaBancaria {
+    public double saldo;
+    public void depositar(double v) { saldo = v; }
+}
+        \end{lstlisting}
+        \item \begin{lstlisting}
+public class ContaBancaria {
+    private double saldo;
+    public ContaBancaria(double s) { this.saldo = s; }
+    public void depositar(double v) { this.saldo += v; }
+    public void sacar(double v) { this.saldo -= v; }
+    public double getSaldo() { return this.saldo; }
+}
+        \end{lstlisting}
+        \item \begin{lstlisting}
+public class ContaBancaria {
+    private double saldo;
+    public void depositar(double v) { }
+    public void sacar(double v) { }
+}
+        \end{lstlisting}
+        \item \begin{lstlisting}
+public class ContaBancaria {
+    private double saldo;
+    private double getSaldo() { return saldo; }
+}
+        \end{lstlisting}
+        \item \begin{lstlisting}
+public class ContaBancaria {
+    public double getSaldo() { return 100.0; }
+}
+        \end{lstlisting}
+    \end{enumerate}
+
+    \item Na programação orientada a objetos, os modificadores de acesso controlam a visibilidade de classes, atributos e métodos. Assinale a alternativa que apresenta o modificador que permite que um membro seja acessado apenas dentro da própria classe e por suas subclasses:
+    \begin{enumerate}[label=\Alph*)]
+        \item \texttt{public}
+        \item \texttt{private}
+        \item \texttt{protected}
+        \item \texttt{package-private}
+        \item \texttt{static}
+    \end{enumerate}
+
+    \item \textbf{Construtores:} Qual é a principal finalidade de um método construtor em uma classe?
+    \begin{enumerate}[label=\Alph*)]
+        \item Destruir o objeto quando ele não for mais necessário.
+        \item Inicializar os atributos de um objeto no momento de sua criação.
+        \item Permitir que o objeto seja herdado por outras classes.
+        \item Converter um objeto em uma string para exibição.
+        \item Impedir que o objeto seja clonado.
+    \end{enumerate}
+
+
+    \vspace{0.3cm}
+
+
+    \item \textbf{Indústria 4.0 — Máquina CNC:} No contexto de sistemas de manufatura inteligentes, a classe \texttt{MaquinaCNC} foi projetada para representar uma máquina de usinagem com controle automatizado.
+
+    \begin{center}
+    \begin{tikzpicture}[node distance=0cm, outer sep=0pt, every node/.style={draw, rectangle, minimum height=0.6cm, font=\small\ttfamily, anchor=north west}]
+        \node (header) [fill=white, minimum width=9cm, font=\small\bfseries] at (0,0) {MaquinaCNC};
+        
+        \node (attrs) [minimum width=9cm, align=left] at (0,-0.6cm) {
+            - modelo : String \\
+            - horasOperacao : double \\
+            - temperaturaAtual : double \\
+            - temperaturaMaxima : double \\
+            - ligada : boolean \\
+            - pecasProduzidas : int \\
+            + MaquinaCNC(modelo: String, tempMax: double) \\
+            + ligar() : void \\
+            + desligar() : void \\
+            + produzir(qtd:int) : boolean \\
+            + getTemperaturaAtual() : double \\
+            + precisaManutencao() : boolean \\
+            - controlarTemperatura(qtd:int) : void \\
+            - verificarManutencao() : boolean
+        };
+    \end{tikzpicture}
+    \end{center}
+\begin{small}
+\begin{lstlisting}
+01: // MaquinaCNC.java
+02: public class MaquinaCNC {
+03:     private String modelo;
+04:     private double horasOperacao;
+05:     private double temperaturaAtual;
+06:     private double temperaturaMaxima;
+07:     private boolean ligada;
+08:     private int pecasProduzidas;
+09: 
+10:     public MaquinaCNC(String modelo, double tempMax) {
+11:         this.modelo = modelo;
+12:         this.temperaturaMaxima = tempMax;
+13:         this.temperaturaAtual = 25.0; // temperatura ambiente
+14:     }
+15: 
+16:     public void ligar() { this.ligada = true; }
+17:     public void desligar() { this.ligada = false; }
+18: 
+19:     public boolean produzir(int qtd) {
+20:         if (!this.ligada){ return false; }
+21: 
+22:         this.pecasProduzidas += qtd;
+23:         this.horasOperacao += qtd * 0.1;
+24:         this.controlarTemperatura(qtd);
+25:         return true;
+26:     }
+27: 
+28:     public double getTemperaturaAtual() { return this.temperaturaAtual; }
+29:     public boolean precisaManutencao() { return this.verificarManutencao(); }
+30: 
+31:     private void controlarTemperatura(int qtd) {
+32:         this.temperaturaAtual += qtd * 2.0;
+33:         if (this.temperaturaAtual > temperaturaMaxima) {
+34:             desligar();
+35:         }
+36:     }
+37: 
+38:     private boolean verificarManutencao() {
+39:         return horasOperacao > 1000;
+40:     }
+41: }
+42: 
+43: // Main.java
+44: public class Main {
+45:     public static void main(String[] args) {
+46:         MaquinaCNC cnc = new MaquinaCNC("CNC-X1", 100.0);
+47:         cnc.ligar();
+48:         if (cnc.produzir(50)) {
+49:             System.out.println("Producao concluida.");
+50:         }
+51:     }
+52: }
+\end{lstlisting}
+\end{small}
+
+    Com base no código da classe \texttt{MaquinaCNC}, analise as afirmações abaixo como Verdadeiras (V) ou Falsas (F) e assinale a alternativa que apresenta a sequência \textbf{correta}:
+
+    ( ) Se a linha 14 for removida, a máquina poderá produzir peças (\texttt{pecasProduzidas}) mesmo estando desligada (\texttt{ligada = false}). \\
+    ( ) Os atributos das linhas 03 a 08 estão corretamente encapsulados como \texttt{private}, impedindo o acesso direto de outras classes. \\
+    ( ) O método \texttt{precisaManutencao} (linha 22) expõe diretamente o atributo \texttt{horasOperacao}, violando o princípio do encapsulamento.
+
+    \begin{enumerate}[label=\Alph*)]
+        \item V - V - V - F.
+        \item V - F - V - V.
+        \item F - V - F - V.
+        \item V - V - F - F.
+        \item F - F - V - V.
+    \end{enumerate}
+
+
+
+    \item \textbf{Siderurgia — Alto Forno:} A modelagem da classe \texttt{AltoForno} envolve o controle de um equipamento utilizado para produção de metal.
+
+    \begin{center}
+    \begin{tikzpicture}[node distance=0cm, outer sep=0pt, every node/.style={draw, rectangle, minimum height=0.6cm, font=\small\ttfamily, anchor=north west}]
+        \node (header) [fill=white, minimum width=9cm, font=\small\bfseries] at (0,0) {AltoForno};
+        
+        \node (attrs) [minimum width=9cm, align=left] at (0,-0.6cm) {
+            - temperaturaInterna : double \\
+            - temperaturaMinimaOperacao : double \\
+            - temperaturaMaximaOperacao : double \\
+            - volumeMetalProduzido : double \\
+            - ativo : boolean \\
+            + AltoForno(tempMin: double, tempMax: double) \\
+            + iniciarForno() : void \\
+            + desligarForno() : void \\
+            + injetarCombustivel(qtd:double) : double \\
+            + produzirMetal() : double \\
+            + estaAtivo() : boolean \\
+            - verificarFaixaTermica() : boolean \\
+            - controleSeguranca() : void
+        };
+    \end{tikzpicture}
+    \end{center}
+\begin{small}
+\begin{lstlisting}
+01: // AltoForno.java
+02: public class AltoForno {
+03:     private double temperaturaInterna;
+04:     private double temperaturaMinimaOperacao;
+05:     private double temperaturaMaximaOperacao;
+06:     private double volumeMetalProduzido;
+07:     private boolean ativo;
+08: 
+09:     public AltoForno(double tempMin, double tempMax) {
+10:         this.temperaturaMinimaOperacao = tempMin;
+11:         this.temperaturaMaximaOperacao = tempMax;
+12:         this.temperaturaInterna = 20.0;
+13:     }
+14: 
+15:     public void iniciarForno() { this.ativo = true; }
+16:     public void desligarForno() { this.ativo = false; }
+17:     public boolean estaAtivo() { return ativo; }
+18: 
+19:     public double injetarCombustivel(double qtd) {
+20:         this.temperaturaInterna += qtd * 10;
+21:         controleSeguranca();
+22:         return temperaturaInterna;
+23:     }
+24: 
+25:     public double produzirMetal() {
+26:         if (ativo && verificarFaixaTermica()) {
+27:             double producao = 100.0;
+28:             this.volumeMetalProduzido += producao;
+29:             return producao;
+30:         }
+31:         return 0.0;
+32:     }
+33: 
+34:     private boolean verificarFaixaTermica() {
+35:         return temperaturaInterna >= temperaturaMinimaOperacao && 
+36:                temperaturaInterna <= temperaturaMaximaOperacao;
+37:     }
+38: 
+39:     private void controleSeguranca() {
+40:         if (temperaturaInterna > temperaturaMaximaOperacao) {
+41:             desligarForno();
+42:         }
+43:     }
+44: }
+\end{lstlisting}
+\end{small}
+
+    Considerando o código da classe \texttt{AltoForno} e os princípios de Programação Orientada a Objetos, julgue os itens a seguir como Verdadeiras (V) ou Falsas (F) e assinale a sequência \textbf{correta}:
+
+    ( ) O método \texttt{verificarFaixaTermica} (linhas 28-31) é \texttt{private}, o que significa que ele só pode ser invocado por outros métodos dentro de outras classes. \\
+    ( ) Na linha 15, o método \texttt{controleSeguranca} é chamado para garantir que a temperatura não ultrapasse o limite após a injeção de combustível, demonstrando o controle de estado interno. \\
+    ( ) A lógica de produção de metal na linha 20 depende exclusivamente do forno estar \texttt{ativo}, ignorando a temperatura atual do equipamento. \\
+    ( ) O atributo \texttt{temperaturaInterna} (linha 03) poderia ser \texttt{public} sem afetar a segurança do equipamento, pois o método \texttt{controleSeguranca} corrigiria qualquer valor inválido.
+
+    \begin{enumerate}[label=\Alph*)]
+        \item V - V - F - F.
+        \item V - F - V - V.
+        \item F - V - V - F.
+        \item V - V - V - F.
+        \item F - F - F - V.
+    \end{enumerate}
+
+
+    \item \textbf{(VUNESP 2021 - Semae de Piracicaba - SP - Programador Junior)} Em programação orientada a objetos, métodos de acesso do tipo setter têm a finalidade primária de:
+    \begin{enumerate}[label=\Alph*)]
+        \item obter o valor de um atributo.
+        \item modificar o valor de um atributo.
+        \item inicializar os valores de atributos de um objeto assim que ele é instanciado.
+        \item contar quantas vezes o valor de um atributo foi obtido.
+        \item salvar o valor de um atributo de um objeto em um banco de dados.
+    \end{enumerate}
+
+    \item \textbf{(FUNDATEC 2025 - GHC-RS - Programador)} Considerando os conceitos de orientação a objetos na linguagem de programação Java, assinale a alternativa que apresenta quem pode acessar o atributo \texttt{v} diretamente:
+
+\begin{lstlisting}
+package conceicao; 
+public class Conceicao {       
+    protected String v; 
+}
+\end{lstlisting}
+
+    \begin{enumerate}[label=\Alph*)]
+        \item Apenas as classes que estejam no mesmo pacote.
+        \item Apenas os métodos da própria classe.
+        \item As classes filhas de qualquer pacote.
+        \item As classes filhas apenas do mesmo pacote.
+        \item Por qualquer classe de qualquer pacote.
+    \end{enumerate}
+
+    \item Considere a modelagem de uma classe \texttt{Carro} que possui um atributo privado chamado \texttt{velocidadeAtual}. Sobre a importância de se utilizar métodos \textit{getters} e \textit{setters}, assinale a alternativa que descreve corretamente uma vantagem e um exemplo de regra de negócio que poderia ser implementada:
+
+    \begin{center}
+    \begin{tikzpicture}[node distance=0cm, outer sep=0pt, every node/.style={draw, rectangle, minimum height=0.6cm, font=\small\ttfamily, anchor=north west}]
+        \node (header) [fill=white, minimum width=9cm, font=\small\bfseries] at (0,0) {Carro};
+        
+        \node (attrs) [minimum width=9cm, align=left] at (0,-0.6cm) {
+            - velocidadeAtual : double \\
+            + getVelocidade() : double \\
+            + setVelocidade(v: double) : void
+        };
+    \end{tikzpicture}
+    \end{center}
+
+    \begin{enumerate}[label=\Alph*)]
+        \item A vantagem é permitir que qualquer pessoa altere a velocidade sem restrições. Exemplo: Deixar a velocidade ser negativa.
+        \item A vantagem é o encapsulamento, permitindo validar os dados antes de alterar o atributo. Exemplo: Impedir que a velocidade receba valores negativos.
+        \item A vantagem é diminuir o tamanho do código Java. Exemplo: Somar a velocidade com o ano do carro.
+        \item A vantagem é tornar todos os atributos públicos automaticamente. Exemplo: Alterar a cor do carro no método da velocidade.
+        \item A vantagem é que o código roda mais rápido. Exemplo: Multiplicar a velocidade por zero para parar o carro.
+    \end{enumerate}
+
+\end{enumerate}
+\vspace{0.8cm}
+
+
+\end{document}

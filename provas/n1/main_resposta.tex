@@ -1,0 +1,411 @@
+\documentclass[12pt,a4paper]{article}
+
+% ------------------------------------------------
+% Pacotes
+% ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{mathptmx} % Times New Roman
+\usepackage{enumitem}\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable, skins}
+ 
+\lstset{
+    language=Java,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries,
+    showstringspaces=false,
+    breaklines=true,
+    frame=none,
+    numbers=none,
+    tabsize=2,
+    commentstyle=\itshape\color{gray},
+    morekeywords={this}
+}
+
+% Caixa de resolução
+\tcbset{
+    respostabox/.style={
+        colback=green!5!white,
+        colframe=green!50!black,
+        fonttitle=\bfseries,
+        title=Resolução,
+        breakable,
+        enhanced,
+        before skip=6pt,
+        after skip=6pt,
+    }
+}
+
+\geometry{
+    a4paper,
+    left=2cm,
+    right=2cm,
+    top=2cm,
+    bottom=2cm,
+    headheight=15pt
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\setlength{\parindent}{0pt}
+
+% ------------------------------------------------
+% Comandos auxiliares
+% ------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ------------------------------------------------
+% Documento
+% ------------------------------------------------
+\begin{document}
+
+% ------------------------------------------------
+% Cabeçalho
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{@{} L{4cm} X @{}}
+    \raisebox{-0.5cm}{\includegraphics[width=4cm]{Universidade_de_Rio_Verde.jpg}} &
+    \hfill
+    \begin{tabular}{|>{\centering\arraybackslash}m{10cm}|>{\raggedright\arraybackslash}p{1.8cm}|}
+        \hline
+        \cellcolor{black}\color{white}\rule{0pt}{1.2cm}\textbf{GABARITO — AVALIAÇÃO 1}
+        &
+        \scriptsize Nota \tabularnewline
+        \hline
+    \end{tabular}
+\end{tabularx}
+\vspace{0.3cm}
+
+\begin{tabularx}{\textwidth}{|X|L{2cm}|}
+\hline
+\textbf{Curso} & \textbf{Campus} \\
+\textit{Engenharia de Software} & \textit{Rio Verde} \\
+\hline
+\multicolumn{2}{|l|}{ \textit{Programação Orientada a Objetos}} \\
+\hline
+\textbf{Professor} & \textbf{Valor} \\
+\textit{Sergio Souza Novak} & 7,0 \\
+\hline
+\textbf{Data da Avaliação} & \textbf{Código} \\
+\textit{20/03/2026} & \textit{ESW448} \\
+\hline
+\end{tabularx}
+
+\vspace{0.4cm}
+
+\begin{center}
+    \rule{\textwidth}{0.4pt}
+    \textbf{QUESTÕES COM RESOLUÇÕES}
+\end{center}
+
+\vspace{0.3cm}
+
+\begin{enumerate}
+
+% ============================================================
+% QUESTÃO 1
+% ============================================================
+\item \textbf{(ENADE 2017)}: O encapsulamento é um mecanismo da programação orientada a objetos no qual os membros de uma classe (atributos e métodos) constituem uma caixa preta. O nível de visibilidade dos membros pode ser definido pelos modificadores de visibilidade ``privado'', ``público'' e ``protegido''. Com relação ao comportamento gerado pelos modificadores de visibilidade, assinale a opção correta.
+    \begin{enumerate}[label=\Alph*)]
+        \item Um atributo privado pode ser acessado pelos métodos privados da própria classe e pelos métodos protegidos das suas classes descendentes.
+        \item Um atributo privado pode ser acessado pelos métodos públicos da própria classe e pelos métodos públicos das suas classes descendentes.
+        \item Um membro público é visível na classe à qual ele pertence, mas não é visível nas suas classes descendentes.
+        \item Um método protegido não pode acessar os atributos privados e declarados na própria classe.
+        \item[\textbf{E)}] \textbf{Um membro protegido é visível na classe à qual pertence e em suas classes descendentes.} \checkmark
+    \end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: E}
+
+Análise das alternativas:
+\begin{itemize}
+    \item \textbf{A — Falsa:} Um atributo \texttt{private} \textbf{não} pode ser acessado por subclasses, nem mesmo por seus métodos \texttt{protected}. O acesso \texttt{private} é restrito à própria classe.
+    \item \textbf{B — Falsa:} Atributo \texttt{private} \textbf{não} é acessível por descendentes, independentemente do modificador do método da subclasse.
+    \item \textbf{C — Falsa:} Um membro \texttt{public} é visível em qualquer lugar, inclusive nas classes descendentes.
+    \item \textbf{D — Falsa:} Um método \texttt{protected} \textbf{pode} acessar atributos \texttt{private} da \textit{própria} classe normalmente.
+    \item \textbf{E — Verdadeira:} O modificador \texttt{protected} garante visibilidade na própria classe \textbf{e} em todas as suas subclasses (classes descendentes), mesmo em pacotes diferentes.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.4cm}
+
+% ============================================================
+% QUESTÃO 2
+% ============================================================
+\item \textbf{Encapsulamento:} Implementação da classe \textbf{ContaBancaria} com o atributo \textbf{saldo} privado e os métodos \texttt{depositar}, \texttt{sacar}, \texttt{getSaldo} e construtor.
+
+\begin{tcolorbox}[respostabox]
+\begin{lstlisting}
+public class ContaBancaria {
+    private double saldo;
+
+    // Construtor
+    public ContaBancaria(double saldoInicial) {
+        if (saldoInicial >= 0) {
+            this.saldo = saldoInicial;
+        } else {
+            this.saldo = 0;
+        }
+    }
+
+    // Deposita um valor na conta
+    public void depositar(double valor) {
+        if (valor > 0) {
+            this.saldo += valor;
+        }
+    }
+
+    // Saca um valor da conta, se houver saldo
+    public void sacar(double valor) {
+        if (valor > 0 && valor <= this.saldo) {
+            this.saldo -= valor;
+        }
+    }
+
+    // Retorna o saldo atual
+    public double getSaldo() {
+        return this.saldo;
+    }
+}
+\end{lstlisting}
+
+\textbf{Justificativa:}
+\begin{itemize}
+    \item O atributo \texttt{saldo} é declarado \texttt{private}, garantindo encapsulamento — nenhuma classe externa pode modificá-lo diretamente.
+    \item O construtor recebe o saldo inicial e valida que não seja negativo.
+    \item \texttt{depositar} e \texttt{sacar} validam os valores antes de alterar o saldo, protegendo a integridade do objeto.
+    \item \texttt{getSaldo()} é o único ponto de leitura do saldo (getter), mantendo o controle sobre o acesso ao dado.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.4cm}
+
+% ============================================================
+% QUESTÃO 3
+% ============================================================
+\item Na programação orientada a objetos, os modificadores de acesso controlam a visibilidade de classes, atributos e métodos. Assinale a alternativa que apresenta o modificador que permite que um membro seja acessado apenas dentro da própria classe e por suas subclasses:
+    \begin{enumerate}[label=\Alph*)]
+        \item \texttt{public}
+        \item \texttt{private}
+        \item[\textbf{C)}] \textbf{\texttt{protected}} \checkmark
+        \item \texttt{package-private}
+        \item \texttt{static}
+    \end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: C — \texttt{protected}}
+
+\begin{itemize}
+    \item \texttt{public}: acessível por \textbf{qualquer} classe.
+    \item \texttt{private}: acessível \textbf{apenas} dentro da própria classe (subclasses \textbf{não} têm acesso).
+    \item \textbf{\texttt{protected}}: acessível dentro da própria classe \textbf{e} por suas subclasses (também acessível dentro do mesmo pacote em Java). É o gabarito correto.
+    \item \texttt{package-private} (sem modificador em Java): acessível apenas dentro do mesmo pacote, mas \textbf{não} por subclasses em outros pacotes.
+    \item \texttt{static}: não é um modificador de acesso; define que o membro pertence à classe, não ao objeto.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.4cm}
+
+% ============================================================
+% QUESTÃO 4
+% ============================================================
+\item \textbf{Construtores:} Qual é a principal finalidade de um método construtor em uma classe?
+    \begin{enumerate}[label=\Alph*)]
+        \item Destruir o objeto quando ele não for mais necessário.
+        \item[\textbf{B)}] \textbf{Inicializar os atributos de um objeto no momento de sua criação.} \checkmark
+        \item Permitir que o objeto seja herdado por outras classes.
+        \item Converter um objeto em uma string para exibição.
+        \item Impedir que o objeto seja clonado.
+    \end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: B}
+
+O construtor é um método especial chamado automaticamente no momento em que um objeto é criado com o operador \texttt{new}. Sua principal finalidade é \textbf{inicializar os atributos do objeto}, colocando-o em um estado válido e consistente desde o início de sua vida útil.
+
+Exemplo: \texttt{ContaBancaria c = new ContaBancaria(500.0);} — o construtor garante que o saldo começa em 500,0.
+
+As demais alternativas descrevem:
+\begin{itemize}
+    \item \textbf{A:} função do \textit{Garbage Collector} (destruidor), não do construtor.
+    \item \textbf{C:} função da herança (\texttt{extends}), não do construtor.
+    \item \textbf{D:} função do método \texttt{toString()}.
+    \item \textbf{E:} sem relação com o construtor.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.4cm}
+
+% ============================================================
+% QUESTÃO 5
+% ============================================================
+\item \textbf{Indústria 4.0 — Máquina CNC:} Analise o código da classe \texttt{MaquinaCNC} e julgue as afirmações:
+
+( ) Se a linha 14 for removida, a máquina poderá produzir peças mesmo estando desligada. \\
+( ) Os atributos das linhas 03 a 08 estão corretamente encapsulados como \texttt{private}. \\
+( ) O método \texttt{precisaManutencao} expõe diretamente o atributo \texttt{horasOperacao}, violando o encapsulamento.
+
+    \begin{enumerate}[label=\Alph*)]
+        \item V - V - V - F.
+        \item V - F - V - V.
+        \item F - V - F - V.
+        \item[\textbf{D)}] \textbf{V - V - F - F.} \checkmark
+        \item F - F - V - V.
+    \end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: D — V - V - F}
+
+Análise de cada afirmação:
+
+\textbf{1ª afirmação — VERDADEIRA:} A linha 14 é \texttt{if (!this.ligada)\{ return false; \}}, que impede produção quando a máquina está desligada. Se for removida, o método \texttt{produzir} executará mesmo com \texttt{ligada = false}.
+
+\textbf{2ª afirmação — VERDADEIRA:} Todos os atributos das linhas 03–08 (\texttt{modelo}, \texttt{horasOperacao}, \texttt{temperaturaAtual}, \texttt{temperaturaMaxima}, \texttt{ligada}, \texttt{pecasProduzidas}) são declarados \texttt{private}, o que os encapsula corretamente.
+
+\textbf{3ª afirmação — FALSA:} O método \texttt{precisaManutencao()} é \texttt{public} e chama internamente o método \texttt{private} \texttt{verificarManutencao()}, que por sua vez acessa \texttt{horasOperacao}. O atributo \textbf{não é exposto diretamente}; o encapsulamento é preservado — apenas um resultado booleano é devolvido.
+
+\textit{Observação:} A questão lista três afirmações, portanto a sequência tem três termos: \textbf{V - V - F}.
+\end{tcolorbox}
+
+\vspace{0.4cm}
+
+% ============================================================
+% QUESTÃO 6
+% ============================================================
+\item \textbf{Siderurgia — Alto Forno:} Julgue as afirmações sobre a classe \texttt{AltoForno}:
+
+( ) O método \texttt{verificarFaixaTermica} é \texttt{private}, podendo ser invocado apenas por outras classes. \\
+( ) Na linha 15, \texttt{controleSeguranca} é chamado para garantir que a temperatura não ultrapasse o limite. \\
+( ) A produção de metal depende exclusivamente do forno estar \texttt{ativo}. \\
+( ) O atributo \texttt{temperaturaInterna} poderia ser \texttt{public} sem afetar a segurança.
+
+    \begin{enumerate}[label=\Alph*)]
+        \item V - V - F - F.
+        \item V - F - V - V.
+        \item[\textbf{C)}] \textbf{F - V - F - F.} \checkmark
+        \item V - V - V - F.
+        \item F - F - F - V.
+    \end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: C — F - V - F - F}
+
+Análise de cada afirmação:
+
+\textbf{1ª afirmação — FALSA:} \texttt{verificarFaixaTermica} é \texttt{private}, o que significa que só pode ser invocado por métodos da \textbf{própria classe} \texttt{AltoForno}. A afirmação diz ``por outras classes'', o que é o oposto — portanto FALSA.
+
+\textbf{2ª afirmação — VERDADEIRA:} Dentro do método \texttt{injetarCombustivel} (linha 19), após incrementar a temperatura, \texttt{controleSeguranca()} é chamado (linha 21). Esse método desliga o forno se a temperatura ultrapassar o máximo, demonstrando controle de estado interno.
+
+\textbf{3ª afirmação — FALSA:} O método \texttt{produzirMetal} (linha 25–32) verifica \textbf{duas} condições: \texttt{ativo} \textbf{E} \texttt{verificarFaixaTermica()}. A temperatura deve estar dentro da faixa operacional — portanto não depende \textit{exclusivamente} de \texttt{ativo}.
+
+\textbf{4ª afirmação — FALSA:} Tornar \texttt{temperaturaInterna} \texttt{public} permitiria que qualquer classe externa alterasse a temperatura arbitrariamente, driblando o \texttt{controleSeguranca}. Isso comprometeria a integridade do objeto e do equipamento.
+\end{tcolorbox}
+
+\vspace{0.4cm}
+
+% ============================================================
+% QUESTÃO 7
+% ============================================================
+\item \textbf{(VUNESP 2021)} Em programação orientada a objetos, métodos de acesso do tipo \textit{setter} têm a finalidade primária de:
+    \begin{enumerate}[label=\Alph*)]
+        \item obter o valor de um atributo.
+        \item[\textbf{B)}] \textbf{modificar o valor de um atributo.} \checkmark
+        \item inicializar os valores de atributos de um objeto assim que ele é instanciado.
+        \item contar quantas vezes o valor de um atributo foi obtido.
+        \item salvar o valor de um atributo de um objeto em um banco de dados.
+    \end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: B}
+
+\begin{itemize}
+    \item \textbf{Getter} (\texttt{get...}): obtém/retorna o valor de um atributo privado.
+    \item \textbf{Setter} (\texttt{set...}): \textbf{modifica} o valor de um atributo privado, podendo incluir validações antes da alteração.
+    \item \textbf{A} descreve o \textit{getter}.
+    \item \textbf{C} descreve o \textit{construtor}.
+    \item \textbf{D} e \textbf{E} não correspondem a nenhum padrão estabelecido de POO.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.4cm}
+
+% ============================================================
+% QUESTÃO 8
+% ============================================================
+\item \textbf{(FUNDATEC 2025 — GHC-RS)} Considerando o código abaixo, quem pode acessar o atributo \texttt{v} diretamente:
+
+\begin{lstlisting}
+package conceicao;
+public class Conceicao {
+    protected String v;
+}
+\end{lstlisting}
+
+    \begin{enumerate}[label=\Alph*)]
+        \item Apenas as classes que estejam no mesmo pacote.
+        \item Apenas os métodos da própria classe.
+        \item[\textbf{C)}] \textbf{As classes filhas de qualquer pacote.} \checkmark
+        \item As classes filhas apenas do mesmo pacote.
+        \item Por qualquer classe de qualquer pacote.
+    \end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: C}
+
+Em Java, o modificador \texttt{protected} concede acesso:
+\begin{enumerate}
+    \item A todos os membros do \textbf{mesmo pacote} (\textit{package access}).
+    \item A todas as \textbf{subclasses} (\texttt{extends}), \textbf{independentemente do pacote}.
+\end{enumerate}
+
+Portanto, uma classe filha em \textbf{qualquer pacote} pode acessar \texttt{v} diretamente por herança.
+
+\textbf{Atenção:} A alternativa A está incompleta (omite as subclasses de outros pacotes). A alternativa E descreve \texttt{public}. A alternativa B descreve \texttt{private}.
+\end{tcolorbox}
+
+\vspace{0.4cm}
+
+% ============================================================
+% QUESTÃO 9 (última questão discursiva)
+% ============================================================
+\item Considere a modelagem da classe \texttt{Carro} com atributo privado \texttt{velocidadeAtual}. Explique a importância de \textit{getters} e \textit{setters} e dê um exemplo de regra de negócio para \texttt{setVelocidade()}.
+
+\begin{tcolorbox}[respostabox]
+\textbf{Importância dos métodos \textit{getter} e \textit{setter}:}
+
+Quando um atributo é declarado \texttt{private}, nenhuma classe externa pode lê-lo ou alterá-lo diretamente. Os métodos \textit{getter} e \textit{setter} são a \textbf{interface controlada} para acessar e modificar esses valores. Isso traz as seguintes vantagens:
+
+\begin{enumerate}
+    \item \textbf{Controle de acesso:} somente o que for exposto via métodos públicos é visível ao mundo externo. Atributos sensíveis ficam protegidos.
+    \item \textbf{Validação de dados:} o \textit{setter} pode verificar se o valor recebido é válido antes de aplicá-lo, evitando estados inconsistentes no objeto.
+    \item \textbf{Manutenibilidade:} a lógica interna da classe pode mudar sem afetar o código que a utiliza, desde que a assinatura dos métodos permaneça a mesma.
+    \item \textbf{Rastreabilidade:} é possível adicionar log, notificações ou outros comportamentos quando um atributo é lido ou modificado, sem alterar código externo.
+\end{enumerate}
+
+\textbf{Exemplo de regra de negócio no \texttt{setVelocidade()}:}
+
+O método \texttt{setVelocidade()} poderia implementar a seguinte regra: \textit{``A velocidade do carro não pode ser negativa e não pode ultrapassar 200 km/h (velocidade máxima permitida pelo veículo). Se o valor fornecido for inválido, a velocidade permanece inalterada e uma mensagem de aviso é registrada.''}
+
+Dessa forma, qualquer parte do sistema que tente definir uma velocidade de $-10$ ou de $300\,\text{km/h}$ será bloqueada pela própria classe, garantindo que o objeto \texttt{Carro} nunca fique em um estado inconsistente com a realidade.
+\end{tcolorbox}
+
+\end{enumerate}
+
+\vspace{0.8cm}
+
+\end{document}

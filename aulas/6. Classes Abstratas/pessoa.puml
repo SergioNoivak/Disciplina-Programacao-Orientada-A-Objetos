@@ -1,0 +1,7 @@
+@startuml
+class Pessoa {
+    + nome : String
+    + idade : int
+    + altura : double
+}
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class Funcionario {
+    + nome : String
+    + salario : double
+
+    --
+    + aumentarSalario(percentual : double) : void
+}
+@enduml

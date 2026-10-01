@@ -1,0 +1,886 @@
+\documentclass[9pt]{beamer}
+\mode<presentation>
+
+% Theme choice:
+\usetheme{Madrid}%Darmstadt 
+
+\definecolor{univBlue}{RGB}{0, 57, 145}
+\definecolor{univLightBlue}{RGB}{71, 115, 169}
+\definecolor{univSoftBlue}{RGB}{147, 172, 203}
+
+\usecolortheme[RGB={0, 57, 145}]{structure}
+ \usefonttheme{structurebold} 
+\setbeamercovered{invisible}
+%\setbeamertemplate{navigation symbols}{}
+\usepackage{dynblocks}
+\usepackage{textpos}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, shapes.symbols, arrows.meta, positioning, shapes.multipart}
+\newtheorem{teorema}{Teorema}\usepackage{mathtools}
+\renewcommand{\proofname}{Prova}
+\usepackage[portuguese]{babel}
+\usepackage{pifont}
+\uselanguage{Portuguese}
+\languagepath{Portuguese}
+
+\deftranslation[to=Portuguese]{Theorem}{Teorema}
+\deftranslation[to=Portuguese]{Lemma}{Lema}
+\deftranslation[to=Portuguese]{Corollary}{Corolário}
+\deftranslation[to=Portuguese]{Proof}{Prova}
+
+\usepackage{dutchcal}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsthm}
+
+
+\usepackage[affil-it]{authblk} 
+\usepackage{etoolbox}
+\usepackage{lmodern}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    language=Java,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{univBlue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle={\ttfamily\small},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\makeatletter
+\patchcmd{\@maketitle}{\LARGE \@title}{\fontsize{18}{19.2}\selectfont\@title}{}{}
+\makeatother
+
+\renewcommand\Authfont{\fontsize{12}{14.4}\selectfont}
+\renewcommand\Affilfont{\fontsize{9}{10.8}\itshape}
+
+% Title page details: 
+\title[Presentation]{Programação Orientada a Objetos} %add title
+
+
+\institute[UniRV]{\textbf{\large  \textcolor{univBlue}{\textbf{\large
+    Interfaces de Orientação a objeto e Java Collections }} %add name 
+% \hspace{0.5pt}
+\\ \qquad
+\\Professor: Me. Sergio Souza Novak 
+\\Faculdade de Engenharia de Software}
+} 
+% \titlegraphic{\includegraphics[width=5cm]{msu.eps}}
+\titlegraphic{\includegraphics[width=3cm]{universidade_logo_novo.png}}
+\date{}
+
+% Logo only on title page
+%\logo{\includegraphics[width=1cm,keepaspectratio]{Logo.png}}
+\usepackage[pscoord]{eso-pic}
+
+\AtBeginSection[]{
+  {
+    \setbeamercolor{background canvas}{bg=univBlue}
+    \begin{frame}[plain]
+      \vfill
+      \centering
+      \begin{beamercolorbox}[sep=12pt,center]{title}
+        \usebeamerfont{title} \Huge \bfseries \textcolor{white}{\insertsection}\par
+        \vspace{0.4cm}
+        \textcolor{univSoftBlue}{\rule{0.6\textwidth}{1.5pt}}
+      \end{beamercolorbox}
+      \vfill
+    \end{frame}
+  }
+}
+
+
+\begin{document}
+
+% Title page frame
+%\begin{frame}
+    %\titlepage 
+%\end{frame}
+\frame[plain]{\titlepage}
+
+\begin{frame}{Sumário}
+    \begin{columns}[t]
+        \begin{column}{0.5\textwidth}
+            \tableofcontents[sections={1-3}]
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \tableofcontents[sections={4-5}]
+        \end{column}
+    \end{columns}
+\end{frame}
+%logo
+\AddToShipoutPictureFG{
+    \put(\LenToUnit{.92\paperwidth},
+    \LenToUnit{.185\paperheight})
+    {\vtop{{\null}
+    \makebox{\includegraphics[width=.8cm,keepaspectratio]{universidade_logo_novo.png}}}}}
+\section{Interfaces na Orientação a Objetos}
+
+\begin{frame}{O que é uma Interface?}
+    \begin{itemize}
+        \item Em Programação Orientada a Objetos, uma \textbf{Interface} é um \textbf{contrato} que define um conjunto de comportamentos (métodos) que uma classe deve implementar.
+        \item Uma interface dita \textbf{o que} um objeto deve fazer, mas não \textbf{como} ele faz.
+        \item Em Java, até a versão 7, interfaces continham apenas assinaturas de métodos (sem corpo) e constantes.
+        \item Serve como uma fronteira de comunicação entre diferentes componentes de um sistema.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Analogia do Mundo Real: A Tomada Elétrica}
+    \begin{itemize}
+        \item Pense em uma \textbf{tomada elétrica} na parede.
+        \item Ela define um "padrão" (Interface): possui furos em posições específicas e fornece energia de uma certa voltagem.
+        \item Qualquer aparelho (TV, Geladeira, Carregador) que tenha um \textbf{plugue} compatível com esse padrão pode se conectar e funcionar.
+        \item A tomada não precisa saber \textbf{qual} aparelho está conectado, apenas que ele segue o contrato (encaixa no plugue).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Diagrama Conceitual: Analogia}
+    \scriptsize
+    \begin{center}
+    \resizebox{0.7\textwidth}{!}{
+    \begin{tikzpicture}[
+        node distance=2cm and 4cm,
+        interface/.style={draw, circle, fill=univSoftBlue!40, align=center, font=\bfseries, minimum size=2cm},
+        class/.style={draw, rectangle, rounded corners, fill=univBlue!20, text centered, minimum width=2.5cm, minimum height=1cm},
+        arrow/.style={-{Stealth[scale=1.2]}, thick, dashed}
+    ]
+        % Nodes
+        \node[interface] (tomada) {Tomada \\ (Interface)};
+        
+        \node[class, above right=of tomada] (tv) {Televisão};
+        \node[class, right=of tomada] (geladeira) {Geladeira};
+        \node[class, below right=of tomada] (notebook) {Notebook};
+        
+        % Arrows
+        \draw[arrow] (tv) -- node[above, sloped, font=\small] {implementa plugue} (tomada);
+        \draw[arrow] (geladeira) -- node[above, sloped, font=\small] {implementa plugue} (tomada);
+        \draw[arrow] (notebook) -- node[below, sloped, font=\small] {implementa plugue} (tomada);
+        
+    \end{tikzpicture}
+    }
+    \end{center}
+\end{frame}
+
+\begin{frame}{Por que usar Interfaces?}
+    \begin{itemize}
+        \item \textbf{Desacoplamento:} O código que usa a interface não fica dependente da implementação específica de uma classe.
+        \item \textbf{Polimorfismo:} Permite tratar objetos de classes diferentes de maneira uniforme, desde que implementem a mesma interface.
+        \item \textbf{Múltipla Herança de Tipos:} No Java, uma classe só pode herdar (\texttt{extends}) de uma única superclasse, mas pode implementar (\texttt{implements}) múltiplas interfaces simultaneamente.
+        \item \textbf{Padronização:} Facilita o trabalho em equipe, pois o arquiteto pode definir as interfaces (contratos) e os programadores criam as implementações de forma independente.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Sintaxe Básica em Java}
+    \begin{itemize}
+        \item Utilizamos a palavra-chave \texttt{interface} em vez de \texttt{class}.
+        \item Os métodos declarados são implicitamente \texttt{public} e \texttt{abstract} (não precisam da palavra-chave).
+    \end{itemize}
+    \begin{lstlisting}
+// Definindo uma interface
+public interface Autenticavel {
+    
+    // Metodo sem corpo (apenas a assinatura)
+    boolean autenticar(String senha);
+    
+    // Outro metodo sem corpo
+    void fazerLogout();
+}
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Implementando uma Interface}
+    \begin{itemize}
+        \item Uma classe assina o contrato usando a palavra-chave \texttt{implements}.
+        \item \textbf{Regra de Ouro:} A classe concreta \textbf{deve} implementar (fornecer o corpo) todos os métodos definidos na interface.
+    \end{itemize}
+    \begin{lstlisting}
+// A classe assina o contrato "Autenticavel"
+public class Gerente implements Autenticavel {
+    private String senhaDoGerente = "1234";
+
+    @Override
+    public boolean autenticar(String senha) {
+        return this.senhaDoGerente.equals(senha);
+    }
+
+    @Override
+    public void fazerLogout() {
+        System.out.println("Gerente saiu do sistema.");
+    }
+}
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Múltiplas Implementações}
+    Diferentes classes podem implementar a mesma interface de maneiras totalmente diferentes:
+    \begin{lstlisting}
+public class Cliente implements Autenticavel {
+    private String tokenApp;
+
+    @Override
+    public boolean autenticar(String senha) {
+        // Logica diferente: usa token de aplicativo
+        return validarTokenNoServidor(this.tokenApp, senha);
+    }
+
+    @Override
+    public void fazerLogout() {
+        System.out.println("Sessao do cliente encerrada.");
+    }
+    
+    private boolean validarTokenNoServidor(String t, String s) {
+        return true; // logica simulada
+    }
+}
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Diagrama UML: Interface vs Implementação}
+    \begin{center}
+    \resizebox{0.6\textwidth}{!}{
+    \begin{tikzpicture}[
+        node distance=1.5cm and 2cm,
+        interface/.style={draw, rectangle, fill=univSoftBlue!30, align=center, font=\ttfamily\bfseries, minimum width=3cm, minimum height=1cm},
+        class/.style={draw, rectangle, fill=univBlue!10, text centered, minimum width=2.5cm, minimum height=0.8cm},
+        arrow/.style={-{Stealth[scale=1.2, open]}, dashed, thick} % UML Realization arrow
+    ]
+        % Nodes
+        \node[interface] (autenticavel) {\guillemotleft interface\guillemotright \\ Autenticavel};
+        
+        \node[class, below left=of autenticavel] (gerente) {Gerente};
+        \node[class, below right=of autenticavel] (cliente) {Cliente};
+        
+        % Arrows
+        \draw[arrow] (gerente) -- (autenticavel);
+        \draw[arrow] (cliente) -- (autenticavel);
+        
+    \end{tikzpicture}
+    }
+    \end{center}
+    \vspace{0.5cm}
+    \begin{itemize}
+        \item No diagrama UML, a relação de implementação é representada por uma seta tracejada com a ponta vazada apontando para a interface.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Polimorfismo: O Verdadeiro Poder}
+    \begin{itemize}
+        \item \textbf{Programar para a interface, não para a implementação.}
+        \item Podemos usar o tipo da Interface como o tipo de uma variável de referência.
+    \end{itemize}
+    
+    \begin{center}
+    \resizebox{0.75\textwidth}{!}{
+    \begin{tikzpicture}[
+        node distance=0.8cm and 2.5cm,
+        var/.style={draw, rectangle, rounded corners, fill=univSoftBlue!30, font=\bfseries\small, minimum width=2.5cm, minimum height=0.8cm, align=center},
+        obj/.style={draw, rectangle, fill=univBlue!15, font=\bfseries\small, minimum width=2.5cm, minimum height=0.8cm, align=center},
+        arrow/.style={-Stealth, thick, univBlue}
+    ]
+        % Nodes
+        \node[var] (v) {Referência:\\ \texttt{Autenticavel u}};
+        \node[obj, above right=of v] (o1) {Objeto na memória:\\ \texttt{new Gerente()}};
+        \node[obj, below right=of v] (o2) {Objeto na memória:\\ \texttt{new Cliente()}};
+        
+        % Connections
+        \draw[arrow] (v.east) -- node[above, sloped, font=\tiny] {pode apontar para} (o1.west);
+        \draw[arrow] (v.east) -- node[below, sloped, font=\tiny] {ou apontar para} (o2.west);
+        
+    \end{tikzpicture}
+    }
+    \end{center}
+    
+    \begin{itemize}
+        \item Isso nos permite criar métodos genéricos que aceitam \textbf{qualquer} objeto que implemente a interface, sem precisar saber a sua classe exata em tempo de compilação.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Classe Abstrata vs Interface}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{center}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{|l|p{4.5cm}|p{4.5cm}|}
+        \hline
+        \textbf{Característica} & \textbf{Classe Abstrata} & \textbf{Interface} \\ \hline
+        \textbf{Herança} & Uma classe só pode herdar (\texttt{extends}) de \textbf{uma} classe. & Uma classe pode implementar (\texttt{implements}) \textbf{múltiplas} interfaces. \\ \hline
+        \textbf{Métodos} & Pode conter métodos abstratos e métodos normais (com corpo). & Métodos sem corpo (Java 8+ permite métodos \texttt{default} e \texttt{static}). \\ \hline
+        \textbf{Atributos} & Pode ter variáveis de instância normais (com estado). & Apenas constantes (\texttt{public static final} implícitos). \\ \hline
+        \textbf{Foco} & Relação de identidade (\textbf{"É um"}). & Relação de comportamento (\textbf{"Faz um"}). \\ \hline
+    \end{tabular}
+    }
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo Prático: Polimorfismo}
+    \begin{lstlisting}
+public class SistemaLogin {
+    // Aceita QUALQUER objeto que seja Autenticavel
+    public void fazerLogin(Autenticavel usuario, String senha) {
+        if (usuario.autenticar(senha)) {
+            System.out.println("Acesso Liberado!");
+        } else {
+            System.out.println("Acesso Negado!");
+        }
+    }
+
+    public static void main(String[] args) {
+        SistemaLogin sistema = new SistemaLogin();
+        Gerente g1 = new Gerente();
+        Cliente c1 = new Cliente();
+
+        // O mesmo metodo lida com objetos diferentes!
+        sistema.fazerLogin(g1, "1234");
+        sistema.fazerLogin(c1, "senhaErrada");
+    }
+}
+    \end{lstlisting}
+\end{frame}
+
+\section{Introdução ao Java Collections Framework}
+
+\begin{frame}[fragile]{Motivação: O Problema dos Arrays}
+    \begin{itemize}
+        \item Arrays são a estrutura de dados mais básica e fundamental no Java.
+        \item No entanto, eles apresentam desafios práticos no dia a dia.
+        \item Exemplo de declaração e uso:
+    \end{itemize}
+    \begin{lstlisting}
+// Criando um array para armazenar 100 nomes
+String[] nomes = new String[100];
+nomes[0] = "Alice";
+nomes[1] = "Bob";
+
+// E se precisarmos adicionar 101 elementos?
+// E se precisarmos remover "Alice" e reorganizar?
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Limitações dos Arrays}
+    \begin{itemize}
+        \item \textbf{Tamanho fixo:} O tamanho do array é definido no momento da sua criação. Ele não pode crescer ou encolher dinamicamente conforme a necessidade.
+        \item \textbf{Inserções e remoções difíceis:} Remover um elemento do meio do array ou inserir em uma posição específica exige o deslocamento manual dos demais elementos.
+        \item \textbf{Pouca flexibilidade:} Não há métodos prontos nativos nos arrays para busca avançada, ordenação fácil ou manipulações complexas (exige implementação própria ou uso da classe utilitária \texttt{Arrays}).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Solução: Java Collections Framework (JCF)}
+    \begin{itemize}
+        \item Para resolver as limitações dos arrays, a linguagem oferece o \textbf{Java Collections Framework}.
+        \item \textbf{O que é?} É uma arquitetura unificada para representar e manipular coleções de objetos de forma padronizada.
+        \item Ele fornece \textbf{interfaces} (que definem o comportamento esperado) e \textbf{classes concretas} (que implementam as estruturas de dados).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Benefícios do Java Collections Framework}
+    \begin{itemize}
+        \item \textbf{Estruturas dinâmicas:} As coleções crescem e diminuem automaticamente conforme elementos são adicionados ou removidos.
+        \item \textbf{Métodos prontos:} Fornece dezenas de métodos úteis e otimizados para inserção, remoção, busca, ordenação e iteração.
+        \item \textbf{Melhor reutilização de código:} Padrões de projeto bem definidos garantem que os desenvolvedores usem uma interface comum e intercambiável.
+        \item \textbf{Maior produtividade:} Reduz o tempo de desenvolvimento, pois elimina a necessidade de criar estruturas de dados do zero.
+    \end{itemize}
+\end{frame}
+
+\section{Hierarquia das Collections}
+
+\begin{frame}{Visão Geral da Hierarquia}
+    \begin{itemize}
+        \item O JCF é composto por um conjunto de \textbf{Interfaces} que organizam o comportamento das coleções.
+        \item As coleções em Java são divididas em duas ramificações principais:
+        \begin{itemize}
+            \item As coleções baseadas na interface \texttt{Collection} (elementos individuais).
+            \item As coleções baseadas na interface \texttt{Map} (pares chave-valor).
+        \end{itemize}
+        \item As classes de implementação (como \texttt{ArrayList}, \texttt{HashSet}, \texttt{HashMap}) fornecem as estruturas reais usadas no código.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Diagrama da Hierarquia: Collection}
+    \begin{center}
+    \resizebox{0.9\textwidth}{!}{
+    \begin{tikzpicture}[
+        node distance=1cm and 1.5cm,
+        interface/.style={draw, rectangle, rounded corners, fill=univSoftBlue!40, text centered, font=\bfseries, minimum width=2.5cm, minimum height=1cm},
+        class/.style={draw, rectangle, fill=univBlue!20, text centered, minimum width=2cm, minimum height=0.8cm},
+        arrow/.style={-{Stealth[scale=1.2]}, thick},
+        dashed_arrow/.style={dashed, -{Stealth[scale=1.2]}, thick}
+    ]
+        % Nodes
+        \node[interface] (iterable) {Iterable};
+        \node[interface, below=of iterable] (collection) {Collection};
+        
+        \node[interface, below=of collection] (set) {Set};
+        \node[interface, left=of set] (list) {List};
+        \node[interface, right=of set] (queue) {Queue};
+        
+        \node[class, below=0.8cm of list, xshift=-1cm] (arraylist) {ArrayList};
+        \node[class, right=0.2cm of arraylist] (linkedlist) {LinkedList};
+        
+        % Arrows
+        \draw[arrow] (collection) -- (iterable);
+        \draw[arrow] (list) -- (collection);
+        \draw[arrow] (set) -- (collection);
+        \draw[arrow] (queue) -- (collection);
+        
+        \draw[dashed_arrow] (arraylist) -- (list);
+        \draw[dashed_arrow] (linkedlist) -- (list);
+        
+    \end{tikzpicture}
+    }
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{A Interface Collection}
+    \begin{itemize}
+        \item \texttt{Collection} é a interface \textbf{principal} da qual a maioria das coleções herda.
+        \item Ela garante que qualquer coleção no Java suporte métodos essenciais:
+    \end{itemize}
+    \begin{lstlisting}
+public interface Collection<E> extends Iterable<E> {
+    boolean add(E e);           // Adiciona um elemento
+    boolean remove(Object o);   // Remove um elemento
+    boolean contains(Object o); // Verifica existencia
+    int size();                 // Retorna o tamanho
+    boolean isEmpty();          // Verifica se esta vazia
+    void clear();               // Limpa a colecao
+    Iterator<E> iterator();     // Para percorrer
+}
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Onde entra o Map?}
+    \begin{itemize}
+        \item \textbf{Importante:} A interface \texttt{Map} \textbf{não herda} de \texttt{Collection}.
+        \item \textbf{Por que?} Diferente das outras coleções que armazenam elementos simples, um \texttt{Map} armazena elementos no formato de \textbf{chave $\rightarrow$ valor}.
+        \item Apesar disso, o \texttt{Map} é considerado parte integral do Java Collections Framework.
+        \item Mapas fornecem visualizações (views) baseadas em \texttt{Collection} de seus dados, como \texttt{keySet()} (chaves) e \texttt{values()} (valores).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Diagrama da Hierarquia: Map}
+    \begin{center}
+    \resizebox{0.6\textwidth}{!}{
+    \begin{tikzpicture}[
+        node distance=1.5cm and 2cm,
+        interface/.style={draw, rectangle, rounded corners, fill=univSoftBlue!40, text centered, font=\bfseries, minimum width=2.5cm, minimum height=1cm},
+        class/.style={draw, rectangle, fill=univBlue!20, text centered, minimum width=2.5cm, minimum height=0.8cm},
+        arrow/.style={-{Stealth[scale=1.2]}, thick},
+        dashed_arrow/.style={dashed, -{Stealth[scale=1.2]}, thick}
+    ]
+        % Nodes
+        \node[interface] (map) {Map};
+        
+        \node[class, below left=of map] (hashmap) {HashMap};
+        \node[interface, below right=of map] (sortedmap) {SortedMap};
+        \node[class, below=of sortedmap] (treemap) {TreeMap};
+        
+        % Arrows
+        \draw[dashed_arrow] (hashmap) -- (map);
+        \draw[arrow] (sortedmap) -- (map);
+        \draw[dashed_arrow] (treemap) -- (sortedmap);
+        
+    \end{tikzpicture}
+    }
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Diferença em Código: Collection vs Map}
+    \textbf{Collection (Exemplo com List):}
+    \begin{lstlisting}
+List<String> cidades = new ArrayList<>();
+cidades.add("Rio Verde");
+cidades.add("Goiania");
+System.out.println(cidades.get(0)); // Rio Verde
+    \end{lstlisting}
+    
+    \vspace{0.3cm}
+    \textbf{Map (Chave-Valor):}
+    \begin{lstlisting}
+Map<Integer, String> ddd = new HashMap<>();
+ddd.put(64, "Rio Verde");
+ddd.put(62, "Goiania");
+System.out.println(ddd.get(64)); // Rio Verde
+    \end{lstlisting}
+\end{frame}
+
+\section{A Interface List}
+
+\begin{frame}{A Interface List: Características}
+    \begin{itemize}
+        \item É uma das interfaces mais utilizadas do Java Collections Framework.
+        \item Representa uma coleção ordenada (sequência) de elementos.
+        \item \textbf{Principais características:}
+        \begin{itemize}
+            \item \textbf{Mantém a ordem de inserção:} Os elementos são armazenados na exata sequência em que foram adicionados.
+            \item \textbf{Permite elementos duplicados:} É possível ter o mesmo valor (ou mesmo objeto) repetido em posições diferentes.
+            \item \textbf{Acesso por índice:} Assim como os arrays, os elementos de uma lista podem ser acessados através de um índice numérico (começando em 0).
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Principais Métodos da Interface List}
+    A interface \texttt{List} adiciona métodos específicos para lidar com índices, além dos já existentes na interface \texttt{Collection}:
+    \begin{itemize}
+        \item \texttt{add(E e)} / \texttt{add(int index, E e)}: Adiciona um elemento.
+        \item \texttt{remove(int index)} / \texttt{remove(Object o)}: Remove um elemento.
+        \item \texttt{get(int index)}: Retorna o elemento na posição informada.
+        \item \texttt{set(int index, E element)}: Substitui um elemento numa dada posição.
+        \item \texttt{contains(Object o)}: Verifica se o elemento está na lista.
+        \item \texttt{size()}: Retorna o número de elementos da lista.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Classe ArrayList}
+    \begin{itemize}
+        \item \textbf{ArrayList} é a implementação mais comum da interface \texttt{List}.
+        \item Baseia-se em um array interno redimensionável.
+        \item \textbf{Como funciona?}
+        \begin{itemize}
+            \item Quando o array interno enche, ele cria um novo array maior e copia os elementos originais.
+        \end{itemize}
+        \item \textbf{Vantagens:} Acesso muito rápido aos elementos via índice.
+        \item \textbf{Desvantagens:} Inserções e remoções no meio da lista são custosas, pois exigem deslocamento de elementos.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Funcionamento do ArrayList}
+    \begin{center}
+    \resizebox{0.8\textwidth}{!}{
+    \begin{tikzpicture}[
+        node distance=0cm,
+        cell/.style={draw, rectangle, minimum width=1.6cm, minimum height=1cm, fill=univSoftBlue!30, font=\bfseries\small, align=center},
+        emptycell/.style={draw, rectangle, minimum width=1.6cm, minimum height=1cm, fill=black!5, font=\tiny\itshape\color{codegray}, align=center},
+        index/.style={font=\tiny\color{codegray}}
+    ]
+        % Nodes
+        \node[cell] (c0) {``Ana''};
+        \node[cell, right=of c0] (c1) {``Carlos''};
+        \node[cell, right=of c1] (c2) {``Ana''};
+        \node[emptycell, right=of c2] (c3) {vazio};
+        \node[emptycell, right=of c3] (c4) {vazio};
+        
+        % Indices
+        \node[index, above=0.1cm of c0] {Índice 0};
+        \node[index, above=0.1cm of c1] {Índice 1};
+        \node[index, above=0.1cm of c2] {Índice 2};
+        \node[index, above=0.1cm of c3] {Índice 3};
+        \node[index, above=0.1cm of c4] {Índice 4};
+        
+        % Helper labels
+        \draw[<->, >=Stealth, thick, univBlue] ([yshift=-0.3cm]c0.south west) -- node[below, font=\small\bfseries] {Array Contíguo na Memória (Capacidade = 5)} ([yshift=-0.3cm]c4.south east);
+        
+    \end{tikzpicture}
+    }
+    \end{center}
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item \textbf{Acesso Direto (Índice):} É imediato. Como os elementos estão sequenciais na memória, o Java sabe exatamente onde encontrar o elemento do índice 2 sem precisar percorrer os anteriores.
+        \item \textbf{Capacidade:} O array interno tem um tamanho fixo. Quando ele enche, o ArrayList cria automaticamente um novo array maior e move todos os elementos.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo Prático: ArrayList}
+    \begin{lstlisting}
+import java.util.*;
+
+public class Exemplo {
+    public static void main(String[] args) {
+        List<String> nomes = new ArrayList<>();
+
+        nomes.add("Ana");
+        nomes.add("Carlos");
+        nomes.add("Ana"); // Permite duplicados
+
+        System.out.println(nomes);
+    }
+}
+    \end{lstlisting}
+    \textbf{Saída:}
+    \begin{lstlisting}[numbers=none, backgroundcolor=\color{white}]
+[Ana, Carlos, Ana]
+    \end{lstlisting}
+\end{frame}
+
+\section{LinkedList}
+
+\begin{frame}{A Classe LinkedList}
+    \begin{itemize}
+        \item A \textbf{LinkedList} implementa as interfaces \texttt{List} e \texttt{Deque} (Fila Duplamente Encadeada).
+        \item Baseia-se em uma estrutura de \textbf{Lista Encadeada} interna.
+        \item \textbf{Como funciona?}
+        \begin{itemize}
+            \item Os elementos (nós) não são armazenados sequencialmente na memória. Cada nó contém o dado e referências para o nó anterior e posterior.
+        \end{itemize}
+        \item \textbf{Vantagens:} Inserções e remoções frequentes (no início ou meio) são muito eficientes.
+        \item \textbf{Desvantagens:} Acesso por índice é muito lento.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Funcionamento do LinkedList}
+    \begin{center}
+    \resizebox{0.8\textwidth}{!}{
+    \begin{tikzpicture}[
+        node distance=0cm,
+        field/.style={draw, rectangle, minimum width=0.8cm, minimum height=0.8cm, fill=univBlue!10, font=\tiny},
+        data/.style={draw, rectangle, minimum width=1.6cm, minimum height=0.8cm, fill=univSoftBlue!30, font=\bfseries\small},
+        arrow/.style={->, >=Stealth, thick, univBlue}
+    ]
+        % Node 0
+        \node[field] (n0p) {null};
+        \node[data, right=of n0p] (n0d) {``Joao''};
+        \node[field, right=of n0d] (n0n) {$\bullet$};
+        
+        % Node 1
+        \node[field, right=1.5cm of n0n] (n1p) {$\bullet$};
+        \node[data, right=of n1p] (n1d) {``Maria''};
+        \node[field, right=of n1d] (n1n) {null};
+        
+        % Connections
+        \draw[arrow] (n0n.center) [bend left=30] to (n1d.west);
+        \draw[arrow] (n1p.center) [bend left=30] to (n0d.east);
+        
+    \end{tikzpicture}
+    }
+    \end{center}
+    \vspace{0.5cm}
+    \begin{itemize}
+        \item \textbf{Encadeamento Duplo:} Cada nó é composto por uma referência para o elemento anterior (\textit{prev}), o dado em si, e uma referência para o próximo (\textit{next}).
+        \item \textbf{Inserção/Remoção:} Para inserir um elemento no meio, basta alterar os ponteiros (ex: fazer o anterior apontar para o novo nó e o novo nó apontar para o próximo), o que é extremamente eficiente.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo Prático: LinkedList}
+    \begin{lstlisting}
+import java.util.*;
+
+public class ExemploFila {
+    public static void main(String[] args) {
+        LinkedList<String> fila = new LinkedList<>();
+
+        fila.add("Joao");
+        fila.add("Maria");
+        
+        System.out.println(fila);
+    }
+}
+    \end{lstlisting}
+    \textbf{Saída:}
+    \begin{lstlisting}[numbers=none, backgroundcolor=\color{white}]
+[Joao, Maria]
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Comparação: ArrayList vs LinkedList}
+    \begin{center}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Operação} & \textbf{ArrayList} & \textbf{LinkedList} \\ \hline
+        Acesso por índice & \textcolor{codegreen}{\textbf{Excelente}} & \textcolor{red}{\textbf{Ruim}} \\ \hline
+        Inserção no meio  & \textcolor{red}{\textbf{Ruim}} & \textcolor{codegreen}{\textbf{Boa}} \\ \hline
+        Remoção no meio   & \textcolor{red}{\textbf{Ruim}} & \textcolor{codegreen}{\textbf{Boa}} \\ \hline
+        \end{tabular}
+    \end{center}
+    
+    \vspace{0.5cm}
+    \begin{itemize}
+        \item \textbf{Resumo:} Na maioria dos casos, o \texttt{ArrayList} oferece a melhor performance geral e deve ser a escolha padrão. Use \texttt{LinkedList} se sua aplicação tiver forte necessidade de realizar inserções e deleções constantes nas posições intermediárias.
+    \end{itemize}
+\end{frame}
+
+\section{A Interface Set}
+
+\begin{frame}{A Interface Set: Características}
+    \begin{itemize}
+        \item A interface \texttt{Set} modela a estrutura matemática de conjuntos.
+        \item \textbf{Características principais:}
+        \begin{itemize}
+            \item \textbf{Não permite duplicatas:} Tentativas de adicionar um elemento repetido são ignoradas.
+            \item \textbf{Ideal para elementos únicos:} Útil para guardar CPFs, RGs, ou qualquer dado que requeira unicidade.
+        \end{itemize}
+        \item A implementação mais comum e rápida é o \textbf{HashSet}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo Prático: HashSet}
+    \begin{lstlisting}
+import java.util.*;
+
+public class ExemploHashSet {
+    public static void main(String[] args) {
+        Set<String> nomes = new HashSet<>();
+
+        nomes.add("Ana");
+        nomes.add("Pedro");
+        nomes.add("Ana"); // Ignorado
+
+        System.out.println(nomes);
+    }
+}
+    \end{lstlisting}
+    \textbf{Possível Saída:}
+    \begin{lstlisting}[numbers=none, backgroundcolor=\color{white}]
+[Pedro, Ana]
+    \end{lstlisting}
+    \vspace{0.1cm}
+    \small{\textbf{Observação:} O elemento duplicado \texttt{"Ana"} não é armazenado. A ordem não é garantida.}
+\end{frame}
+
+\section{TreeSet}
+
+\begin{frame}{A Classe TreeSet}
+    \begin{itemize}
+        \item O \textbf{TreeSet} é outra implementação popular da interface \texttt{Set}.
+        \item \textbf{Características:}
+        \begin{itemize}
+            \item \textbf{Não aceita duplicados:} Assim como qualquer \texttt{Set}.
+            \item \textbf{Mantém ordenação automática:} Os elementos são organizados seguindo a sua ordem natural (alfabética para \texttt{String}, numérica para \texttt{Integer}) ou por um comparador fornecido.
+        \end{itemize}
+        \item \textbf{Vantagem:} Buscas e iterações ocorrem sempre de forma ordenada.
+        \item \textbf{Desvantagem:} As operações de inserção são um pouco mais lentas que o \texttt{HashSet}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo Prático: TreeSet}
+    \begin{lstlisting}
+import java.util.*;
+
+public class ExemploTreeSet {
+    public static void main(String[] args) {
+        Set<Integer> numeros = new TreeSet<>();
+
+        numeros.add(30);
+        numeros.add(10);
+        numeros.add(20);
+
+        System.out.println(numeros);
+    }
+}
+    \end{lstlisting}
+    \textbf{Saída:}
+    \begin{lstlisting}[numbers=none, backgroundcolor=\color{white}]
+[10, 20, 30]
+    \end{lstlisting}
+\end{frame}
+
+\section{A Interface Map}
+
+\begin{frame}{A Interface Map: Características}
+    \begin{itemize}
+        \item Um \texttt{Map} (Mapa/Dicionário) \textbf{não} é uma extensão da interface \texttt{Collection}.
+        \item \textbf{Características principais:}
+        \begin{itemize}
+            \item \textbf{Armazena pares chave-valor:} Cada elemento possui uma chave única que mapeia para um valor.
+            \item \textbf{Não permite chaves duplicadas:} Cada chave pode ter no máximo um valor associado.
+            \item Se você adicionar um novo valor para uma chave já existente, o valor antigo será sobrescrito.
+        \end{itemize}
+        \item A implementação mais comum é o \textbf{HashMap}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo Prático: HashMap}
+    \begin{lstlisting}
+import java.util.*;
+
+public class ExemploHashMap {
+    public static void main(String[] args) {
+        Map<Integer, String> alunos = new HashMap<>();
+
+        alunos.put(1, "Ana");
+        alunos.put(2, "Carlos");
+
+        System.out.println(alunos.get(1));
+    }
+}
+    \end{lstlisting}
+    \textbf{Saída:}
+    \begin{lstlisting}[numbers=none, backgroundcolor=\color{white}]
+Ana
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Principais Métodos da Interface Map}
+    \begin{itemize}
+        \item \texttt{put(K key, V value)}: Insere ou atualiza um par chave-valor.
+        \item \texttt{get(Object key)}: Retorna o valor associado à chave.
+        \item \texttt{remove(Object key)}: Remove o mapeamento para aquela chave.
+        \item \texttt{containsKey(Object key)}: Verifica se o mapa contém a chave.
+        \item \texttt{containsValue(Object value)}: Verifica se o mapa contém o valor.
+        \item \texttt{keySet()}: Retorna um \texttt{Set} com todas as chaves.
+        \item \texttt{values()}: Retorna uma \texttt{Collection} com todos os valores.
+    \end{itemize}
+\end{frame}
+
+\section{Ordenação de Collections}
+
+\begin{frame}{Ordenação de Collections}
+    \begin{itemize}
+        \item Frequentemente precisamos organizar os dados em uma lista (por exemplo, ordem alfabética ou do menor para o maior).
+        \item Estruturas como \texttt{ArrayList} e \texttt{LinkedList} mantêm apenas a ordem de inserção.
+        \item Para ordená-las ativamente, o Java oferece métodos utilitários embutidos.
+        \item A classe utilitária \textbf{\texttt{java.util.Collections}} contém algoritmos estáticos que operam sobre coleções.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{O Método Collections.sort()}
+    \begin{itemize}
+        \item O método \texttt{Collections.sort(List<T> list)} ordena a lista especificada na sua ordem natural ascendente.
+        \item \textbf{Requisitos:}
+        \begin{itemize}
+            \item Os elementos da lista devem implementar a interface \texttt{Comparable}.
+            \item Tipos básicos do Java como \texttt{String}, \texttt{Integer}, \texttt{Double} já implementam isso nativamente.
+        \end{itemize}
+        \item É um algoritmo altamente otimizado.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo Prático: Ordenação}
+    \begin{lstlisting}
+import java.util.*;
+
+public class ExemploOrdenacao {
+    public static void main(String[] args) {
+        List<Integer> numeros = new ArrayList<>();
+
+        numeros.add(20);
+        numeros.add(5);
+        numeros.add(15);
+
+        Collections.sort(numeros);
+
+        System.out.println(numeros);
+    }
+}
+    \end{lstlisting}
+    \textbf{Saída:}
+    \begin{lstlisting}[numbers=none, backgroundcolor=\color{white}]
+[5, 15, 20]
+    \end{lstlisting}
+\end{frame}
+
+\end{document}

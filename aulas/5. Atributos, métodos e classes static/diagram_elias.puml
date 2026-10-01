@@ -1,0 +1,30 @@
+@startuml
+skinparam shadowing false
+skinparam rectangle {
+    roundCorner 10
+}
+
+rectangle "tilapia 250.v22i.yolov8" {
+
+    rectangle "data.yaml"
+    rectangle "README.dataset.txt"
+    rectangle "README.roboflow.txt"
+
+    rectangle "train (5958)" {
+        rectangle "images/"
+        rectangle "labels/"
+    }
+
+    rectangle "valid (1276)" {
+        rectangle "images/"
+        rectangle "labels/"
+    }
+
+    rectangle "test (1278)" {
+        rectangle "images/"
+        rectangle "labels/"
+    }
+
+}
+
+@enduml

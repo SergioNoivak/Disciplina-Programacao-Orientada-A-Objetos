@@ -1,0 +1,10 @@
+@startuml
+class Retangulo {
+    + largura : double
+    + altura : double
+
+    --
+    + calcularArea() : double
+    + calcularPerimetro() : double
+}
+@enduml

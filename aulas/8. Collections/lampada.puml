@@ -1,0 +1,10 @@
+@startuml
+class Lampada {
+    + ligada : boolean
+
+    --
+    + ligar() : void
+    + desligar() : void
+    + mostrarEstado() : void
+}
+@enduml

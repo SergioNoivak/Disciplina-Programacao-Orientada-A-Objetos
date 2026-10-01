@@ -1,0 +1,1266 @@
+\documentclass[9pt]{beamer}
+\mode<presentation>
+
+% Theme choice:
+\usetheme{Madrid}%Darmstadt 
+
+\definecolor{univBlue}{RGB}{0, 57, 145}
+\definecolor{univLightBlue}{RGB}{71, 115, 169}
+\definecolor{univSoftBlue}{RGB}{147, 172, 203}
+
+\usecolortheme[RGB={0, 57, 145}]{structure}
+ \usefonttheme{structurebold} 
+\setbeamercovered{invisible}
+%\setbeamertemplate{navigation symbols}{}
+\usepackage{dynblocks}
+\usepackage{textpos}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, shapes.symbols, arrows.meta, positioning, shapes.multipart}
+\newtheorem{teorema}{Teorema}\usepackage{mathtools}
+\renewcommand{\proofname}{Prova}
+\usepackage[portuguese]{babel}
+\usepackage{pifont}
+\uselanguage{Portuguese}
+\languagepath{Portuguese}
+
+\deftranslation[to=Portuguese]{Theorem}{Teorema}
+\deftranslation[to=Portuguese]{Lemma}{Lema}
+\deftranslation[to=Portuguese]{Corollary}{Corolário}
+\deftranslation[to=Portuguese]{Proof}{Prova}
+
+\usepackage{dutchcal}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsthm}
+
+
+\usepackage[affil-it]{authblk} 
+\usepackage{etoolbox}
+\usepackage{lmodern}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    language=Java,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{univBlue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle={\ttfamily\small},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\makeatletter
+\patchcmd{\@maketitle}{\LARGE \@title}{\fontsize{18}{19.2}\selectfont\@title}{}{}
+\makeatother
+
+\renewcommand\Authfont{\fontsize{12}{14.4}\selectfont}
+\renewcommand\Affilfont{\fontsize{9}{10.8}\itshape}
+
+% Title page details: 
+\title[Presentation]{Programação Orientada a Objetos} %add title
+
+
+\institute[UniRV]{\textbf{\large  \textcolor{univBlue}{\textbf{\large
+    Tratamento de Exceções }} %add name 
+% \hspace{0.5pt}
+\\ \qquad
+\\Professor: Me. Sergio Souza Novak 
+\\Faculdade de Engenharia de Software}
+} 
+% \titlegraphic{\includegraphics[width=5cm]{msu.eps}}
+\titlegraphic{\includegraphics[width=3cm]{universidade_logo_novo.png}}
+\date{}
+
+% Logo only on title page
+%\logo{\includegraphics[width=1cm,keepaspectratio]{Logo.png}}
+\usepackage[pscoord]{eso-pic}
+
+\AtBeginSection[]{
+  {
+    \setbeamercolor{background canvas}{bg=univBlue}
+    \begin{frame}[plain]
+      \vfill
+      \centering
+      \begin{beamercolorbox}[sep=12pt,center]{title}
+        \usebeamerfont{title} \Huge \bfseries \textcolor{white}{\insertsection}\par
+        \vspace{0.4cm}
+        \textcolor{univSoftBlue}{\rule{0.6\textwidth}{1.5pt}}
+      \end{beamercolorbox}
+      \vfill
+    \end{frame}
+  }
+}
+
+
+\begin{document}
+
+% Title page frame
+%\begin{frame}
+    %\titlepage 
+%\end{frame}
+\frame[plain]{\titlepage}
+
+\begin{frame}{Sumário}
+    \begin{columns}[t]
+        \begin{column}{0.5\textwidth}
+            \tableofcontents[sections={1-3}]
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \tableofcontents[sections={4-5}]
+        \end{column}
+    \end{columns}
+\end{frame}
+%logo
+\AddToShipoutPictureFG{
+    \put(\LenToUnit{.92\paperwidth},
+    \LenToUnit{.185\paperheight})
+    {\vtop{{\null}
+    \makebox{\includegraphics[width=.8cm,keepaspectratio]{universidade_logo_novo.png}}}}}
+\section{Motivação}
+
+\subsection{Cenários Cotidianos de Erro}
+\begin{frame}{Motivação: Por que tratar exceções?}
+    Software não roda em um ambiente perfeito. Em cenários reais, sistemas estão sujeitos a imprevistos causados por fatores ambientais, de hardware ou erros operacionais humanos.
+    
+    \vspace{0.3cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{O Desafio do Mundo Real}
+                Aplicações em produção precisam ser robustas e resilientes. Ignorar a possibilidade de falhas resulta em sistemas frágeis, que travam facilmente e causam prejuízos ou insatisfação dos usuários.
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Exemplos Cotidianos de Falhas}
+                \small
+                \begin{itemize}
+                    \item \textbf{Divisão por zero:} Tentativa de realizar operações matemáticas impossíveis.
+                    \item \textbf{Arquivo inexistente:} Tentar ler dados de um arquivo que foi deletado, corrompido ou movido.
+                    \item \textbf{Entrada inválida:} O usuário digita texto onde se esperavam números.
+                    \item \textbf{Falha de conexão:} Rede instável cai durante acesso ao banco de dados ou APIs.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\subsection{O Fluxo de Resiliência}
+\begin{frame}{O Impacto do Tratamento de Erros}
+    Como sua aplicação reage a um imprevisto determina o nível de profissionalismo, confiabilidade e qualidade do seu software.
+    
+    \vspace{0.2cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Sem Tratamento}
+                \small
+                \begin{itemize}
+                    \item O programa encerra abruptamente (\textit{crash}).
+                    \item Perda imediata de dados e do progresso do usuário.
+                    \item Sensação de amadorismo e insegurança no uso do sistema.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Com Tratamento}
+                \small
+                \begin{itemize}
+                    \item O sistema continua funcionando perfeitamente.
+                    \item O erro é capturado e controlado de forma invisível.
+                    \item Mensagens amigáveis e claras são exibidas ao usuário final.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.3cm}
+    
+    \begin{center}
+    \begin{tikzpicture}[
+        node distance=0.4cm,
+        flowNode/.style={rectangle, draw=univBlue, fill=univBlue!8, thick, rounded corners, minimum height=0.6cm, font=\scriptsize\bfseries}
+    ]
+        \node[flowNode, fill=red!10, draw=red!70] (f1) {Erro};
+        \node[flowNode, right=of f1, fill=orange!10, draw=orange!70] (f2) {Exceção};
+        \node[flowNode, right=of f2, fill=univLightBlue!20, draw=univBlue] (f3) {Tratamento};
+        \node[flowNode, right=of f3, fill=green!10, draw=green!70!black] (f4) {Continuidade do Sistema};
+        
+        \draw[-{Stealth[scale=1.2]}, thick, univBlue] (f1) -- (f2);
+        \draw[-{Stealth[scale=1.2]}, thick, univBlue] (f2) -- (f3);
+        \draw[-{Stealth[scale=1.2]}, thick, univBlue] (f3) -- (f4);
+    \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\section{Tratamento de Erros em POO}
+
+\begin{frame}{O Paradigma de POO e o Tratamento de Erros}
+    O desenvolvimento de software moderno exige robustez. No paradigma de Programação Orientada a Objetos (POO), o tratamento de erros foi revolucionado em relação ao modelo procedural clássico.
+    
+    \vspace{0.3cm}
+    
+    \begin{block}{Abordagem Tradicional (Procedural)}
+        \begin{itemize}
+            \item Uso frequente de retornos especiais (ex: \texttt{-1}, \texttt{NULL}) para sinalizar falhas.
+            \item Poluição do fluxo principal com múltiplos blocos condicionais (\texttt{if/else}).
+            \item Dificuldade de propagação: o erro deve ser manualmente repassado por toda a pilha de chamadas.
+        \end{itemize}
+    \end{block}
+    
+    \begin{block}{Abordagem Orientada a Objetos}
+        \begin{itemize}
+            \item \textbf{Desacoplamento:} Separação nítida entre a lógica de negócio (fluxo normal) e a lógica de tratamento de erros.
+            \item Erros são representados como \textbf{objetos de exceção} ricos, contendo mensagem, estado e rastreamento da pilha (\textit{stack trace}).
+            \item Propagação automática através da pilha de execução até encontrar um tratador compatível.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\subsection{Abordagem Tradicional}
+\begin{frame}[fragile]{Abordagem Tradicional (Procedural) - Exemplo}
+    O controle de erros baseia-se no retorno de valores especiais que o chamador deve verificar manualmente.
+    
+    \vspace{0.2cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Definição do Método}
+                \begin{lstlisting}[language=Java,numbers=none]
+public int sacar(double valor) {
+    if (valor > this.saldo) {
+        return -1; // Saldo insuficiente
+    }
+    if (valor <= 0) {
+        return -2; // Valor invalido
+    }
+    this.saldo -= valor;
+    return 1; // Sucesso
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Código Chamador (Uso)}
+                \begin{lstlisting}[language=Java,numbers=none]
+int res = conta.sacar(150.0);
+if (res == -1) {
+    System.out.println("Saldo insuficiente!");
+} else if (res == -2) {
+    System.out.println("Valor invalido!");
+} else if (res == 1) {
+    System.out.println("Saque realizado!");
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.15cm}
+    \scriptsize
+    \textbf{Desvantagem:} O fluxo feliz da aplicação fica totalmente poluído e misturado com o fluxo de tratamento de erros através de sucessivas estruturas condicionais.
+\end{frame}
+
+\subsection{Abordagem Orientada a Objetos}
+\begin{frame}[fragile]{Abordagem com Exceções - Exemplo}
+    Com exceções, separamos o fluxo feliz da lógica de negócios de toda a recuperação e tratamento de erros.
+    
+    \vspace{0.2cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Definição do Método}
+                \begin{lstlisting}[language=Java,numbers=none]
+public void sacar(double valor) 
+      throws SaldoInsuficienteException {
+    if (valor <= 0) {
+        throw new IllegalArgumentException();
+    }
+    if (valor > this.saldo) {
+        throw new SaldoInsuficienteException();
+    }
+    this.saldo -= valor;
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Código Chamador (Uso)}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    conta.sacar(150.0);
+    System.out.println("Saque realizado!");
+} catch (SaldoInsuficienteException e) {
+    System.out.println("Saldo insuficiente!");
+} catch (IllegalArgumentException e) {
+    System.out.println("Valor invalido!");
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.15cm}
+    \scriptsize
+    \textbf{Vantagem:} O bloco \texttt{try} contém apenas o código da regra de negócios em perfeito fluxo contínuo, enquanto os blocos \texttt{catch} centralizam e isolam a lógica de tratamento de erros.
+\end{frame}
+
+\subsection{A Estrutura Try-Catch}
+\begin{frame}{O Mecanismo de Exceção}
+    Uma \textbf{Exceção} é um evento indesejado que ocorre durante a execução de um programa, interrompendo o fluxo normal de suas instruções.
+    
+    \vspace{0.4cm}
+    
+    \begin{center}
+    \begin{tikzpicture}[
+        node distance=0.8cm and 0.3cm,
+        stepNode/.style={rectangle, draw=univBlue, fill=univBlue!8, thick, rounded corners, minimum height=1.0cm, text width=2.4cm, align=center, font=\scriptsize}
+    ]
+        % Nodes
+        \node[stepNode] (n1) {\textbf{1. Ocorrência}\\ Anomalia detectada em tempo de execução (ex: divisão por zero).};
+        \node[stepNode, right=of n1] (n2) {\textbf{2. Criação}\\ JVM cria um objeto de exceção com informações da falha.};
+        \node[stepNode, right=of n2] (n3) {\textbf{3. Lançamento}\\ O método lança (\textit{throw}) a exceção para a pilha de chamadas.};
+        \node[stepNode, right=of n3] (n4) {\textbf{4. Captura}\\ A JVM procura e executa um manipulador (\textit{catch}) adequado.};
+        
+        % Arrows
+        \draw[-{Stealth[scale=1.2]}, thick, univBlue] (n1) -- (n2);
+        \draw[-{Stealth[scale=1.2]}, thick, univBlue] (n2) -- (n3);
+        \draw[-{Stealth[scale=1.2]}, thick, univBlue] (n3) -- (n4);
+    \end{tikzpicture}
+    \end{center}
+    
+    \vspace{0.3cm}
+    \begin{alertblock}{O Princípio do Lançamento}
+        Se um método encontra uma condição de erro que ele não consegue resolver sozinho, ele empacota essa falha em um objeto de exceção e o ``lança'' para o sistema.
+    \end{alertblock}
+\end{frame}
+
+\section{Classes de Exceção em Java}
+
+\subsection{A Hierarquia de Exceções}
+\begin{frame}{Hierarquia de Classes de Exceção}
+    Em Java, toda a estrutura de tratamento de erros baseia-se em uma hierarquia estrita de classes derivadas de \texttt{java.lang.Throwable}.
+    
+    \vspace{0.2cm}
+    
+    \begin{center}
+    \begin{tikzpicture}[
+        sibling distance=12em,
+        level 1/.style={sibling distance=12em},
+        level 2/.style={sibling distance=12em},
+        every node/.style = {shape=rectangle, rounded corners, draw=univBlue, fill=univBlue!8, align=center, font=\scriptsize, thick, minimum height=0.6cm, text width=3.2cm}
+      ]
+      \node [fill=univBlue!20] {\textbf{Throwable}}
+        child { node {\textbf{Error}\\ \tiny Falhas graves na JVM (irrecuperáveis). \\ Ex: \texttt{OutOfMemoryError}} }
+        child { node {\textbf{Exception}\\ \tiny Condições anômalas que o programa pode tratar.}
+          child { node [fill=univLightBlue!20] {\textbf{Checked Exceptions}\\ \tiny Checadas pelo compilador. \\ Ex: \texttt{IOException}} }
+          child { node [fill=univSoftBlue!30] {\textbf{RuntimeException (Unchecked)}\\ \tiny Erros lógicos de programação. \\ Ex: \texttt{NullPointerException}} }
+        };
+    \end{tikzpicture}
+    \end{center}
+    
+    \vspace{0.1cm}
+    \begin{itemize}
+        \item \textbf{Throwable:} Superclasse de todas as exceções e erros da plataforma Java.
+        \item \textbf{Error:} Representa condições catastróficas. O programa geralmente não deve tentar capturá-las.
+    \end{itemize}
+\end{frame}
+
+\subsection{Checked vs. Unchecked}
+\begin{frame}{Checked vs. Unchecked Exceptions}
+    Em Java, as exceções derivadas de \texttt{Exception} dividem-se em dois tipos principais com comportamentos de compilação diferentes:
+    
+    \vspace{0.3cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Checked (Verificadas)}
+                \small
+                \begin{itemize}
+                    \item \textbf{Definição:} Classes herdadas diretamente de \texttt{Exception} (exceto de \texttt{RuntimeException}).
+                    \item \textbf{Regra:} Devem ser tratadas obrigatoriamente (via \texttt{try-catch} ou declaradas com \texttt{throws}).
+                    \item \textbf{Exemplo:} \texttt{IOException}, representando falha em leitura/escrita de arquivo.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Unchecked (Não Verificadas)}
+                \small
+                \begin{itemize}
+                    \item \textbf{Definição:} Classes que herdam de \texttt{RuntimeException}.
+                    \item \textbf{Regra:} Ocorrência em tempo de execução. O compilador não exige o tratamento obrigatório.
+                    \item \textbf{Exemplo:} \texttt{NullPointerException}, \texttt{ArithmeticException} (divisão por zero).
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Tabela Comparativa: Checked vs. Unchecked}
+    Veja um resumo das diferenças essenciais entre as categorias de exceções para orientar suas decisões de desenvolvimento:
+    
+    \vspace{0.4cm}
+    
+    \begin{center}
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{|l|c|l|}
+        \hline
+        \textbf{Tipo de Exceção} & \textbf{Obrigatório Tratar?} & \textbf{Exemplo Prático} \\
+        \hline
+        \textbf{Checked} (Verificadas) & Sim & \texttt{IOException} \\
+        \hline
+        \textbf{Unchecked} (Não Verificadas) & Não & \texttt{NullPointerException},\\& & \texttt{ArithmeticException} \\
+        \hline
+    \end{tabular}
+    \end{center}
+    
+    \vspace{0.4cm}
+    
+    \begin{block}{Diretriz Prática}
+        \small
+        Use \textbf{Checked} para condições fora do controle do programa (erros recuperáveis de infraestrutura). Use \textbf{Unchecked} para erros lógicos do programador (bugs que devem ser corrigidos).
+    \end{block}
+\end{frame}
+
+\begin{frame}{Exceções como Classes em POO}
+    Como este é um curso de Programação Orientada a Objetos, é fundamental entender que, em Java, as exceções não são apenas sinalizadores ou códigos numéricos de retorno. Elas são \textbf{objetos} de pleno direito!
+    
+    \vspace{0.2cm}
+    
+    \begin{block}{O Conceito de Exceção sob a Ótica de POO}
+        \begin{itemize}
+            \item \textbf{Exceções são Objetos:} São instanciadas usando o operador \texttt{new} e ocupam espaço na memória heap como qualquer outro objeto.
+            \item \textbf{Atributos e Métodos:} Possuem atributos internos (mensagem, causa raiz, pilha de rastreamento) e métodos expostos (ex: \texttt{getMessage()}, \texttt{printStackTrace()}).
+            \item \textbf{Personalização:} Você pode projetar suas próprias classes de exceção estendendo a hierarquia existente para modelar falhas de negócio do seu domínio.
+        \end{itemize}
+    \end{block}
+    
+    \begin{block}{Os Pilares de POO aplicados às Exceções}
+        \begin{itemize}
+            \item \textbf{Herança:} Todas as exceções herdam características comuns da superclasse \texttt{Throwable}.
+            \item \textbf{Reutilização:} Funcionalidades como capturar a pilha de execução (\textit{call stack}) são herdadas e reutilizadas de forma transparente.
+            \item \textbf{Especialização:} Criamos subclasses específicas para retratar erros únicos de forma cirúrgica.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\subsection{Exceções Personalizadas}
+\begin{frame}[fragile]{Criando Exceções Personalizadas}
+    Criar suas próprias classes de exceção permite dar nomes e comportamentos claros e significativos às falhas específicas do seu domínio de negócios.
+    
+    \vspace{0.2cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Definição da Classe}
+                \begin{lstlisting}[language=Java,numbers=none]
+public class SaldoInsuficienteException
+       extends Exception {
+
+    public SaldoInsuficienteException(
+           String msg) {
+        super(msg);
+    }
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Relação Direta com POO}
+                \small
+                \begin{itemize}
+                    \item \textbf{Encapsulamento do Erro:} O objeto de exceção encapsula todos os detalhes do erro (mensagem, causa raiz e a pilha de rastreamento) de forma limpa e autocontida.
+                    \item \textbf{Especialização:} Estende a superclasse \texttt{Exception} para modelar cirurgicamente uma regra de negócio específica da aplicação.
+                    \item \textbf{Reutilização:} Herda todo o complexo comportamento interno de rastreabilidade de erros da plataforma Java através do \texttt{super(msg)}.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Criando Exceções Personalizadas: Exemplo Completo}
+    Vejamos uma implementação clássica de domínio de negócios onde um saque em uma conta bancária lança nossa própria exceção personalizada se o saldo for insuficiente.
+    
+    \vspace{0.1cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.54\textwidth}
+            \begin{block}{Classe ContaBancaria}
+                \begin{lstlisting}[language=Java,numbers=none]
+public class ContaBancaria {
+    private double saldo;
+
+    public void sacar(double valor)
+      throws SaldoInsuficienteException {
+        if(valor > saldo) {
+            throw new SaldoInsuficienteException(
+                "Saldo insuficiente"
+            );
+        }
+        saldo -= valor;
+    }
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.44\textwidth}
+            \begin{block}{Entendendo o Fluxo}
+                \small
+                \begin{enumerate}
+                    \item \textbf{Validação:} O método verifica se a regra (saldo suficiente) é violada.
+                    \item \textbf{Lançamento:} Se violada, cria-se e arremessa-se o erro.
+                    \item \textbf{Desvio:} O decremento do saldo é ignorado e o fluxo normal de execução é interrompido.
+                \end{enumerate}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Entendendo as Palavras-Chave: throw vs. throws}
+    Embora parecidas e correlacionadas, as palavras-chave \texttt{throw} e \texttt{throws} desempenham papéis completamente diferentes em Java.
+    
+    \vspace{0.3cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{\texttt{throw} (Lançar)}
+                \small
+                \begin{itemize}
+                    \item \textbf{Ação:} Usado para arremessar ativamente uma exceção em tempo de execução.
+                    \item \textbf{Onde:} Fica dentro do corpo de métodos ou blocos de código.
+                    \item \textbf{Sintaxe:} Seguido de uma instância de objeto.
+                \end{itemize}
+                \vspace{0.1cm}
+                \centering\scriptsize
+                \texttt{throw new Excecao("Erro");}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{\texttt{throws} (Declarar)}
+                \small
+                \begin{itemize}
+                    \item \textbf{Ação:} Cláusula usada para alertar que o método pode gerar certas exceções.
+                    \item \textbf{Onde:} Fica na assinatura (cabeçalho) do método.
+                    \item \textbf{Sintaxe:} Seguido dos tipos das classes de exceção.
+                \end{itemize}
+                \vspace{0.1cm}
+                \centering\scriptsize
+                \texttt{void m() throws Excecao \{ ... \}}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Tratando a Exceção Personalizada}
+    Uma vez declarada na assinatura do método (\texttt{throws}) e lançada quando as regras de negócio falham (\texttt{throw}), a exceção precisa ser devidamente tratada.
+    
+    \vspace{0.2cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.52\textwidth}
+            \begin{block}{Capturando o Erro}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    conta.sacar(1000);
+} catch (SaldoInsuficienteException e) {
+    System.out.println(e.getMessage());
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.46\textwidth}
+            \begin{block}{O Mecanismo em Detalhes}
+                \small
+                \begin{itemize}
+                    \item \textbf{\texttt{try}:} Monitora a execução da operação de saque.
+                    \item \textbf{\texttt{catch}:} Se a exceção for arremessada, a JVM desvia a execução para este bloco.
+                    \item \textbf{\texttt{getMessage()}:} Recupera a mensagem \texttt{"Saldo insuficiente"} repassada na instanciação.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\subsection{Propagação e Call Stack}
+\begin{frame}{A Jornada da Pilha de Chamadas (Call Stack)}
+    Para entender como as exceções se propagam, é fundamental compreender a estrutura de execução da JVM: a \textbf{Pilha de Chamadas} (Call Stack).
+    
+    \vspace{0.2cm}
+    
+    \begin{block}{O que é a Call Stack?}
+        Sempre que um método é invocado, a JVM cria um \textbf{Stack Frame} (quadro de pilha) na memória contendo suas variáveis locais e parâmetros. Esse quadro é empilhado (\textit{Push}). Quando o método termina, seu quadro é desempilhado (\textit{Pop}).
+    \end{block}
+    
+    \begin{block}{Borbulhamento de Exceções}
+        Se um erro ocorre dentro de um método e não é capturado localmente:
+        \begin{itemize}
+            \item A JVM interrompe a execução daquele método imediatamente.
+            \item Realiza o desempilhamento (\textit{Pop}) e entrega o erro ao método chamador.
+            \item Esse "borbulhamento" continua até encontrar um bloco \texttt{catch} compatível.
+            \item Se atingir o método \texttt{main} sem tratamento, a \textit{Thread} principal encerra abruptamente.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Visualizando a Propagação da Exceção}
+    Veja como o erro sobe pela pilha de execução da JVM procurando um manipulador:
+    
+    \vspace{0.2cm}
+    
+    \begin{center}
+    \begin{tikzpicture}[
+        node distance=0.8cm,
+        frame/.style={draw=univBlue!60, rectangle, fill=univBlue!5, minimum width=5cm, minimum height=0.6cm, rounded corners=3pt, font=\ttfamily\scriptsize},
+        errorFrame/.style={draw=red!70, rectangle, fill=red!10, minimum width=5cm, minimum height=0.6cm, rounded corners=3pt, font=\ttfamily\scriptsize\bfseries},
+        arrow/.style={-Stealth, thick, univLightBlue},
+        redArrow/.style={-Stealth, thick, red, dashed}
+    ]
+        % Stack Frames
+        \node[errorFrame] (b) {metodoB() $\rightarrow$ Lança Divisão por Zero!};
+        \node[frame, below=of b] (a) {metodoA() $\rightarrow$ Apenas repassa (Sem catch)};
+        \node[frame, below=of a] (m) {main() $\rightarrow$ Captura com try-catch!};
+        
+        % Downward Call Flow
+        \draw[arrow] (m.west) -- ++(-0.6,0) |- node[left, pos=0.25, font=\tiny, text=univBlue] {1. Push} (a.west);
+        \draw[arrow] (a.west) -- ++(-0.6,0) |- node[left, pos=0.25, font=\tiny, text=univBlue] {2. Push} (b.west);
+        
+        % Upward Exception Bubbling
+        \draw[redArrow] (b.east) -- ++(0.6,0) |- node[right, pos=0.25, font=\tiny, text=red] {3. Borbulha Erro (Pop)} (a.east);
+        \draw[redArrow] (a.east) -- ++(0.6,0) |- node[right, pos=0.25, font=\tiny, text=red] {4. Trata e estabiliza (Catch)} (m.east);
+    \end{tikzpicture}
+    \end{center}
+    
+    \vspace{0.1cm}
+    \centering\scriptsize
+    \textbf{Conclusão:} O tratamento na raiz (\texttt{main}) impede que a aplicação encerre, mesmo que métodos profundos falhem.
+\end{frame}
+
+\subsection{Exceções e Polimorfismo}
+\begin{frame}[fragile]{Exceções e Polimorfismo}
+    Como as exceções em Java são classes inseridas em uma hierarquia de herança, as regras de \textbf{Polimorfismo} se aplicam integralmente à captura de erros.
+    
+    \vspace{0.2cm}
+    
+    \begin{block}{O Princípio da Substituição}
+        Capturar uma superclasse de exceção interceptará automaticamente todas as suas subclasses derivadas.
+        \begin{itemize}
+            \item Um bloco \texttt{catch (IOException e)} capturará tanto \texttt{IOException} quanto \texttt{FileNotFoundException}, \texttt{EOFException} ou \texttt{SocketException}.
+        \end{itemize}
+    \end{block}
+    
+    \begin{block}{Exemplo Prático}
+        \begin{lstlisting}[language=Java,numbers=none]
+try {
+    FileReader fr = new FileReader("dados.txt"); // Lanca FileNotFoundException
+    fr.read(); // Lanca IOException
+} catch (IOException e) {
+    // Este unico catch captura AMBAS as excecoes!
+    System.out.println("Falha na operacao de E/S.");
+}
+\end{lstlisting}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{A Ordem dos Blocos Catch Importa!}
+    Ao tratar múltiplas exceções em blocos \texttt{catch} sequenciais, devemos ordenar as exceções das **mais específicas (subclasses)** para as **mais genéricas (superclasses)**.
+    
+    \vspace{0.15cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Erro de Compilação (Incorreto)}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    usuario.getNome().toUpperCase();
+} catch (Exception e) {
+    System.out.println("Erro!");
+} catch (NullPointerException e) {
+    // ERRO: Inalcanzavel!
+    System.out.println("Nulo!");
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Ordem Correta (Compila)}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    usuario.getNome().toUpperCase();
+} catch (NullPointerException e) {
+    // Especifico primeiro
+    System.out.println("Nulo!");
+} catch (Exception e) {
+    // Generico por ultimo
+    System.out.println("Erro!");
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.15cm}
+    \centering\scriptsize
+    \textbf{Por que?} Se a superclasse (\texttt{Exception}) for colocada primeiro, ela capturará todas as falhas, tornando os blocos subsequentes de subclasses mortos/inalcançáveis. O compilador Java impede isso.
+\end{frame}
+
+\section{Recursos e Sintaxe Moderna (Java 7+)}
+
+\subsection{O Bloco Finally}
+\begin{frame}[fragile]{O Bloco Finally: Execução Garantida}
+    O bloco \texttt{finally} é uma estrutura acoplada ao \texttt{try-catch} cuja principal finalidade é garantir que determinado código seja executado \textbf{sempre}, ocorrendo erro ou não.
+    
+    \vspace{0.2cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Uso Clássico}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    lock.adquirir();
+    processarDados();
+} catch (Exception e) {
+    log.error(e);
+} finally {
+    // Executa SEMPRE para liberar recurso!
+    lock.liberar();
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Regras de Execução}
+                \small
+                \begin{itemize}
+                    \item Se o bloco \texttt{try} executa com sucesso, o \texttt{finally} executa em seguida.
+                    \item Se um erro ocorre e é tratado no \texttt{catch}, o \texttt{finally} executa após o \texttt{catch}.
+                    \item Se um erro ocorre e \textbf{não} é tratado, o \texttt{finally} executa antes do erro estourar na pilha.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{A Armadilha do Finally: Exceções Mascaradas}
+    Embora seja muito útil para liberação de recursos, escrever blocos complexos no \texttt{finally} que podem lançar suas próprias exceções esconde uma perigosa armadilha de depuração.
+    
+    \vspace{0.15cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.54\textwidth}
+            \begin{block}{O Problema da Supressão Silenciosa}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    // 1. Falha principal
+    throw new RuntimeException("Erro A");
+} finally {
+    // 2. Outra falha ao fechar
+    throw new RuntimeException("Erro B");
+}
+// Quem chama recebe apenas o "Erro B"!
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.44\textwidth}
+            \begin{block}{A Consequência}
+                \small
+                \begin{itemize}
+                    \item O \texttt{finally} é a última palavra do bloco. Se ele lança uma exceção, ela aborta o fluxo e \textbf{suprime} (apaga) a exceção original do \texttt{try}.
+                    \item O desenvolvedor em produção verá apenas o \texttt{"Erro B"} nos logs, tornando impossível descobrir que a causa real do problema foi o \texttt{"Erro A"}.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.15cm}
+    \centering\scriptsize
+    \textbf{Como evitar?} Antes do Java 7, exigia aninhamentos verbosos de try-catch dentro do finally. Hoje, usamos o \textbf{Try-with-Resources}.
+\end{frame}
+
+\subsection{Try-with-Resources}
+\begin{frame}[fragile]{Try-with-Resources: O Fechamento Tradicional}
+    Antes do Java 7, gerenciar recursos que exigem fechamento manual (arquivos, conexões de rede, BD) resultava em códigos extremamente verbosos e propensos a falhas.
+    
+    \vspace{0.1cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.54\textwidth}
+            \begin{block}{O Padrão Antigo (Verboso)}
+                \begin{lstlisting}[language=Java,numbers=none]
+BufferedReader br = null;
+try {
+    br = new BufferedReader(
+         new FileReader("arq.txt"));
+    System.out.println(br.readLine());
+} catch (IOException e) {
+    e.printStackTrace();
+} finally {
+    try {
+        if (br != null) br.close();
+    } catch (IOException ex) {
+        ex.printStackTrace(); // Mascara erro original!
+    }
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.44\textwidth}
+            \begin{block}{Os Problemas do Padrão}
+                \small
+                \begin{itemize}
+                    \item \textbf{Vazamento de Memória:} Se esquecer o \texttt{finally}, o arquivo fica preso na memória.
+                    \item \textbf{Verbosidade Extrema:} Necessidade de aninhar blocos \texttt{try-catch} dentro do \texttt{finally}.
+                    \item \textbf{Erros Mascarados:} Se o \texttt{close()} lançar erro, o erro real do processamento é ocultado.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Try-with-Resources: A Solução Elegante}
+    A cláusula \textbf{Try-with-Resources} (Java 7+) gerencia o ciclo de vida dos recursos automaticamente, garantindo que sejam fechados em qualquer situação.
+    
+    \vspace{0.15cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.54\textwidth}
+            \begin{block}{Código Moderno e Limpo}
+                \begin{lstlisting}[language=Java,numbers=none]
+try (BufferedReader br = 
+     new BufferedReader(
+     new FileReader("arq.txt"))) {
+     
+    System.out.println(br.readLine());
+    
+} catch (IOException e) {
+    System.out.println("Erro: " + 
+        e.getMessage());
+}
+// O close() e chamado automaticamente!
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.44\textwidth}
+            \begin{block}{Como Funciona?}
+                \small
+                \begin{itemize}
+                    \item \textbf{Declaração:} O recurso é instanciado dentro dos parênteses do \texttt{try(...)}.
+                    \item \textbf{Contrato:} O recurso deve implementar a interface \texttt{java.lang.AutoCloseable}.
+                    \item \textbf{Garantia:} A JVM chama automaticamente o método \texttt{close()} ao final do bloco, mesmo sob falhas catastróficas.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Try-with-Resources com Múltiplos Recursos}
+    A cláusula Try-with-Resources permite gerenciar a abertura e o fechamento automático de múltiplos recursos simultâneos no mesmo bloco \texttt{try}.
+    
+    \vspace{0.15cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.58\textwidth}
+            \begin{block}{Declaração Separada por Ponto e Vírgula}
+                \begin{lstlisting}[language=Java,numbers=none]
+try (ZipFile zip = new ZipFile("dados.zip");
+     InputStream is = zip.getInputStream(
+         zip.getEntry("arq.txt"))) {
+         
+    int dado = is.read();
+    System.out.println((char) dado);
+    
+} catch (IOException e) {
+    System.out.println("Erro: " + e.getMessage());
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.4\textwidth}
+            \begin{block}{Ordem de Fechamento}
+                \small
+                \begin{itemize}
+                    \item Múltiplos recursos são declarados dentro dos parênteses do \texttt{try}, separados por \texttt{;}.
+                    \item A JVM realiza o fechamento automático na \textbf{ordem reversa} da declaração.
+                    \item No exemplo, o \texttt{InputStream} é fechado primeiro, e em seguida o \texttt{ZipFile} é encerrado, evitando corrupção de streams aninhados.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Sob os Panos: Exceções Supressas}
+    Uma grande inovação do Try-with-Resources é a forma inteligente como ele lida com múltiplos erros concomitantes sem mascará-los.
+    
+    \vspace{0.2cm}
+    
+    \begin{block}{O que são Exceções Supressas (Suppressed)?}
+        Se o processamento principal dentro do bloco \texttt{try} falhar (ex: erro de leitura) e o fechamento automático do recurso pelo \texttt{close()} também falhar (ex: arquivo corrompido):
+        \begin{itemize}
+            \item A exceção do \textbf{processamento principal} é a que será capturada no \texttt{catch}.
+            \item A exceção gerada no fechamento não desaparece: ela é anexada à principal como uma \textbf{Exceção Supressa}.
+        \end{itemize}
+    \end{block}
+    
+    \begin{block}{Como Acessar?}
+        Você pode recuperar e tratar as exceções suprimidas no bloco de captura:
+        \centering\scriptsize
+        \texttt{Throwable[] suprimidas = e.getSuppressed();}
+    \end{block}
+\end{frame}
+
+\subsection{Multi-Catch e Encadeamento}
+\begin{frame}[fragile]{Multi-Catch (Java 7+)}
+    Antes do Java 7, se diferentes exceções precisavam do mesmo tratamento, éramos obrigados a duplicar blocos de código redundantes. O \textbf{Multi-Catch} resolve isso.
+    
+    \vspace{0.2cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Antes (Redundante)}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    lerArquivo();
+    conectarBanco();
+} catch (IOException e) {
+    log.error("Falha na operacao");
+    recuperarSistema();
+} catch (SQLException e) {
+    log.error("Falha na operacao");
+    recuperarSistema();
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Depois (Multi-Catch)}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    lerArquivo();
+    conectarBanco();
+} catch (IOException | 
+         SQLException e) {
+    log.error("Falha na operacao");
+    recuperarSistema();
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.15cm}
+    \scriptsize
+    \textbf{Regra Crucial:} As classes do multi-catch não podem herdar uma da outra (ex: \texttt{FileNotFoundException | IOException} causará erro de compilação). A variável \texttt{e} é implicitamente \texttt{final}.
+\end{frame}
+
+\begin{frame}{Exceções Encadeadas (Chained Exceptions)}
+    Em sistemas profissionais multicamadas, expor exceções de baixo nível (como infraestrutura ou banco de dados) para a camada de apresentação quebra o encapsulamento.
+    
+    \vspace{0.2cm}
+    
+    \begin{block}{O Conceito de Encadeamento}
+        Consiste em capturar uma exceção técnica de baixo nível (\texttt{SQLException}) e relançar uma exceção de domínio mais abstrata (\texttt{PersistenciaException}), mas \textbf{preservando a causa original} para permitir a depuração.
+    \end{block}
+    
+    \begin{block}{Como Preservar a Rastreabilidade?}
+        Toda classe em Java herda de \texttt{Throwable}, que possui construtores preparados para registrar a exceção causadora (a causa raiz). Fazemos isso chamando a superclasse:
+        \centering\small
+        \texttt{super(mensagem, causaOriginal);}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo Prático de Encadeamento}
+    Veja como projetar sua própria exceção personalizada de negócio e manter a rastreabilidade do erro de infraestrutura original:
+    
+    \vspace{0.15cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.5\textwidth}
+            \begin{block}{1. Exceção Customizada}
+                \begin{lstlisting}[language=Java,numbers=none]
+public class PersistenciaException 
+       extends Exception {
+
+    // Construtor que recebe a causa raiz
+    public PersistenciaException(
+           String msg, Throwable causa) {
+        super(msg, causa);
+    }
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{2. Encadeamento no DAOs}
+                \begin{lstlisting}[language=Java,numbers=none]
+public void salvar(Usuario u) 
+       throws PersistenciaException {
+    try {
+        conexaoBanco.executarInsert(u);
+    } catch (SQLException e) {
+        // Encadeia mantendo a causa raiz!
+        throw new PersistenciaException(
+            "Erro ao persistir usuario", e
+        );
+    }
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\section{Exceções Genéricas e Boas Práticas}
+
+\subsection{O Perigo do Catch Genérico}
+\begin{frame}{O Perigo do Uso Excessivo de Exception}
+    Capturar a classe genérica \texttt{Exception} indiscriminadamente é uma prática comum para "evitar que a aplicação pare", mas ela introduz graves riscos à saúde do projeto.
+    
+    \vspace{0.3cm}
+    
+    \begin{block}{Por que evitar exceções genéricas?}
+        A classe \texttt{Exception} é a superclasse de todas as exceções (verificadas e não verificadas). Ao capturá-la de forma indistinta, você intercepta qualquer tipo de erro, desde falhas contornáveis de negócios até bugs críticos de programação que deveriam quebrar a aplicação para serem expostos e corrigidos.
+    \end{block}
+    
+    \begin{block}{Principais Desvantagens}
+        \begin{itemize}
+            \item \textbf{Dificulta a depuração:} Mascara a causa real do erro e a linha exata onde ocorreu, exigindo muito mais tempo para diagnosticar falhas.
+            \item \textbf{Oculta o tipo real do problema:} Um erro de ponteiro nulo (\texttt{NullPointerException}) ou divisão por zero é tratado sob a mesma mensagem genérica, ocultando a real raiz da anomalia.
+            \item \textbf{Reduz a manutenção do código:} O código se torna imprevisível e inseguro. Outros desenvolvedores não conseguem deduzir quais falhas reais podem acontecer na rotina.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Comparação Prática: Genérico vs. Específico}
+    Veja como o tratamento genérico impede a identificação de bugs em comparação ao tratamento de erros cirúrgico.
+    
+    \vspace{0.2cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Antipadrão (Ruim)}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    usuario.getNome().toUpperCase();
+} catch (Exception e) {
+    // Esconde o NullPointerException!
+    System.out.println("Erro!");
+}
+\end{lstlisting}
+                \vspace{0.15cm}
+                \scriptsize
+                O código compila, mas se \texttt{usuario} for nulo, a falha é silenciada, ocultando a existência de um bug de lógica crítica.
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Recomendado (Bom)}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    usuario.getNome().toUpperCase();
+} catch (NullPointerException e) {
+    // Trata apenas a falta de nome
+    System.out.println("Nome nulo!");
+}
+\end{lstlisting}
+                \vspace{0.15cm}
+                \scriptsize
+                Captura cirurgicamente apenas a ausência da referência. Qualquer outro erro imprevisto continuará visível e poderá ser corrigido.
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Boas Práticas no Tratamento de Exceções}
+    Garantir a estabilidade de um sistema envolve tratar as falhas de forma assertiva e consciente.
+    
+    \vspace{0.3cm}
+    
+    \begin{alertblock}{A Regra de Ouro}
+        \centering\large\bfseries
+        Capturar exceções específicas sempre que possível!
+    \end{alertblock}
+    
+    \vspace{0.2cm}
+    
+    \begin{block}{Benefícios de Ser Específico}
+        \begin{itemize}
+            \item \textbf{Tratamento Adequado:} Permite reagir de forma correta a cada tipo de erro (ex: tentar reconectar em falha de rede, solicitar nova entrada em dados inválidos).
+            \item \textbf{Segurança e Resiliência:} Garante que erros de lógica (bugs) continuem expostos nos logs e no ambiente de desenvolvimento para correção precoce.
+            \item \textbf{Documentação Viva:} Os blocos \texttt{catch} documentam de forma clara para outros programadores todas as falhas previstas naquela rotina.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\subsection{Performance e Stack Trace}
+\begin{frame}{Análise de Desempenho: O Peso do Stack Trace}
+    Existem muitos mitos sobre o custo computacional de usar exceções em Java. Vamos analisar a realidade técnica por trás do desempenho:
+    
+    \vspace{0.2cm}
+    
+    \begin{block}{O Custo Oculto da Instanciação}
+        Escrever blocos \texttt{try-catch} vazios ou onde nenhuma exceção é lançada tem \textbf{custo computacional virtualmente nulo} em Java moderno (graças à otimização da JVM/JIT).
+        
+        \vspace{0.15cm}
+        O verdadeiro gargalo de desempenho ocorre quando uma exceção é \textbf{instanciada e lançada}. Isso acontece por causa de uma chamada nativa cara:
+        \centering\small\color{red!80!black}\bfseries
+        \texttt{Throwable.fillInStackTrace()}
+    \end{block}
+    
+    \begin{block}{O que fillInStackTrace() faz?}
+        A JVM suspende a execução atual, varre toda a \textit{Thread} de execução de cima a baixo e constrói uma matriz de registros representando a exata linha, método e classe de cada nível da chamada ativa. Quanto mais profunda a pilha, maior o custo.
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Antipadrão: Exceções para Controle de Fluxo}
+    Como as exceções carregam um peso computacional significativo, usá-las para controlar a lógica de execução comum do programa é um grave erro de arquitetura e performance.
+    
+    \vspace{0.1cm}
+    
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Antipadrão (Fluxo Lento)}
+                \begin{lstlisting}[language=Java,numbers=none]
+try {
+    int i = 0;
+    while (true) {
+        System.out.println(array[i++]);
+    }
+} catch (ArrayIndexOutOfBoundsException e) {
+    // Usando erro para parar o loop!
+}
+\end{lstlisting}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Recomendado (Fluxo Rápido)}
+                \begin{lstlisting}[language=Java,numbers=none]
+for (int i = 0; i < array.length; i++) {
+    System.out.println(array[i]);
+}
+// Logica natural e otimizada!
+\end{lstlisting}
+            \end{block}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.15cm}
+    \begin{alertblock}{Diretriz de Ouro}
+        \small
+        Exceções devem ser usadas unicamente para eventos \textbf{excepcionais} (erros de ambiente, rede, dados corrompidos) e \textbf{nunca} para controle de fluxo padrão do sistema.
+    \end{alertblock}
+\end{frame}
+
+\subsection{Rastreabilidade e Logs}
+\begin{frame}{Rastreabilidade em Produção: Logging vs. printStackTrace}
+    Em ambientes de produção reais (servidores na nuvem, microsserviços), o uso do clássico \texttt{e.printStackTrace()} ou \texttt{System.err} representa uma prática amadora e arriscada.
+    
+    \vspace{0.2cm}
+    
+    \begin{center}
+    \renewcommand{\arraystretch}{1.3}
+    \scriptsize
+    \begin{tabular}{|l|p{3.5cm}|p{3.5cm}|}
+        \hline
+        \textbf{Critério} & \textbf{e.printStackTrace()} & \textbf{Framework (Log4j2 / SLF4J)} \\
+        \hline
+        \textbf{Destino} & Console fixo (\texttt{System.err}) & Redirecionável (Arquivo, Console, Nuvem) \\
+        \hline
+        \textbf{Desempenho} & Lento (I/O Síncrono Bloqueante) & Rápido (Gravação Assíncrona na memória) \\
+        \hline
+        \textbf{Formato} & Texto livre sem estrutura & Altamente estruturado (ex: JSON para Datadog) \\
+        \hline
+        \textbf{Filtros} & Sem controle de nível & Níveis customizáveis (DEBUG, INFO, ERROR) \\
+        \hline
+    \end{tabular}
+    \end{center}
+\end{frame}
+
+\subsection{Antipadrões Comuns}
+\begin{frame}[fragile]{Antipadrões Comuns: Silenciamento e Log-and-Throw}
+    Identificar falhas em produção exige evitar práticas comuns que destroem a rastreabilidade do sistema:
+    
+    \vspace{0.2cm}
+    
+    \begin{block}{1. Silenciar Exceções (Swallowing)}
+        Capturar a exceção e deixar o bloco \texttt{catch} em branco é extremamente perigoso. O erro ocorre, o estado interno corrompe e o sistema falha silenciosamente.
+        \centering\scriptsize
+        \begin{lstlisting}[language=Java,numbers=none]
+} catch (IOException e) { /* faz nada */ } // Pior pratica possivel!
+\end{lstlisting}
+    \end{block}
+    
+    \begin{block}{2. O Redundante "Log and Throw"}
+        Registrar o log do erro e imediatamente relançar a mesma exceção na pilha. Isso gera duplicação maciça de logs em produção, dificultando a análise.
+        \centering\scriptsize
+        \begin{lstlisting}[language=Java,numbers=none]
+} catch (IOException e) { 
+    log.error("Erro na leitura", e); 
+    throw e; // Escolha: ou voce trata o erro ou relanca, nunca os dois!
+}
+\end{lstlisting}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Antipadrão: Interceptar Throwable ou Error}
+    Existem erros dos quais a aplicação simplesmente não consegue ou não deve tentar se recuperar.
+    
+    \vspace{0.2cm}
+    
+    \begin{block}{O Perigo de Capturar Throwable}
+        A classe \texttt{Throwable} é a raiz de toda a hierarquia, abrangendo \texttt{Exception} e \texttt{Error}.
+        Ao capturar \texttt{Throwable}, o programa interceptará falhas críticas da JVM:
+        \begin{itemize}
+            \item \texttt{OutOfMemoryError} (memória esgotada).
+            \item \texttt{StackOverflowError} (estouro da pilha de recursão).
+            \item \texttt{InternalError} (falhas internas da JVM).
+        \end{itemize}
+    \end{block}
+    
+    \begin{block}{Consequências}
+        Estas falhas graves exigem que a JVM aborte a execução imediatamente. Tentar capturá-las com \texttt{catch(Throwable t)} impede a parada segura, deixando a aplicação em estado imprevisível.
+        \centering\scriptsize
+        \texttt{catch (Throwable t) \{ ... \} // Evite a todo custo!}
+    \end{block}
+\end{frame}
+
+\end{document}

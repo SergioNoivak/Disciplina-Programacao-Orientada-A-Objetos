@@ -1,0 +1,231 @@
+\documentclass[12pt,a4paper]{article}
+
+% ------------------------------------------------
+% Pacotes
+% ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{mathptmx} % Times New Roman
+\usepackage{enumitem}\usepackage{amsfonts}
+\usepackage{amsmath} % Recomendado para o comando \text{}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta}
+
+% TikZ Styles for ER Diagrams
+\tikzset{
+    block/.style={rectangle, draw, thick, minimum width=2cm, minimum height=1cm, fill=white},
+    diamond_node/.style={diamond, draw, thick, minimum width=2cm, minimum height=1cm, fill=white, aspect=2},
+    attribute/.style={ellipse, draw, thin, minimum width=1.5cm, minimum height=0.6cm, fill=white, font=\scriptsize},
+    line/.style={draw, thick},
+}
+% ------------------------------------------------ 
+% Configuração de página 
+% ------------------------------------------------
+\geometry{
+    a4paper,
+    left=2cm,
+    right=2cm,
+    top=2cm,
+    bottom=2cm,
+    headheight=15pt 
+}
+
+% Caixa para resposta discursiva
+\newcommand{\resposta}[2]{
+\noindent
+\framebox[\textwidth]{
+\begin{minipage}{0.95\textwidth}
+\vspace{0.2cm}
+\textbf{RESPOSTA:} \\
+#2
+\vspace{#1}
+\end{minipage}
+}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\setlength{\parindent}{0pt}
+
+% ------------------------------------------------
+% Comandos auxiliares
+% ------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ------------------------------------------------
+% Documento
+% ------------------------------------------------
+\begin{document}
+
+% ------------------------------------------------
+% Cabeçalho
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{@{} L{4cm} X @{}}
+    \raisebox{-0.5cm}{\includegraphics[width=4cm]{Universidade_de_Rio_Verde.jpg}} &
+    \hfill
+    \begin{tabular}{|>{\centering\arraybackslash}m{9.5cm}|>{\raggedright\arraybackslash}p{1.8cm}|}
+        \hline
+        \cellcolor{black}\color{white}\rule{0pt}{1.2cm}\textbf{GABARITO - AVALIAÇÃO 2} 
+        & 
+        \scriptsize Nota \tabularnewline
+        \hline
+    \end{tabular} 
+\end{tabularx}
+\vspace{0.3cm}
+
+% ------------------------------------------------  
+% Tabela principal
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{|X|L{2cm}|}
+\hline
+\textbf{Curso} & \textbf{Campus} \\
+\textit{Engenharia de Software} & \textit{Rio Verde} \\
+\hline
+\multicolumn{2}{|l|}{\textbf{Disciplina}} \\  
+\multicolumn{2}{|l|}{ \textit{Programação Orientada a Objetos}} \\
+\hline
+\textbf{Nome do(a) acadêmico(a)} & \textbf{Valor} \\
+\textbf{GABARITO OFICIAL} & 7,0 \\
+\hline
+\textbf{Professor} & \textbf{Turma} \\
+\textit{ Sergio Souza Novak} & \textit{B} \\
+\hline
+\textbf{Data da Avaliação} & \textbf{Código} \\
+\textit{13/05/2026} & \textit{ESW448} \\
+\hline
+\end{tabularx}
+ 
+\vspace{0.5cm}
+
+\begin{center}
+    \rule{\textwidth}{0.4pt}
+    \textbf{QUESTÕES TEÓRICAS}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{enumerate}
+    \item \textbf{Resposta: B}
+    \begin{itemize}
+        \item Afirmativa 1: Falsa. Classes abstratas podem conter atributos normalmente.
+        \item Afirmativa 2: Verdadeira. Podem conter tanto métodos abstratos quanto concretos.
+        \item Afirmativa 3: Falsa. Construtores não podem ser abstratos.
+        \item Afirmativa 4: Falsa. Classes abstratas não podem ser instanciadas diretamente.
+    \end{itemize}
+
+    \item \textbf{Resposta:}\\
+    \resposta{0.5cm}{
+    O modificador \texttt{private} restringe o acesso ao atributo \texttt{nome} apenas à própria classe \texttt{Animal}, impedindo o acesso direto pelas subclasses. O modificador \texttt{protected} permite que o atributo \texttt{idade} seja acessado por \texttt{Animal}, suas subclasses (\texttt{Cachorro} e \texttt{Gato}) e outras classes do mesmo pacote. O modificador \texttt{public} torna o método \texttt{emitirSom()} acessível de qualquer lugar. \\
+    No método \texttt{exibirDados()}, o atributo \texttt{nome} \textbf{não} pode ser acessado diretamente devido ao encapsulamento (\texttt{private}), enquanto o atributo \texttt{idade} \textbf{pode} ser acessado diretamente por conta da herança e do modificador \texttt{protected}.
+    }
+
+    \item \textbf{Resposta:}
+    \begin{enumerate}[label=( \quad )]
+        \item[\textbf{( V )}] Para que ocorra a sobrescrita, o método na subclasse deve possuir o mesmo nome e a mesma assinatura (parâmetros) do método na superclasse.
+        \item[\textbf{( F )}] Um método definido como \texttt{final} na superclasse pode ser livremente sobrescrito... (\textit{Métodos final não podem ser sobrescritos}).
+        \item[\textbf{( V )}] O uso da anotação \texttt{@Override} é opcional, mas ajuda o compilador...
+        \item[\textbf{( V )}] A sobrescrita permite que uma subclasse forneça uma implementação específica...
+        \item[\textbf{( F )}] Se um método for declarado como \texttt{static} na superclasse, ele pode ser sobrescrito... (\textit{Métodos estáticos são ocultados, não sobrescritos}).
+    \end{enumerate}
+
+    \item \textbf{Resposta:}\\
+    \resposta{0.5cm}{
+    a) O compilador baseia-se no tipo da referência (\texttt{Animal}) para verificar a validade das chamadas. Como \texttt{Animal} não possui o método \texttt{enterrarOsso()}, a chamada direta é negada por segurança de tipo. \\
+    b) Ocorreria uma exceção do tipo \texttt{ClassCastException} em tempo de execução, pois um objeto do tipo \texttt{Gato} não pode ser convertido para \texttt{Cachorro}, já que não há relação de herança entre eles (são irmãos na hierarquia).
+    }
+
+    \item \textbf{Resposta: A}
+    \begin{itemize}
+        \item I: Correta. \texttt{final} em classes impede herança.
+        \item II: Incorreta. \texttt{final} em métodos impede sobrescrita.
+        \item III: Correta. \texttt{final} em atributos cria constantes (após inicialização).
+        \item IV: Correta. Sem herança, não há sobrescrita.
+    \end{itemize}
+
+\end{enumerate}
+
+\newpage
+\begin{center}
+    \rule{\textwidth}{0.4pt}
+    \textbf{QUESTÕES PRÁTICAS}
+\end{center}
+
+\begin{enumerate}
+    \item \textbf{Implementação de \texttt{ItemVestuario}:}\\
+    \resposta{4cm}{
+    \texttt{public abstract class ItemVestuario \{ \\
+    \quad protected String marca; \\
+    \quad protected double preco; \\
+    \quad public static final String MOEDA = "R\$"; \\
+    \quad public static int totalItens = 0; \\
+    \quad \\
+    \quad public abstract void exibirDetalhes(); \\
+    \}}
+    }
+
+    \item \textbf{Implementação de \texttt{Camiseta}:}\\
+    \resposta{6cm}{
+    \texttt{public class Camiseta extends ItemVestuario \{ \\
+    \quad private String tamanho; \\
+    \quad public static final String TIPO = "Camiseta"; \\
+    \quad \\
+    \quad public Camiseta(String marca, double preco, String tamanho) \{ \\
+    \quad\quad this.marca = marca; \\
+    \quad\quad this.preco = preco; \\
+    \quad\quad this.tamanho = tamanho; \\
+    \quad\quad totalItens++; \\
+    \quad \} \\
+    \quad \\
+    \quad @Override \\
+    \quad public void exibirDetalhes() \{ \\
+    \quad\quad System.out.println("Tipo: " + TIPO + " | Marca: " + marca + \\
+    \quad\quad\quad " | Preço: " + MOEDA + preco + " | Tam: " + tamanho); \\
+    \quad \} \\
+    \}}
+    }
+
+    \item \textbf{Implementação de \texttt{Blusa}:}\\
+    \resposta{6cm}{
+    \texttt{public class Blusa extends ItemVestuario \{ \\
+    \quad private String tecido; \\
+    \quad public static final String TIPO = "Blusa"; \\
+    \quad \\
+    \quad public Blusa(String marca, double preco, String tecido) \{ \\
+    \quad\quad this.marca = marca; \\
+    \quad\quad this.preco = preco; \\
+    \quad\quad this.tecido = tecido; \\
+    \quad\quad totalItens++; \\
+    \quad \} \\
+    \quad \\
+    \quad @Override \\
+    \quad public void exibirDetalhes() \{ \\
+    \quad\quad System.out.println("Tipo: " + TIPO + " | Marca: " + marca + \\
+    \quad\quad\quad " | Preço: " + MOEDA + preco + " | Tecido: " + tecido); \\
+    \quad \} \\
+    \}}
+    }
+
+    \item \textbf{Downcasting e Explicação:}\\
+    \resposta{3cm}{
+    \texttt{((Camiseta) item).dobrarCamiseta();} \\
+    Os parênteses externos são necessários devido à precedência de operadores. O operador de ponto (\texttt{.}) tem precedência maior que o operador de \textit{cast}. Sem os parênteses, o compilador tentaria primeiro executar o método no objeto do tipo \texttt{ItemVestuario} antes de realizar a conversão.
+    }
+
+    \item \textbf{SOLID e Classes Abstratas:}\\
+    \resposta{3cm}{
+    As classes abstratas são fundamentais para o Princípio do Aberto/Fechado (OCP), permitindo que o comportamento de um sistema seja estendido sem modificar o código existente, e para o Princípio da Inversão de Dependência (DIP), pois garantem que módulos de alto nível dependam de abstrações e não de implementações concretas, promovendo baixo acoplamento.
+    }
+\end{enumerate}
+
+\end{document} 

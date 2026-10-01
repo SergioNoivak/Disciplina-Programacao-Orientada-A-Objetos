@@ -1,0 +1,8 @@
+@startuml
+class Livro {
+    + titulo : String
+    + autor : String
+    + anoPublicacao : int
+    + numeroPaginas : int
+}
+@enduml

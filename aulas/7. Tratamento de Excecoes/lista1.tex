@@ -1,0 +1,164 @@
+\documentclass[12pt]{article}
+
+% Idioma e codificação
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% Matemática e listas
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+
+% Layout e cores
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% Cores institucionais
+\definecolor{maincolor}{RGB}{0,100,50}
+\definecolor{forestgreen}{RGB}{0,100,50}
+
+% Cabeçalho e rodapé
+\usepackage{fancyhdr}
+
+% Blocos
+\usepackage[most]{tcolorbox}
+\newtcolorbox{block}[1]{%
+  colback=green!5,
+  colframe=maincolor,
+  coltitle=white,
+  title=#1,
+  fonttitle=\bfseries,
+  boxrule=1.5pt,
+  arc=3mm,
+  left=6pt,
+  right=6pt,
+  top=6pt,
+  bottom=6pt
+}
+
+% Margens
+\geometry{margin=2.5cm}
+
+% Fancyhdr
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{2pt}
+
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{forestgreen}\leaders\hrule height \headrulewidth\hfill}}
+
+\renewcommand{\footrule}{\hbox to\headwidth{%
+  \color{forestgreen}\leaders\hrule height \footrulewidth\hfill}}
+
+% Altura do cabeçalho (corrigida)
+\setlength{\headheight}{52pt}
+\addtolength{\topmargin}{-20pt}
+
+% Cabeçalho
+\fancyhead[L]{%
+  \includegraphics[height=1.2cm]{Universidade_de_Rio_Verde.jpg}
+}
+
+\fancyhead[R]{%
+  \raggedleft
+  \textcolor{forestgreen}{%
+    \small
+    \textbf{Lista de Exercícios — Paradigmas de Programação}\\
+    Me.~Sergio Souza Novak\\
+    \textit{Programação Orientada a Objetos}
+  }
+}
+
+% Rodapé
+\fancyfoot[C]{\textcolor{forestgreen}{\thepage}}
+
+% =========================
+\begin{document}
+% =========================
+
+\vspace*{0.2cm}
+
+\section*{Exercícios}
+
+\begin{block}{Questão 1 — Conceitos Fundamentais}
+Explique, com suas próprias palavras, o que é um \textbf{paradigma de programação}.
+Por que diferentes paradigmas existem e qual a importância deles no desenvolvimento
+de software?
+\end{block}
+
+\begin{block}{Questão 2 — Associação}
+Associe cada paradigma à sua principal característica:
+
+\begin{enumerate}[label=\alph*)]
+  \item Paradigma Imperativo
+  \item Paradigma Orientado a Objetos
+  \item Paradigma Funcional
+  \item Paradigma Lógico
+  \item Paradigma Declarativo
+\end{enumerate}
+
+\begin{itemize}
+  \item ( \quad ) Uso de objetos, classes e encapsulamento
+  \item ( \quad ) Programação baseada em fatos e regras
+  \item ( \quad ) Ênfase em funções puras e imutabilidade
+  \item ( \quad ) Descrição do resultado esperado, não do algoritmo
+  \item ( \quad ) Execução sequencial de comandos que alteram estado
+\end{itemize}
+\end{block}
+
+\begin{block}{Questão 3 — Análise}
+Considere o trecho de código abaixo:
+
+\begin{verbatim}
+const numeros = [1, 2, 3, 4, 5];
+const dobro = numeros.map(n => n * 2);
+\end{verbatim}
+
+\begin{enumerate}
+  \item Qual paradigma de programação está sendo utilizado?
+  \item Cite duas características desse paradigma presentes no código.
+  \item O vetor original foi modificado? Justifique.
+\end{enumerate}
+\end{block}
+
+\begin{block}{Questão 4 — Paradigma Lógico}
+Considere os fatos a seguir escritos em Prolog:
+
+\begin{verbatim}
+gosta(ana, cafe).
+gosta(joao, cha).
+gosta(ana, cha).
+\end{verbatim}
+
+Responda:
+\begin{enumerate}
+  \item O que representa cada fato?
+  \item Qual seria a resposta para a consulta \texttt{?- gosta(ana, X).}?
+  \item Como esse tipo de consulta difere de uma busca em linguagens imperativas?
+\end{enumerate}
+\end{block}
+
+\begin{block}{Questão 5 — Comparação}
+Explique duas diferenças entre:
+\begin{itemize}
+  \item Paradigma Orientado a Objetos e Paradigma Funcional;
+  \item Paradigma Imperativo e Paradigma Declarativo.
+\end{itemize}
+
+Dê exemplos de situações em que cada paradigma seria mais adequado.
+\end{block}
+
+\begin{block}{Questão 6 — Reflexão}
+Linguagens modernas como Java, Python e JavaScript são consideradas
+\textbf{multiparadigma}.
+
+Na sua opinião, isso é uma vantagem ou uma desvantagem?
+Justifique sua resposta.
+\end{block}
+
+% =========================
+\end{document}
+% =========================

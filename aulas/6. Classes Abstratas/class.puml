@@ -1,0 +1,26 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam stereotypeCBackgroundColor transparent
+skinparam stereotypeCBorderColor transparent
+hide stereotype
+
+
+    class ContaBancaria {
+
+        + saldo : double
+        + agencia : String
+        + tipo : String
+        + numero : String
+
+        --
+
+        + **ContaBancaria(agencia : String, tipo : String, numero : String)**
+        + getSaldoFormatado() : String
+        + depositar(valor : double) : void
+        + saque(valor : double) : void
+        + exibirSaldo() : void
+    }
+
+
+
+@enduml

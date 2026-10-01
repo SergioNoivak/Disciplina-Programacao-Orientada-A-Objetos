@@ -1,0 +1,517 @@
+\documentclass[9pt]{beamer}
+\mode<presentation>
+
+% Theme choice:
+\usetheme{Madrid}%Darmstadt 
+
+\definecolor{univBlue}{RGB}{0, 57, 145}
+\definecolor{univLightBlue}{RGB}{71, 115, 169}
+\definecolor{univSoftBlue}{RGB}{147, 172, 203}
+
+\usecolortheme[RGB={0, 57, 145}]{structure}
+ \usefonttheme{structurebold} 
+\setbeamercovered{invisible}
+%\setbeamertemplate{navigation symbols}{}
+\usepackage{dynblocks}
+\usepackage{textpos}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, shapes.symbols, arrows.meta, positioning, shapes.multipart, calc}
+\newtheorem{teorema}{Teorema}\usepackage{mathtools}
+\renewcommand{\proofname}{Prova}
+\usepackage[portuguese]{babel}
+\usepackage{pifont}
+\uselanguage{Portuguese}
+\languagepath{Portuguese}
+
+\deftranslation[to=Portuguese]{Theorem}{Teorema}
+\deftranslation[to=Portuguese]{Lemma}{Lema}
+\deftranslation[to=Portuguese]{Corollary}{Corolário}
+\deftranslation[to=Portuguese]{Proof}{Prova}
+
+\usepackage{dutchcal}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsthm}
+
+
+\usepackage[affil-it]{authblk} 
+\usepackage{etoolbox}
+\usepackage{lmodern}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    language=Java,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{univBlue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle={\ttfamily\small},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\makeatletter
+\patchcmd{\@maketitle}{\LARGE \@title}{\fontsize{18}{19.2}\selectfont\@title}{}{}
+\makeatother
+
+\renewcommand\Authfont{\fontsize{12}{14.4}\selectfont}
+\renewcommand\Affilfont{\fontsize{9}{10.8}\itshape}
+
+% Title page details: 
+\title[Exercício N2]{Exercício N2 - POO: Compactação do Solo} %add title
+
+
+\institute[UniRV]{\textbf{\large  \textcolor{univBlue}{\textbf{\large
+    Classes Abstratas e Concretas, palavras static e final }} %add name 
+% \hspace{0.5pt}
+\\ \qquad
+\\Professor: Me. Sergio Souza Novak 
+\\Faculdade de Engenharia de Software}
+} 
+% \titlegraphic{\includegraphics[width=5cm]{msu.eps}}
+\titlegraphic{\includegraphics[width=3cm]{universidade_logo_novo.png}}
+\date{}
+
+% Logo only on title page
+%\logo{\includegraphics[width=1cm,keepaspectratio]{Logo.png}}
+\usepackage[pscoord]{eso-pic}
+
+
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\AddToShipoutPictureFG{
+    \put(\LenToUnit{.92\paperwidth},
+    \LenToUnit{.185\paperheight})
+    {\vtop{{\null}
+    \makebox{\includegraphics[width=.8cm,keepaspectratio]{universidade_logo_novo.png}}}}}
+
+\section{Introdução e Definição}
+
+\begin{frame}{O que é a Compactação do Solo?}
+    \begin{itemize}
+        \item \textbf{Definição:} Processo de reorganização das partículas do solo que resulta no aumento da densidade e redução da porosidade.
+        \item \textbf{Aspectos Físicos:}
+        \begin{itemize}
+            \item Expulsão do ar dos poros do solo.
+            \item Redução do volume total do solo sob uma carga aplicada.
+            \item Aumento da resistência mecânica à penetração.
+        \end{itemize}
+        \item \textbf{Estado Crítico:} Ocorre quando a pressão aplicada pelo maquinário ou animais excede a capacidade de suporte de carga do solo.
+    \end{itemize}
+\end{frame}
+
+\section{Processo Físico e Estrutura}
+
+\begin{frame}{Mudança na Estrutura do Solo}
+    \centering
+    \begin{tikzpicture}[scale=1.2, every node/.style={scale=0.8}]
+        % Solo Ideal
+        \draw[thick] (0,0) rectangle (2,3);
+        \node[above] at (1,3) {\textbf{Solo Ideal}};
+        \fill[brown!70!black] (0,0) rectangle (2,1.5); 
+        \node at (1,0.75) {Sólidos (50\%)};
+        \fill[blue!30] (0,1.5) rectangle (2,2.25);
+        \node at (1,1.87) {Água (25\%)};
+        \fill[gray!20] (0,2.25) rectangle (2,3);
+        \node at (1,2.62) {Ar (25\%)};
+
+        % Seta de Compactação
+        \draw[->, ultra thick, univBlue] (2.5,1.5) -- (4.5,1.5) node[midway, above] {Compactação};
+
+        % Solo Compactado
+        \begin{scope}[xshift=5cm]
+            \draw[thick] (0,0) rectangle (2,3);
+            \node[above] at (1,3) {\textbf{Solo Compactado}};
+            \fill[brown!70!black] (0,0) rectangle (2,2.1); 
+            \node at (1,1.05) {Sólidos (70\%)};
+            \fill[blue!30] (0,2.1) rectangle (2,2.7);
+            \node at (1,2.4) {Água (20\%)};
+            \fill[gray!20] (0,2.7) rectangle (2,3);
+            \node at (1,2.85) {Ar (10\%)};
+        \end{scope}
+    \end{tikzpicture}
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item A \textbf{macroporosidade} (poros de ar) é a primeira a ser reduzida.
+        \item Resulta em solo com baixa capacidade de trocas gasosas.
+    \end{itemize}
+\end{frame}
+
+\section{Causas Principais}
+
+\begin{frame}{Fatores que Levam à Compactação}
+    \begin{columns}
+        \begin{column}{0.6\textwidth}
+            \begin{itemize}
+                \item \textbf{Maquinário Agrícola:}
+                \begin{itemize}
+                    \item Tratores e colhedoras pesadas.
+                    \item Pressão excessiva dos pneus.
+                    \item Tráfego repetido no mesmo local.
+                \end{itemize}
+                \item \textbf{Pisoteio Animal:}
+                \begin{itemize}
+                    \item Alta taxa de lotação em pastagens.
+                \end{itemize}
+                \item \textbf{Umidade do Solo:}
+                \begin{itemize}
+                    \item Trabalhar o solo quando está muito úmido (estado plástico).
+                \end{itemize}
+                \item \textbf{Manejo:} Ausência de matéria orgânica.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \begin{tikzpicture}
+                % Simulação de pressão
+                \draw[thick, fill=gray!10] (0,0) rectangle (3,1);
+                \node at (1.5,0.5) {Camada de Solo};
+                \draw[red, ultra thick, <-] (0.5,1.5) -- (0.5,1.1);
+                \draw[red, ultra thick, <-] (1.5,1.5) -- (1.5,1.1);
+                \draw[red, ultra thick, <-] (2.5,1.5) -- (2.5,1.1);
+                \node[red] at (1.5,1.8) {Pressão (P)};
+                
+                % Efeito subsuperficial
+                \draw[dashed] (0,-0.5) arc (180:360:1.5 and 0.5);
+                \node at (1.5,-0.8) {\tiny Bulbo de Pressão};
+            \end{tikzpicture}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\section{Consequências e Impactos}
+
+\begin{frame}{Efeitos no Desenvolvimento da Cultura}
+    \begin{itemize}
+        \item \textbf{Restrição Radicular:} Raízes tornam-se superficiais e deformadas.
+        \item \textbf{Baixa Infiltração:} Aumento do escoamento superficial (erosão).
+        \item \textbf{Deficiência Nutricional:} Menor volume de solo explorado.
+    \end{itemize}
+    \centering
+    \begin{tikzpicture}[scale=0.8]
+        % Eixo
+        \draw[->] (0,0) -- (5,0) node[right] {Densidade do Solo};
+        \draw[->] (0,0) -- (0,3) node[above] {Produtividade};
+        % Curva
+        \draw[thick, univBlue] (0.5,2.5) to[out=0, in=120] (2.5,2.2) to[out=-60, in=170] (4.5,0.5);
+        \node[univBlue, pin=45:{Queda de rendimento}] at (3.5,1.2) {};
+        
+        % Raízes TikZ
+        \begin{scope}[xshift=6cm, yshift=1.5cm]
+            \draw[brown, thick] (-1,0) -- (1,0);
+            \draw[brown, ultra thick] (0,0) -- (0,-0.3);
+            \draw[brown, thin] (0,-0.3) -- (-0.4,-0.8);
+            \draw[brown, thin] (0,-0.3) -- (0.4,-0.8);
+            \node at (0,0.3) {\tiny Solo Normal};
+            
+            \begin{scope}[xshift=2.5cm]
+                \draw[brown, thick] (-1,0) -- (1,0);
+                \draw[brown, ultra thick] (0,0) -- (0,-0.15);
+                \draw[brown, thin] (0,-0.15) -- (0.5,-0.2) -- (0.8,-0.25);
+                \draw[brown, thin] (0,-0.15) -- (-0.5,-0.2) -- (-0.8,-0.25);
+                \draw[red, thick] (-1,-0.3) -- (1,-0.3);
+                \node at (0,0.3) {\tiny Solo Compactado};
+                \node[red] at (0,-0.5) {\tiny Camada Adensada};
+            \end{scope}
+        \end{scope}
+    \end{tikzpicture}
+\end{frame}
+
+\section{Manejo e Recuperação}
+
+\begin{frame}{Como Mitigar a Compactação?}
+    \begin{enumerate}
+        \item \textbf{Controle de Tráfego:} Uso de rotas fixas para máquinas.
+        \item \textbf{Plantio Direto:} Mantém a estrutura natural e umidade.
+        \item \textbf{Culturas de Cobertura:} Uso de plantas com raízes agressivas (ex: Nabo Forrageiro, Braquiária).
+        \item \textbf{Intervenção Mecânica:}
+        \begin{itemize}
+            \item \textbf{Escarificação:} Camadas superficiais.
+            \item \textbf{Subsolagem:} Camadas mais profundas (acima de 30cm).
+        \end{itemize}
+    \end{enumerate}
+    \centering
+    \begin{tikzpicture}
+        \draw[thick, fill=orange!20] (0,-0.5) rectangle (4,0);
+        \node at (2,-0.25) {\small Solo};
+        \draw[thick] (2,0.5) -- (2,-0.3) -- (2.5,-0.35);
+        \node[above] at (2,0.5) {Subsolador};
+        \foreach \x in {1.8, 2, 2.2} {
+            \draw[dashed, red] (\x, -0.1) -- (\x, -0.4);
+        }
+        \node[right] at (4,-0.25) {Rompe a camada compactada};
+    \end{tikzpicture}
+\end{frame}
+
+\section{Implementação em POO}
+
+\begin{frame}{Estrutura Sugerida do Projeto}
+    \begin{itemize}
+        \item \textbf{Diretório:} \texttt{src/}
+        \item \textbf{Arquivos:}
+        \begin{itemize}
+            \item \texttt{MaquinaAgricola.java} (Classe Abstrata)
+            \item \texttt{TratorMedio.java} (Especialização)
+            \item \texttt{Colheitadeira.java} (Especialização)
+            \item \texttt{ModeloProdutividade.java} (Utilitários \texttt{static})
+            \item \texttt{SimuladorAgricola.java} (Classe Principal)
+        \end{itemize}
+    \end{itemize}
+    \centering
+    \begin{tikzpicture}
+        \node[draw, fill=univBlue!10, rounded corners] (src) {src/};
+        \node[below right=0.5cm and 0.2cm of src, draw] (m1) {\tiny MaquinaAgricola.java};
+        \node[below=0.1cm of m1, draw] (m2) {\tiny TratorMedio.java};
+        \node[below=0.1cm of m2, draw] (m3) {\tiny Colheitadeira.java};
+        \node[below=0.1cm of m3, draw] (m4) {\tiny ModeloProdutividade.java};
+        \node[below=0.1cm of m4, draw] (m5) {\tiny SimuladorAgricola.java};
+        \draw (src.south west) |- (m1.west);
+        \draw (src.south west) |- (m2.west);
+        \draw (src.south west) |- (m3.west);
+        \draw (src.south west) |- (m4.west);
+        \draw (src.south west) |- (m5.west);
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Diagrama de Classes UML}
+    \centering
+    \begin{tikzpicture}[
+        class/.style={
+            draw, fill=univBlue!5, 
+            rectangle split, rectangle split parts=3, 
+            align=left, font=\tiny,
+            minimum width=3.5cm
+        }
+    ]
+        % Superclasse
+        \node[class] (maquina) {
+            \textbf{\textit{MaquinaAgricola}}
+            \nodepart{second}
+            \# pesoToneladas: double\\
+            \# pressaoSoloKPa: double\\
+            \# totalMaquinas: static int
+            \nodepart{third}
+            + \textit{avaliarCompactacao()}\\
+            + haRestricaoRadicular(): final
+        };
+
+        % Subclasses
+        \node[class, below left=1.2cm and -0.8cm of maquina] (trator) {
+            \textbf{TratorMedio}
+            \nodepart{third}
+            + avaliarCompactacao()
+        };
+
+        \node[class, below right=1.2cm and -0.8cm of maquina] (colhei) {
+            \textbf{Colheitadeira}
+            \nodepart{third}
+            + avaliarCompactacao()
+        };
+
+        % Herança
+        \draw[{Triangle[open]}-] (maquina.south) -- ++(0,-0.4) -| (trator.north);
+        \draw[{Triangle[open]}-] (maquina.south) -- ++(0,-0.4) -| (colhei.north);
+
+        % Utilitária
+        \node[class, right=1.2cm of maquina] (modelo) {
+            \textbf{ModeloProdutividade}
+            \nodepart{third}
+            + calcularProdutividade(): static\\
+            + riscoCompactacao(): static
+        };
+
+        \draw[dashed, ->] (modelo.west) -- (maquina.east) node[midway, above] {\tiny usa};
+    \end{tikzpicture}
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item \textbf{Herança}: Indicada pela seta com triângulo vazado.
+        \item \textbf{Itálico}: Representa elementos abstratos (não instanciáveis).
+        \item \textbf{\texttt{static}}: Membros que pertencem à classe, não ao objeto.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{1. Classe Abstrata: \texttt{MaquinaAgricola}}
+\begin{lstlisting}[basicstyle=\tiny]
+public abstract class MaquinaAgricola {
+    protected double pesoToneladas;
+    protected double pressaoSoloKPa;
+    protected String tipoRodado;
+    protected double resistenciaPenetracaoMPa;
+
+    // Limiares cientificos (static final)
+    public static final double RP_CRITICA_MIN = 2.0;
+    public static final double RP_CRITICA_MAX = 2.5;
+    protected static int totalMaquinas = 0;
+
+    public MaquinaAgricola(double peso, double pressao, String rodado) {
+        this.pesoToneladas = peso;
+        this.pressaoSoloKPa = pressao;
+        this.tipoRodado = rodado;
+        totalMaquinas++;
+    }
+
+    public final boolean haRestricaoRadicular() {
+        return resistenciaPenetracaoMPa >= RP_CRITICA_MIN;
+    }
+
+    public abstract String avaliarCompactacao();
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Conceitos Aplicados: \texttt{abstract}, \texttt{final} e \texttt{static}}
+    \begin{itemize}
+        \item \textbf{\texttt{abstract class}}: Define um modelo que não pode ser instanciado diretamente. Exige que cada máquina implemente sua própria lógica de compactação.
+        \item \textbf{\texttt{static final}} (Constantes): \texttt{RP\_CRITICA\_MIN} é um valor global fixo baseado em literatura científica.
+        \item \textbf{\texttt{static}} (Contador): \texttt{totalMaquinas} pertence à classe, permitindo rastrear quantas máquinas foram criadas no sistema.
+        \item \textbf{\texttt{final method}}: \texttt{haRestricaoRadicular()} possui uma lógica universal que não deve ser alterada pelas subclasses.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{2. Classes Concretas: Especialização}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{lstlisting}[language=Java, basicstyle=\tiny, title=TratorMedio.java]
+public class TratorMedio extends MaquinaAgricola {
+    public TratorMedio() {
+        super(5.0, 100.0, "Pneu simples");
+    }
+    @Override
+    public String avaliarCompactacao() {
+        this.resistenciaPenetracaoMPa = 2.2;
+        return "Compactacao superficial (0-0,20 m)";
+    }
+}
+\end{lstlisting}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{lstlisting}[language=Java, basicstyle=\tiny, title=Colheitadeira.java]
+public class Colheitadeira extends MaquinaAgricola {
+    public Colheitadeira() {
+        super(16.0, 130.0, "Duplo pneu");
+    }
+    @Override
+    public String avaliarCompactacao() {
+        this.resistenciaPenetracaoMPa = 2.6;
+        return "Alta compactacao (solo umido)";
+    }
+}
+\end{lstlisting}
+\end{column}
+\end{columns}
+\begin{itemize}
+    \item \textbf{Herança}: Reuso de atributos e construtores da superclasse.
+    \item \textbf{Polimorfismo}: Cada classe decide como o solo é afetado.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{3. Modelo de Produtividade: \texttt{static}}
+\begin{lstlisting}[language=Java, basicstyle=\tiny]
+public class ModeloProdutividade {
+    public static final double A = 10.0;
+    public static final double B = -4.0;
+    public static final double C = -1.5;
+
+    // Regressao quadratica envolvendo a maquina
+    public static double calcularProdutividade(double densidade, MaquinaAgricola m) {
+        double base = A + B * densidade + C * Math.pow(densidade, 2);
+        // Penalidade se houver restricao radicular causada pela maquina
+        return m.haRestricaoRadicular() ? base * 0.7 : base;
+    }
+
+    public static double produtividadePorRP(double rp) {
+        if (rp < 2.0) return 100;
+        if (rp < 2.5) return 80;
+        return 50;
+    }
+}
+\end{lstlisting}
+\begin{itemize}
+    \item \textbf{Métodos de Classe}: Não dependem de instâncias. Funcionam como uma "Calculadora Científica" de produtividade disponível para todo o sistema.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{4. Simulação: Integrando tudo}
+\begin{lstlisting}[language=Java, basicstyle=\tiny]
+public class SimuladorAgricola {
+    public static void main(String[] args) {
+        MaquinaAgricola trator = new TratorMedio();
+        MaquinaAgricola colheitadeira = new Colheitadeira();
+
+        trator.exibirInfo();
+        System.out.println(trator.avaliarCompactacao());
+
+        // Analise de produtividade vinculada a maquina
+        double densidade = 1.4;
+        double prod = ModeloProdutividade.calcularProdutividade(densidade, trator);
+
+        System.out.println("Produtividade: " + prod);
+        System.out.println("Restricao Trator: " + trator.haRestricaoRadicular());
+        System.out.println("Total Maquinas: " + MaquinaAgricola.getTotalMaquinas());
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Resumo da Aprendizagem}
+    \begin{block}{Conceitos de POO}
+        \begin{itemize}
+            \item \textbf{Classe Abstrata}: \texttt{MaquinaAgricola}
+            \item \textbf{Herança}: \texttt{TratorMedio}, \texttt{Colheitadeira}
+            \item \textbf{Polimorfismo}: \texttt{avaliarCompactacao()}
+        \end{itemize}
+    \end{block}
+    \begin{block}{Palavras-Chave \texttt{final} e \texttt{static}}
+        \begin{itemize}
+            \item \textbf{\texttt{final}}: Constantes e métodos imutáveis (\texttt{haRestricaoRadicular}).
+            \item \textbf{\texttt{static}}: Métodos utilitários (Modelos matemáticos) e contadores globais.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Exercício Sugerido}
+
+\begin{frame}{\ding{46} Exercício para os Alunos}
+    \begin{alertblock}{Desafio Prático}
+        Expanda o simulador criando as seguintes classes:
+        \begin{enumerate}
+            \item \texttt{Pulverizador}: Peso leve, rodado fino (foco em pressão pontual).
+            \item \texttt{TratorGrande}: Peso elevado, rodado de esteira (foco em distribuição de peso).
+        \end{enumerate}
+    \end{alertblock}
+    
+    \begin{block}{Implementação Requerida}
+        \begin{itemize}
+            \item Definir novos valores de \textbf{RP} (Resistência à Penetração).
+            \item Calcular o \textbf{impacto na produtividade} usando o \texttt{ModeloProdutividade}.
+            \item Comparar se o rodado de esteira do \texttt{TratorGrande} protege mais o solo que o pneu do \texttt{TratorMedio}.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\end{document}

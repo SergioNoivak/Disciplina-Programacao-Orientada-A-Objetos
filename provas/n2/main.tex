@@ -1,0 +1,389 @@
+\documentclass[12pt,a4paper]{article}
+
+% ------------------------------------------------
+% Pacotes
+% ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{mathptmx} % Times New Roman
+\usepackage{enumitem}\usepackage{amsfonts}
+\usepackage{amsmath} % Recomendado para o comando \text{}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta}
+
+% TikZ Styles for ER Diagrams
+\tikzset{
+    block/.style={rectangle, draw, thick, minimum width=2cm, minimum height=1cm, fill=white},
+    diamond_node/.style={diamond, draw, thick, minimum width=2cm, minimum height=1cm, fill=white, aspect=2},
+    attribute/.style={ellipse, draw, thin, minimum width=1.5cm, minimum height=0.6cm, fill=white, font=\scriptsize},
+    line/.style={draw, thick},
+}
+% ------------------------------------------------ 
+% Configuração de página
+% ------------------------------------------------
+\geometry{
+    a4paper,
+    left=2cm,
+    right=2cm,
+    top=2cm,
+    bottom=2cm,
+    headheight=15pt % Adicione isso
+}% Caixa para resposta discursiva
+\newcommand{\resposta}[1]{
+\noindent
+\framebox[\textwidth]{
+\begin{minipage}{0.98\textwidth}
+\vspace{#1}
+\end{minipage}
+}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\setlength{\parindent}{0pt}
+
+% ------------------------------------------------
+% Comandos auxiliares
+% ------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ------------------------------------------------
+% Documento
+% ------------------------------------------------
+\begin{document}
+
+% ------------------------------------------------
+% Cabeçalho - Corrigido para evitar aninhamento problemático
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{@{} L{4cm} X @{}}
+    \raisebox{-0.5cm}{\includegraphics[width=4cm]{Universidade_de_Rio_Verde.jpg}} &
+    \hfill
+    \begin{tabular}{|>{\centering\arraybackslash}m{10cm}|>{\raggedright\arraybackslash}p{1.8cm}|}
+        \hline
+        \cellcolor{black}\color{white}\rule{0pt}{1.2cm}\textbf{AVALIAÇÃO 2} 
+        & 
+        \scriptsize Nota \tabularnewline
+        \hline
+    \end{tabular} 
+\end{tabularx}
+\vspace{0.3cm}
+
+% ------------------------------------------------  
+% Tabela principal - Estrutura limpa
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{|X|L{2cm}|}
+\hline
+\textbf{Curso} & \textbf{Campus} \\
+\textit{Engenharia de Software} & \textit{Rio Verde} \\
+\hline
+\multicolumn{2}{|l|}{\textbf{Disciplina}} \\  
+\multicolumn{2}{|l|}{ \textit{Programação Orientada a Objetos}} \\
+\hline
+\textbf{Nome do(a) acadêmico(a)} & \textbf{Valor} \\
+& 7,0 \\
+\hline
+\textbf{Professor} & \textbf{Turma} \\
+\textit{ Sergio Souza Novak} & \textit{B} \\
+\hline
+\textbf{Data da Avaliação} & \textbf{Código} \\
+\textit{13/05/2026} & \textit{ESW448} \\
+\hline
+\end{tabularx}
+ 
+% ------------------------------------------------
+% Barra de Atenção
+% ------------------------------------------------
+\vspace{0.2cm}
+
+\begin{tabularx}{\textwidth}{|X|}
+\hline
+\cellcolor{black}\color{white}
+\centering \textbf{ATENÇÃO:} Somente serão passíveis de \textbf{REVISÃO} avaliações resolvidas à \textbf{TINTA}. \tabularnewline
+\hline
+\end{tabularx}
+
+\vspace{0.3cm}
+
+\textbf{ORIENTAÇÕES PARA A RESOLUÇÃO}  
+
+\begin{itemize}
+    \item A avaliação é individual, sem consulta;
+    \item É permitida a utilização da IDE \textbf{IntelliJ IDEA} com a Linguagem \textbf{JAVA};
+    \item O código Java das questões de implementação deve ser preenchido \textbf{a caneta} na área retangular abaixo de cada questão;
+    \item Todas as 10 questões possuem o mesmo peso;
+    \item A interpretação de texto faz parte da avaliação;
+\end{itemize}
+
+\vspace{0.5cm}
+
+\begin{center}
+    \rule{\textwidth}{0.4pt}
+    \textbf{QUESTÕES TEÓRICAS}
+\end{center}
+
+\vspace{0.2cm}
+
+\textbf{INSTRUÇÕES:} Esta seção contém \textbf{5 exercícios}. Recomenda-se reservar \textbf{40 minutos} para sua resolução. A avaliação é individual e \textbf{sem consulta}.
+
+\vspace{0.3cm}
+
+\begin{enumerate}
+    \item \textbf{(Ano: 2018 Banca: NC-UFPR Órgão: FOZPREV Prova: Analista Previdenciário)} Classes abstratas são um recurso importante na linguagem Java, pois incentivam o polimorfismo e dão flexibilidade à modelagem de classes, favorecendo a abstração. A respeito de classes abstratas, considere as seguintes afirmativas:
+    
+    \begin{enumerate}[label=\arabic*.]
+        \item Classes abstratas não podem conter atributos.
+        \item Uma classe abstrata pode conter métodos concretos.
+        \item O construtor de uma classe abstrata deve ser abstrato.
+        \item Classes abstratas podem ser instanciadas.
+    \end{enumerate}
+    
+    Assinale a alternativa correta.
+    
+    \begin{enumerate}[label=\Alph*)]
+        \item Somente a afirmativa 1 é verdadeira.
+        \item Somente a afirmativa 2 é verdadeira.
+        \item Somente as afirmativas 1 e 3 são verdadeiras.
+        \item Somente as afirmativas 1 e 4 são verdadeiras.
+        \item Somente as afirmativas 2, 3 e 4 são verdadeiras.
+    \end{enumerate}
+
+    \item Considere a seguinte estrutura de classes em Java que modela um sistema simples de animais:
+
+
+    \begin{center}
+        \begin{tikzpicture}[
+            node distance=1.5cm and 2cm
+        ]
+            % Animal Class
+            \node (Animal) {
+                \begin{tabular}{|l|}
+                    \hline
+                    \multicolumn{1}{|c|}{\textbf{\textit{Animal}}} \\
+                    \hline
+                    \texttt{- nome: String} \\
+                    \texttt{\# idade: int} \\
+                    \hline
+                    \textit{+ emitirSom(): void} \\
+                    \hline
+                \end{tabular}
+            };
+
+            % Cachorro Class
+            \node[below left=0.6cm and 0.5cm of Animal] (Cachorro) {
+                \begin{tabular}{|l|}
+                    \hline
+                    \multicolumn{1}{|c|}{\textbf{Cachorro}} \\
+                    \hline
+                    \hline
+                    \texttt{+ emitirSom(): void} \\
+                    \hline
+                \end{tabular}
+            };
+
+            % Gato Class
+            \node[below right=0.6cm and 0.5cm of Animal] (Gato) {
+                \begin{tabular}{|l|}
+                    \hline
+                    \multicolumn{1}{|c|}{\textbf{Gato}} \\
+                    \hline
+                    \hline
+                    \texttt{+ emitirSom(): void} \\
+                    \texttt{+ exibirDados(): void} \\
+                    \hline
+                \end{tabular}
+            };
+
+            % Inheritance Arrows
+            \draw[-{Triangle[open]}, thick] (Cachorro.north) -- ++(0,0.3) -| (Animal.south);
+            \draw[-{Triangle[open]}, thick] (Gato.north) -- ++(0,0.3) -| (Animal.south);
+        \end{tikzpicture}
+    \end{center}
+
+    \begin{verbatim}
+    public abstract class Animal {
+        private String nome;
+        protected int idade;
+        public abstract void emitirSom();
+    }
+
+    public class Cachorro extends Animal {
+        @Override
+        public void emitirSom() { System.out.println("Au Au"); }
+    }
+
+    public class Gato extends Animal {
+        @Override
+        public void emitirSom() { System.out.println("Miau"); }
+        
+        public void exibirDados() {
+            // Tentativa de acesso aos atributos da superclasse
+        }
+    }
+    \end{verbatim}
+
+    A respeito da estrutura de classes acima, descreva como os modificadores de acesso \texttt{private}, \texttt{protected} e \texttt{public} influenciam a visibilidade dos membros da classe \texttt{Animal} nas subclasses \texttt{Cachorro} e \texttt{Gato}. Em sua resposta, explique se os atributos \texttt{nome} e \texttt{idade} podem ser acessados diretamente no método \texttt{exibirDados()} e justifique sua resposta com base nos conceitos de encapsulamento e herança.
+    
+    \resposta{6cm}
+
+    \item Considere o uso de polimorfismo no trecho de código Java abaixo, utilizando as classes \texttt{Animal}, \texttt{Cachorro} e \texttt{Gato} definidas anteriormente:
+    
+    \begin{verbatim}
+    Animal meuPet = new Cachorro();
+    meuPet.emitirSom();
+    \end{verbatim}
+
+    Com base exclusivamente no conceito de \textbf{Sobrescrita de Métodos (Overriding)}, julgue as afirmativas a seguir como Verdadeiras (V) ou Falsas (F):
+
+    \begin{enumerate}[label=( \quad )]
+        \item Para que ocorra a sobrescrita, o método na subclasse deve possuir o mesmo nome e a mesma assinatura (parâmetros) do método na superclasse.
+        \item Um método definido como \texttt{final} na superclasse pode ser livremente sobrescrito pelas subclasses para especializar seu comportamento.
+        \item O uso da anotação \texttt{@Override} é opcional, mas ajuda o compilador a verificar se a sobrescrita está ocorrendo corretamente.
+        \item A sobrescrita permite que uma subclasse forneça uma implementação específica para um método que já foi definido em uma de suas superclasses.
+        \item Se um método for declarado como \texttt{static} na superclasse, ele pode ser sobrescrito normalmente nas subclasses.
+    \end{enumerate}
+
+    \item Suponha que a classe \texttt{Cachorro} possua um método exclusivo chamado \texttt{enterrarOsso()}, que não está presente na classe \texttt{Animal}. Considere o seguinte código:
+
+    \begin{verbatim}
+    Animal meuPet = new Cachorro();
+    meuPet.emitirSom(); // Funciona (polimorfismo)
+    // meuPet.enterrarOsso(); // Erro de compilação
+    ((Cachorro) meuPet).enterrarOsso(); // Funciona após o casting
+    \end{verbatim}
+
+    Com base nesse cenário, responda:
+    
+    \begin{enumerate}[label=\alph*)]
+        \item Por que o compilador não permite a chamada \texttt{meuPet.enterrarOsso()} sem o uso de \textit{casting}, mesmo sabendo que o objeto foi instanciado como \texttt{new Cachorro()}?
+        \item Explique o que ocorreria em tempo de execução caso a variável \texttt{meuPet} estivesse referenciando um objeto do tipo \texttt{Gato} e o programador tentasse realizar o \textit{casting} para \texttt{Cachorro}: \texttt{((Cachorro) meuPet).enterrarOsso();}.
+    \end{enumerate}
+    
+    \resposta{5cm}
+
+    \item O modificador \texttt{final} na linguagem Java é utilizado para restringir a alteração de elementos. Sobre o uso desse modificador em classes, métodos e atributos, analise as seguintes afirmações:
+
+    \begin{enumerate}[label=\Roman*.]
+        \item Uma classe declarada como \texttt{final} não pode ser estendida, ou seja, ela não pode servir como superclasse para nenhuma outra classe.
+        \item Um método declarado como \texttt{final} na superclasse pode ser sobrescrito nas subclasses, desde que a assinatura do método seja mantida.
+        \item Quando aplicado a um atributo, o modificador \texttt{final} indica que o valor do atributo não pode ser alterado após ter sido inicializado (comportamento de constante).
+        \item Se uma classe for \texttt{final}, todos os seus métodos são implicitamente impedidos de serem sobrescritos, uma vez que a herança é proibida.
+    \end{enumerate}
+
+    Assinale a alternativa \textbf{CORRETA}:
+
+    \begin{enumerate}[label=\Alph*)]
+        \item Apenas as afirmações I, III e IV estão corretas.
+        \item Apenas as afirmações I e IV estão corretas.
+        \item Apenas as afirmações II e III estão corretas.
+        \item Apenas as afirmações I e II estão corretas.
+        \item Todas as afirmações estão corretas.
+    \end{enumerate}
+
+\end{enumerate}
+\vspace{0.5cm}
+\newpage
+\begin{center}
+    \rule{\textwidth}{0.4pt}
+    \textbf{QUESTÕES PRÁTICAS}
+\end{center}
+
+\vspace{0.2cm}
+
+\textbf{INSTRUÇÕES:} Esta seção contém \textbf{5 exercícios} de implementação. Recomenda-se reservar \textbf{60 minutos} para sua resolução. A avaliação é individual e \textbf{sem consulta}. O código Java deve ser transcrito \textbf{a caneta} para as áreas retangulares reservadas abaixo de cada exercício.
+
+\vspace{0.3cm}
+
+\textbf{Considere o seguinte diagrama de classes para as questões de 1 a 5:}
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=1cm and 1cm
+]
+
+% ItemVestuario Class
+\node (Item) {
+    \begin{tabular}{|l|}
+        \hline
+        \multicolumn{1}{|c|}{\textbf{\textit{ItemVestuario}}} \\
+        \hline
+        \texttt{\# marca: String} \\
+        \texttt{\# preco: double} \\
+        \underline{\texttt{+ MOEDA: String \{readOnly\}}} \\
+        \underline{\texttt{+ totalItens: int}} \\
+        \hline
+        \textit{+ exibirDetalhes(): void} \\
+        \hline
+    \end{tabular}
+};
+
+% Camiseta Class
+\node[below left=0.6cm and 0cm of Item] (Camiseta) {
+    \begin{tabular}{|l|}
+        \hline
+        \multicolumn{1}{|c|}{\textbf{Camiseta}} \\
+        \hline
+        \texttt{- tamanho: String} \\
+        \underline{\texttt{+ TIPO: String \{readOnly\}}} \\
+        \hline
+        \texttt{+ exibirDetalhes(): void} \\
+        \hline
+    \end{tabular}
+};
+
+% Blusa Class
+\node[below right=0.6cm and -2cm of Item] (Blusa) {
+    \begin{tabular}{|l|}
+        \hline
+        \multicolumn{1}{|c|}{\textbf{Blusa}} \\
+        \hline
+        \texttt{- tecido: String} \\
+        \underline{\texttt{+ TIPO: String \{readOnly\}}} \\
+        \hline
+        \texttt{+ exibirDetalhes(): void} \\
+        \hline
+    \end{tabular}
+};
+
+% Inheritance Arrows
+\draw[-{Triangle[open]}, thick] (Camiseta.north) -- ++(0,0.3) -| (Item.south);
+\draw[-{Triangle[open]}, thick] (Blusa.north) -- ++(0,0.3) -| (Item.south);
+
+\end{tikzpicture}
+\end{center}
+
+\textbf{LEGENDA:} Atributos \underline{sublinhados} indicam membros \texttt{static} e o rótulo \texttt{\{readOnly\}} indica membros \texttt{final}.
+
+\begin{enumerate}
+    \item Implemente a classe abstrata \texttt{ItemVestuario} com seus atributos protegidos e os membros estáticos conforme o diagrama.\\
+    \resposta{8cm}
+
+    \item Implemente a classe concreta \texttt{Camiseta} realizando a herança de \texttt{ItemVestuario} e definindo seus membros específicos.\\
+    \resposta{12cm}
+
+    \item Implemente a classe concreta \texttt{Blusa} realizando a herança de \texttt{ItemVestuario} e definindo seus membros específicos.\\
+    \resposta{12cm}
+
+    \item Suponha que a variável \texttt{item}, declarada como \texttt{ItemVestuario}, esteja referenciando um objeto do tipo \texttt{Camiseta}. Sabendo que a classe \texttt{Camiseta} possui um método exclusivo chamado \texttt{dobrarCamiseta()}, demonstre o código necessário para realizar o \textit{downcasting} e invocar esse método. Explique por que o compilador exige o uso de parênteses para essa operação.
+    
+    \resposta{5cm}
+
+    \item Discorra 1 parágrafo sobre a importância das classes abstratas na aplicação dos princípios \textbf{SOLID}.
+    
+    \resposta{5cm}
+\end{enumerate}
+
+\vspace{0.5cm} 
+
+
+\end{document} 

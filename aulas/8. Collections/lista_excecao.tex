@@ -1,0 +1,306 @@
+\documentclass[12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\definecolor{univBlue}{RGB}{0, 57, 145}
+\definecolor{univLightBlue}{RGB}{71, 115, 169}
+\definecolor{univSoftBlue}{RGB}{147, 172, 203}
+\definecolor{maincolor}{RGB}{0, 57, 145}
+
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{block}[1]{%
+  colback=univSoftBlue!10,
+  colframe=maincolor,
+  coltitle=white,
+  title=#1,
+  fonttitle=\bfseries,
+  boxrule=1.5pt,
+  arc=3mm,
+  left=6pt,
+  right=6pt,
+  top=6pt,
+  bottom=6pt
+}
+
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.multipart}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{2pt}
+
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{maincolor}\leaders\hrule height \headrulewidth\hfill}}
+
+\renewcommand{\footrule}{\hbox to\headwidth{%
+  \color{maincolor}\leaders\hrule height \footrulewidth\hfill}}
+
+\setlength{\headheight}{52pt}
+
+\fancyhead[L]{%
+  \includegraphics[height=1.2cm]{universidade_logo_novo.png}
+}
+
+\fancyhead[R]{%
+  \raggedleft
+  \textcolor{maincolor}{%
+    \small
+    \textbf{Lista de Exercícios — Tratamento de Exceções}\\
+    Me.~Sergio Souza Novak\\
+    \textit{Faculdade de Engenharia de Software}
+  }
+}
+
+\fancyfoot[C]{%
+  \textcolor{maincolor}{\thepage}
+}
+
+% Estilo reutilizável para diagramas UML
+\tikzset{
+  uml/.style={
+    draw=maincolor,
+    rectangle split,
+    rectangle split parts=3,
+    fill=univSoftBlue!20,
+    minimum width=5cm,
+    font=\small\ttfamily,
+    align=left
+  },
+  heranca/.style={-{Triangle[open]}, thick, maincolor},
+  composicao/.style={-{Diamond[fill=maincolor]}, thick, maincolor},
+  dependencia/.style={-stealth, dashed, thick, maincolor}
+}
+
+\begin{document}
+% ============================================================
+Lista de implementação de Tratamento de Exceções. Implemente na linguagem Java todos os exercícios propostos. O objetivo é aplicar os conceitos vistos em aula: blocos \texttt{try-catch-finally}, exceções \texttt{Checked} e \texttt{Unchecked}, \texttt{throw}, \texttt{throws}, e criação de exceções personalizadas.
+
+\section*{Formato de Entrega}
+
+\begin{block}{Instruções para Submissão}
+A entrega desta lista de exercícios deve ser feita através de um \textbf{único arquivo .zip}.
+Dentro deste arquivo, deve haver uma pasta estruturada para cada exercício (ex: \texttt{Exercicio1}, \texttt{Exercicio2}, ..., \texttt{Exercicio8}).
+
+\textbf{Atenção:} Certifique-se de que cada pasta contenha \textbf{todos} os arquivos necessários (\texttt{.java}) para a correta compilação e execução do respectivo exercício.
+\end{block}
+
+% ============================================================
+\section*{1) Capturando Exceção Nativa Unchecked (ArithmeticException)}
+Escreva um programa que solicite ao usuário dois números inteiros e exiba o resultado da divisão do primeiro pelo segundo.
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Utilize a classe \texttt{Scanner} para entrada de dados.
+    \item Utilize um bloco \texttt{try-catch} para capturar a exceção \texttt{ArithmeticException} caso o usuário insira \texttt{0} como divisor.
+    \item Imprima uma mensagem amigável alertando sobre a impossibilidade da divisão por zero, em vez de deixar o programa fechar abruptamente.
+\end{itemize}
+
+% ============================================================
+\section*{2) Tratamento de Múltiplas Exceções (Ordem dos blocos)}
+Expanda o programa do exercício anterior para lidar também com erros de entrada de dados.
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Adicione um novo bloco \texttt{catch} para capturar a \texttt{InputMismatchException} (lançada quando o usuário digita letras ou símbolos onde se espera um inteiro).
+    \item Lembre-se de importar o pacote \texttt{java.util.InputMismatchException}.
+    \item Demonstre a correta estruturação e ordem adequada dos múltiplos blocos \texttt{catch}.
+\end{itemize}
+
+% ============================================================
+\section*{3) Uso do Multi-Catch (Sintaxe Java 7+)}
+Modifique o exercício anterior unindo os blocos de captura da \texttt{ArithmeticException} e \texttt{InputMismatchException} em um único bloco.
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Utilize o operador de Multi-Catch (\texttt{|}) para capturar ambas as exceções no mesmo bloco \texttt{catch}.
+    \item Imprima uma mensagem genérica como: \textit{"Erro de entrada de dados ou operação matemática inválida"}.
+\end{itemize}
+
+% ============================================================
+\section*{4) Exceção Personalizada Verificada (Checked)}
+Crie um sistema simples de login que valida o tamanho da senha.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and 1cm]
+
+\node[uml] (login) {
+    \textbf{SistemaLogin}
+    \nodepart{second}
+    \nodepart{third}
+    + autenticar(senha: String) : void
+};
+
+\node[uml, right=of login] (senha) {
+    \textbf{SenhaInvalidaException}
+    \nodepart{second}
+    \nodepart{third}
+    + SenhaInvalidaException(msg: String)
+};
+
+\node[uml, fill=white, above=1.5cm of senha] (exc) {
+    \textbf{Exception}
+    \nodepart{second}
+    \nodepart{third}
+};
+
+\draw[heranca] (senha.north) -- (exc.south);
+\draw[dependencia] (login.east) -- node[above, font=\scriptsize] {\textit{throws}} (senha.west);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Crie uma classe de exceção personalizada chamada \texttt{SenhaInvalidaException} que herde diretamente de \texttt{Exception}.
+    \item Crie uma classe \texttt{SistemaLogin} com um método \texttt{autenticar(String senha)} que lance ativamente (\texttt{throw}) essa exceção caso a senha possua menos de 6 caracteres.
+    \item Teste o método na classe \texttt{Main}, encapsulando a chamada em um bloco \texttt{try-catch} e imprimindo a mensagem do erro utilizando o método \texttt{getMessage()}.
+\end{itemize}
+
+% ============================================================
+\section*{5) Lançamento Ativo de Exceção Nativa (IllegalArgumentException)}
+Modele uma classe \texttt{Pessoa} que não permite idades negativas.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and 1cm]
+
+\node[uml] (pessoa) {
+    \textbf{Pessoa}
+    \nodepart{second}
+    - idade : int
+    \nodepart{third}
+    + getIdade() : int \\
+    + setIdade(idade: int) : void
+};
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Crie a classe \texttt{Pessoa} com o atributo privado \texttt{idade} e seu método \texttt{setIdade(int idade)}.
+    \item Dentro do método setter, verifique se a idade passada é negativa.
+    \item Se for negativa, lance ativamente (\texttt{throw}) uma \texttt{IllegalArgumentException} (exceção nativa não verificada) com a mensagem \textit{"A idade não pode ser negativa"}.
+    \item Realize a captura desta exceção na classe principal (\texttt{Main}).
+\end{itemize}
+
+% ============================================================
+\section*{6) Garantia de Execução com bloco Finally}
+Simule o uso de um recurso que necessita ser finalizado de forma garantida após o uso, independentemente de erros.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and 1cm]
+
+\node[uml] (conexao) {
+    \textbf{ConexaoBanco}
+    \nodepart{second}
+    \nodepart{third}
+    + conectar() : void \\
+    + desconectar() : void
+};
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Crie uma classe \texttt{ConexaoBanco} com os métodos \texttt{conectar()} (que imprime "Conectado") e \texttt{desconectar()} (que imprime "Desconectado").
+    \item No método \texttt{Main}, chame \texttt{conectar()} dentro de um bloco \texttt{try}.
+    \item Simule um erro no meio do processamento (ex: lançando uma exceção qualquer ou forçando uma divisão por zero).
+    \item Obrigatoriamente, dentro de um bloco \texttt{finally}, chame o método \texttt{desconectar()} garantindo a "liberação do recurso", comprovando no console que ele executou.
+\end{itemize}
+
+% ============================================================
+\section*{7) Encadeamento de Exceções (Chained Exceptions)}
+Crie um mecanismo de abstração de falhas capturando exceções nativas e preservando a causa original.
+
+\begin{center}
+\begin{tikzpicture}[node distance=1cm and 1cm]
+
+\node[uml] (calc) {
+    \textbf{Calculadora}
+    \nodepart{second}
+    \nodepart{third}
+    + processar(opcao: int) : void
+};
+
+\node[uml, right=of calc, font=\scriptsize] (proc) {
+    \textbf{ProcessamentoException}
+    \nodepart{second}
+    \nodepart{third}
+    + ProcessamentoException(msg: String, causa: Throwable)
+};
+
+\node[uml, fill=white, above=1cm of proc, font=\scriptsize] (exc) {
+    \textbf{Exception}
+    \nodepart{second}
+    \nodepart{third}
+};
+
+\draw[heranca] (proc.north) -- (exc.south);
+\draw[dependencia] (calc.east) -- node[above, font=\scriptsize] {\textit{throws}} (proc.west);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Crie uma classe \texttt{ProcessamentoException} (Checked) que tenha um construtor recebendo uma \texttt{String} e um objeto \texttt{Throwable} (a causa raiz). Lembre-se de repassar para a superclasse utilizando \texttt{super(mensagem, causa)}.
+    \item Crie uma classe \texttt{Calculadora} com o método \texttt{processar(int opcao)} que simule diferentes falhas: se \texttt{opcao == 1}, provoque uma \texttt{ArithmeticException} (divisão por zero); se \texttt{opcao == 2}, provoque uma \texttt{NullPointerException} (acesso a objeto nulo).
+    \item O método \texttt{processar()} deve capturar essas exceções (utilizando múltiplos blocos \texttt{catch} ou um Multi-catch) e lançar a \texttt{ProcessamentoException} informando a causa original (o objeto da exceção nativa).
+    \item No \texttt{Main}, teste as duas opções e trate o erro imprimindo o \textit{stack trace} para verificar se a \textit{"Caused by:"} foi preservada na saída, mostrando corretamente se foi \texttt{ArithmeticException} ou \texttt{NullPointerException}.
+\end{itemize}
+
+% ============================================================
+\section*{8) Cenário de Domínio: Conta Bancária}
+Implemente um sistema completo de transação bancária aplicando as regras de POO e tratamento de erros.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and 1cm]
+
+\node[uml] (conta) {
+    \textbf{ContaBancaria}
+    \nodepart{second}
+    - saldo : double
+    \nodepart{third}
+    + getSaldo() : double \\
+    + sacar(valor: double) : void
+};
+
+\node[uml, right=of conta] (saldoexc) {
+    \textbf{SaldoInsuficienteException}
+    \nodepart{second}
+    \nodepart{third}
+    + SaldoInsuficienteException(msg: String)
+};
+
+\node[uml, fill=white, above=1.5cm of saldoexc] (exc) {
+    \textbf{Exception}
+    \nodepart{second}
+    \nodepart{third}
+};
+
+\draw[heranca] (saldoexc.north) -- (exc.south);
+\draw[dependencia] (conta.east) -- node[above, font=\scriptsize] {\textit{throws}} (saldoexc.west);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Crie a exceção customizada \texttt{SaldoInsuficienteException}.
+    \item Crie a classe \texttt{ContaBancaria} com o atributo \texttt{saldo}.
+    \item Crie o método \texttt{sacar(double valor)}. Se não houver saldo suficiente, lance a \texttt{SaldoInsuficienteException}. Se o valor de saque for negativo ou zero, lance uma \texttt{IllegalArgumentException}.
+    \item No \texttt{Main}, instancie a conta e teste os fluxos: sacar com sucesso, tentar sacar sem saldo, e tentar sacar um valor negativo.
+    \item Trate adequadamente todas as exceções utilizando os respectivos blocos \texttt{catch}.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,323 @@
+\documentclass[12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\definecolor{univBlue}{RGB}{0, 57, 145}
+\definecolor{univLightBlue}{RGB}{71, 115, 169}
+\definecolor{univSoftBlue}{RGB}{147, 172, 203}
+\definecolor{maincolor}{RGB}{0, 57, 145}
+
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{block}[1]{%
+  colback=univSoftBlue!10,
+  colframe=maincolor,
+  coltitle=white,
+  title=#1,
+  fonttitle=\bfseries,
+  boxrule=1.5pt,
+  arc=3mm,
+  left=6pt,
+  right=6pt,
+  top=6pt,
+  bottom=6pt
+}
+
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.multipart}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{2pt}
+
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{maincolor}\leaders\hrule height \headrulewidth\hfill}}
+
+\renewcommand{\footrule}{\hbox to\headwidth{%
+  \color{maincolor}\leaders\hrule height \footrulewidth\hfill}}
+
+\setlength{\headheight}{52pt}
+
+\fancyhead[L]{%
+  \includegraphics[height=1.2cm]{universidade_logo_novo.png}
+}
+
+\fancyhead[R]{%
+  \raggedleft
+  \textcolor{maincolor}{%
+    \small
+    \textbf{Lista de Exercícios — Interfaces e Collections}\\
+    Me.~Sergio Souza Novak\\
+    \textit{Faculdade de Engenharia de Software}
+  }
+}
+
+\fancyfoot[C]{%
+  \textcolor{maincolor}{\thepage}
+}
+
+% Estilo reutilizável para diagramas UML
+\tikzset{
+  uml/.style={
+    draw=maincolor,
+    rectangle split,
+    rectangle split parts=3,
+    fill=univSoftBlue!20,
+    minimum width=5cm,
+    font=\small\ttfamily,
+    align=left
+  },
+  heranca/.style={-{Triangle[open]}, thick, maincolor},
+  implementacao/.style={-{Triangle[open]}, dashed, thick, maincolor},
+  composicao/.style={-{Diamond[fill=maincolor]}, thick, maincolor},
+  dependencia/.style={-stealth, dashed, thick, maincolor}
+}
+
+\begin{document}
+% ============================================================
+Lista de implementação abordando \textbf{Interfaces} e o \textbf{Java Collections Framework}. Implemente na linguagem Java todos os exercícios propostos. O objetivo é aplicar os conceitos vistos em aula: definição e implementação de interfaces, polimorfismo, e o uso de \texttt{List} (\texttt{ArrayList}, \texttt{LinkedList}), \texttt{Set} (\texttt{HashSet}, \texttt{TreeSet}), \texttt{Map} (\texttt{HashMap}) e ordenação (\texttt{Collections.sort}).
+
+\section*{Formato de Entrega}
+
+\begin{block}{Instruções para Submissão}
+A entrega desta lista de exercícios deve ser feita através de um \textbf{único arquivo .zip}.
+Dentro deste arquivo, deve haver uma pasta estruturada para cada exercício (ex: \texttt{Exercicio1}, \texttt{Exercicio2}, ..., \texttt{Exercicio6}).
+
+\textbf{Atenção:} Certifique-se de que cada pasta contenha \textbf{todos} os arquivos necessários (\texttt{.java}) para a correta compilação e execução do respectivo exercício.
+\end{block}
+
+% ============================================================
+\section*{1) Implementação de Interface e Polimorfismo}
+Modele um sistema simples de autenticação que demonstra o uso de interfaces e polimorfismo.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and 1cm, , scale=0.8, transform shape]
+
+\node[uml, rectangle split parts=2, fill=univSoftBlue!40] (autenticavel) {
+    \textbf{\guillemotleft interface\guillemotright} \\
+    \textbf{Autenticavel}
+    \nodepart{second}
+    + autenticar(senha: String) : boolean \\
+    + fazerLogout() : void
+};
+
+\node[uml, below left=1.5cm and -1cm of autenticavel] (gerente) {
+    \textbf{Gerente}
+    \nodepart{second}
+    - senhaDoGerente : String
+    \nodepart{third}
+    + autenticar(senha: String) : boolean \\
+    + fazerLogout() : void
+};
+
+\node[uml, below right=1.5cm and -1cm of autenticavel] (cliente) {
+    \textbf{Cliente}
+    \nodepart{second}
+    - tokenApp : String
+    \nodepart{third}
+    + autenticar(senha: String) : boolean \\
+    + fazerLogout() : void
+};
+
+\draw[implementacao] (gerente.north) -- ++(0,0.5) -| (autenticavel.south);
+\draw[implementacao] (cliente.north) -- ++(0,0.5) -| (autenticavel.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Crie a interface \texttt{Autenticavel} com os métodos indicados no diagrama.
+    \item Crie as classes \texttt{Gerente} e \texttt{Cliente} implementando a interface. Cada classe deve ter lógicas diferentes de autenticação (ex: o Gerente compara uma string fixa, o Cliente valida um token simulado).
+    \item Crie uma classe \texttt{SistemaLogin} com um método \texttt{fazerLogin(Autenticavel usuario, String senha)} que recebe \textbf{qualquer} objeto que assine o contrato da interface.
+    \item No \texttt{Main}, instancie gerentes e clientes, e passe-os para o método \texttt{fazerLogin} do sistema.
+\end{itemize}
+
+% ============================================================
+\section*{2) ArrayList e Manipulação de Elementos}
+Desenvolva um pequeno sistema orientado a objetos para gerenciar um carrinho de compras de um supermercado, utilizando a estrutura de dados \texttt{ArrayList}.
+
+\begin{center}
+\begin{tikzpicture}[node distance=1cm and 1cm, scale=0.8, transform shape]
+\scriptsize  
+\node[uml] (item) {
+    \textbf{ItemCompra}
+    \nodepart{second}
+    - nome : String \\
+    - quantidade : int \\
+    - precoUnitario : double
+    \nodepart{third}
+    + ItemCompra(nome: String, qtd: int, preco: double) \\
+    + getNome() : String \\
+    + calcularSubtotal() : double \\
+    + toString() : String
+};
+
+\node[uml, right=of item] (carrinho) {
+    \textbf{CarrinhoDeCompras}
+    \nodepart{second}
+    - itens : List<ItemCompra>
+    \nodepart{third}
+    + adicionarItem(item: ItemCompra) : void \\
+    + removerItem(nome: String) : void \\
+    + listarItens() : void \\
+    + calcularTotal() : double
+};
+
+\draw[composicao] (carrinho.west) -- (item.east);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Crie a classe \texttt{ItemCompra} devidamente encapsulada. O método \texttt{calcularSubtotal()} deve retornar a multiplicação da quantidade pelo preço unitário.
+    \item Na classe \texttt{CarrinhoDeCompras}, o atributo \texttt{itens} deve ser declarado utilizando a interface \texttt{List} e instanciado como um \texttt{ArrayList}.
+    \item Implemente \texttt{adicionarItem} utilizando o método \texttt{add()} da coleção.
+    \item Implemente \texttt{removerItem} para buscar o item pelo nome e removê-lo. (Dica: pesquise sobre o método \texttt{removeIf()} da interface \texttt{Collection} ou utilize um \texttt{Iterator}).
+    \item O método \texttt{listarItens} deve usar o laço \texttt{for-each} para percorrer a lista e exibir o \texttt{toString()} e o subtotal de cada item. O método \texttt{calcularTotal()} deve somar os subtotais de todos os itens do carrinho.
+    \item Crie uma classe principal (\texttt{Main}) para instanciar o carrinho, adicionar alguns itens, remover pelo menos um deles e exibir o resumo final e o valor total.
+\end{itemize}
+
+% ============================================================
+\section*{3) LinkedList: Fila de Atendimento}
+Simule uma fila de atendimento de um hospital, onde a ordem de chegada dita a ordem de atendimento, mas emergências podem furar a fila.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and 1cm]
+
+\node[uml] (paciente) {
+    \textbf{Paciente}
+    \nodepart{second}
+    - nome : String \\
+    - prioridade : int
+    \nodepart{third}
+    + getNome() : String \\
+    + getPrioridade() : int
+};
+
+\node[uml, right=of paciente] (fila) {
+    \textbf{GerenciadorFila}
+    \nodepart{second}
+    - fila : LinkedList<Paciente>
+    \nodepart{third}
+    + adicionarPaciente(p: Paciente) : void \\
+    + atenderProximo() : Paciente
+};
+
+\draw[composicao] (fila.west) -- (paciente.east);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Utilize a classe \texttt{LinkedList} devido à sua eficiência em inserções e remoções no início/meio.
+    \item Crie um método \texttt{adicionarPaciente}. Se for uma emergência (prioridade alta), insira o paciente na \textbf{primeira posição} da lista (utilize os métodos específicos do \texttt{LinkedList} ou insira no índice \texttt{0}). Caso contrário, insira no final.
+    \item O método \texttt{atenderProximo()} deve remover e retornar o primeiro elemento da lista.
+\end{itemize}
+
+% ============================================================
+\section*{4) Trabalhando com Set (HashSet e TreeSet)}
+Implemente um sistema de registro de CPFs únicos para um evento.
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Primeiramente, utilize um \texttt{HashSet<String>} para tentar inserir diversos CPFs, incluindo alguns duplicados.
+    \item Imprima a coleção e comprove que os duplicados foram ignorados e que a ordem de impressão pode ser aleatória.
+    \item Em seguida, transfira todos os elementos do \texttt{HashSet} para um \texttt{TreeSet<String>}.
+    \item Imprima o \texttt{TreeSet} e verifique se os CPFs foram automaticamente ordenados em ordem alfabética/numérica natural.
+\end{itemize}
+
+% ============================================================
+\section*{5) Map: Dicionário Chave-Valor (HashMap)}
+Desenvolva um sistema acadêmico orientado a objetos que mapeia números de matrícula para os registros completos dos alunos utilizando a estrutura \texttt{HashMap}.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and 1cm, , scale=0.8, transform shape]
+
+\node[uml] (aluno) {
+    \textbf{Aluno}
+    \nodepart{second}
+    - nome : String \\
+    - curso : String
+    \nodepart{third}
+    + Aluno(nome: String, curso: String) \\
+    + getNome() : String \\
+    + getCurso() : String \\
+    + toString() : String
+};
+
+\node[uml, right=of aluno] (sistema) {
+    \textbf{SistemaAcademico}
+    \nodepart{second}
+    - alunos : Map<Integer, Aluno>
+    \nodepart{third}
+    + matricularAluno(matricula: int, a: Aluno) : void \\
+    + buscarAluno(matricula: int) : Aluno \\
+    + listarTodosAlunos() : void
+};
+
+\draw[composicao] (sistema.west) -- (aluno.east);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item Crie a classe \texttt{Aluno} com os atributos \texttt{nome} e \texttt{curso}, encapsulando-os corretamente e sobrescrevendo o método \texttt{toString()}.
+    \item Na classe \texttt{SistemaAcademico}, instancie o atributo \texttt{alunos} utilizando a interface \texttt{Map} e a implementação \texttt{HashMap<Integer, Aluno>}. A chave será o número de matrícula (\texttt{Integer}).
+    \item O método \texttt{matricularAluno} deve adicionar o par chave-valor usando \texttt{put()}. Se uma matrícula já existente for passada, permita a sobrescrita mas informe no console que o aluno foi atualizado.
+    \item O método \texttt{buscarAluno} deve recuperar e retornar o aluno através do método \texttt{get(Object key)}, ou exibir uma mensagem se a matrícula não existir.
+    \item O método \texttt{listarTodosAlunos} deve percorrer a coleção imprimindo as matrículas e os respectivos dados dos alunos. (Dica: utilize \texttt{keySet()} ou \texttt{entrySet()}).
+    \item Na classe \texttt{Main}, instancie o sistema, matricule pelo menos 3 alunos, busque por uma matrícula específica e, em seguida, liste todos.
+\end{itemize}
+
+% ============================================================
+\section*{6) Ordenação Customizada com Comparable}
+Modele uma classe \texttt{Produto} e utilize a classe utilitária \texttt{Collections} para ordená-los.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm and 1cm]
+
+\node[uml, rectangle split parts=2, fill=univSoftBlue!40] (comparable) {
+    \textbf{\guillemotleft interface\guillemotright} \\
+    \textbf{Comparable<Produto>}
+    \nodepart{second}
+    + compareTo(outro: Produto) : int
+};
+
+\node[uml, below=1.5cm of comparable] (produto) {
+    \textbf{Produto}
+    \nodepart{second}
+    - nome : String \\
+    - preco : double
+    \nodepart{third}
+    + getNome() : String \\
+    + getPreco() : double \\
+    + toString() : String
+};
+
+\draw[implementacao] (produto.north) -- (comparable.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Requisitos}
+\begin{itemize}
+    \item A classe \texttt{Produto} deve implementar a interface nativa do Java \texttt{Comparable<Produto>}.
+    \item Sobrescreva o método \texttt{compareTo} para definir a ordem natural dos produtos baseada no \textbf{preço} (do menor para o maior).
+    \item Crie um \texttt{ArrayList} de produtos e adicione vários objetos de forma desordenada.
+    \item Utilize \texttt{Collections.sort(listaDeProdutos)} para ordenar a lista.
+    \item Imprima a lista antes e depois da ordenação para validar a implementação. Dica: Sobrescreva o método \texttt{toString()} na classe \texttt{Produto} para facilitar a visualização.
+\end{itemize}
+
+\end{document}

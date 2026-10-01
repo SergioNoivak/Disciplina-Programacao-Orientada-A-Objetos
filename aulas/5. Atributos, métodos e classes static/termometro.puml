@@ -1,0 +1,10 @@
+@startuml
+class Termometro {
+    + temperatura : double
+
+    --
+    + aumentarTemperatura(valor : double) : void
+    + diminuirTemperatura(valor : double) : void
+    + mostrarTemperatura() : void
+}
+@enduml

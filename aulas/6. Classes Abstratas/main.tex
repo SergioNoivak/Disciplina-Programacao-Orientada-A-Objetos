@@ -1,0 +1,1210 @@
+\documentclass[9pt]{beamer}
+\mode<presentation>
+
+% Theme choice:
+\usetheme{Madrid}%Darmstadt 
+
+\definecolor{univBlue}{RGB}{0, 57, 145}
+\definecolor{univLightBlue}{RGB}{71, 115, 169}
+\definecolor{univSoftBlue}{RGB}{147, 172, 203}
+
+\usecolortheme[RGB={0, 57, 145}]{structure}
+ \usefonttheme{structurebold} 
+\setbeamercovered{invisible}
+%\setbeamertemplate{navigation symbols}{}
+\usepackage{dynblocks}
+\usepackage{textpos}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, shapes.symbols, arrows.meta, positioning, shapes.multipart}
+\newtheorem{teorema}{Teorema}\usepackage{mathtools}
+\renewcommand{\proofname}{Prova}
+\usepackage[portuguese]{babel}
+\usepackage{pifont}
+\uselanguage{Portuguese}
+\languagepath{Portuguese}
+
+\deftranslation[to=Portuguese]{Theorem}{Teorema}
+\deftranslation[to=Portuguese]{Lemma}{Lema}
+\deftranslation[to=Portuguese]{Corollary}{Corolário}
+\deftranslation[to=Portuguese]{Proof}{Prova}
+
+\usepackage{dutchcal}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsthm}
+
+
+\usepackage[affil-it]{authblk} 
+\usepackage{etoolbox}
+\usepackage{lmodern}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    language=Java,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{univBlue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle={\ttfamily\small},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\makeatletter
+\patchcmd{\@maketitle}{\LARGE \@title}{\fontsize{18}{19.2}\selectfont\@title}{}{}
+\makeatother
+
+\renewcommand\Authfont{\fontsize{12}{14.4}\selectfont}
+\renewcommand\Affilfont{\fontsize{9}{10.8}\itshape}
+
+% Title page details: 
+\title[Presentation]{Programação Orientada a Objetos} %add title
+
+
+\institute[UniRV]{\textbf{\large  \textcolor{univBlue}{\textbf{\large
+    Palavras chaves static, final e Classes Abstratas }} %add name 
+% \hspace{0.5pt}
+\\ \qquad
+\\Professor: Me. Sergio Souza Novak 
+\\Faculdade de Engenharia de Software}
+} 
+% \titlegraphic{\includegraphics[width=5cm]{msu.eps}}
+\titlegraphic{\includegraphics[width=3cm]{universidade_logo_novo.png}}
+\date{}
+
+% Logo only on title page
+%\logo{\includegraphics[width=1cm,keepaspectratio]{Logo.png}}
+\usepackage[pscoord]{eso-pic}
+
+\AtBeginSection[]{
+  {
+    \setbeamercolor{background canvas}{bg=univBlue}
+    \begin{frame}[plain]
+      \vfill
+      \centering
+      \begin{beamercolorbox}[sep=12pt,center]{title}
+        \usebeamerfont{title} \Huge \bfseries \textcolor{white}{\insertsection}\par
+        \vspace{0.4cm}
+        \textcolor{univSoftBlue}{\rule{0.6\textwidth}{1.5pt}}
+      \end{beamercolorbox}
+      \vfill
+    \end{frame}
+  }
+}
+
+
+\begin{document}
+
+% Title page frame
+%\begin{frame}
+    %\titlepage 
+%\end{frame}
+\frame[plain]{\titlepage}
+
+\begin{frame}{Sumário}
+    \tableofcontents
+\end{frame}
+%logo
+\AddToShipoutPictureFG{
+    \put(\LenToUnit{.92\paperwidth},
+    \LenToUnit{.185\paperheight})
+    {\vtop{{\null}
+    \makebox{\includegraphics[width=.8cm,keepaspectratio]{universidade_logo_novo.png}}}}}
+
+
+\section{Modificadores static e final}
+
+\begin{frame}{1. Modificadores de Acesso e Escopo}
+    \begin{itemize}
+        \item Antes de avançarmos para abstração, precisamos entender dois modificadores cruciais no Java: \textbf{\texttt{static}} e \textbf{\texttt{final}}.
+        \item Eles controlam como os membros de uma classe são armazenados na memória e se podem ser alterados ou estendidos.
+    \end{itemize}
+    \begin{block}{Destaque}
+        Enquanto \texttt{public/private} controlam a \textbf{visibilidade}, \texttt{static/final} controlam o \textbf{comportamento} e a \textbf{existência}.
+    \end{block}
+\end{frame}\subsection{O Modificador static}
+\begin{frame}{2. O Modificador \texttt{static}}
+
+\begin{itemize}
+    \item Pertence à \textbf{classe}, não ao objeto.
+    \item \textbf{Único na memória}: criado uma vez ao carregar a classe.
+    \item \textbf{Compartilhado}: todos os objetos usam o mesmo valor.
+    \item \textbf{Acesso}: \texttt{Classe.membro}
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=2.5cm,
+    every node/.style={draw, rectangle, rounded corners, align=center, minimum width=3cm, minimum height=1cm}
+]
+
+% Classe
+\node (classe) {\textbf{Classe}\\ \texttt{static contador}};
+
+% Objetos
+\node (obj1) [below left of=classe, xshift=-1cm] {Objeto A};
+\node (obj2) [below right of=classe, xshift=1cm] {Objeto B};
+
+% Setas
+\draw[->, thick] (obj1) -- (classe);
+\draw[->, thick] (obj2) -- (classe);
+
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{block}{Ideia-chave}
+Existe apenas \textbf{uma cópia} do membro \texttt{static}, compartilhada por todos os objetos.
+\end{block}
+
+\end{frame}
+
+\begin{frame}{3. Atributos \texttt{static}}
+    \begin{itemize}
+        \item Úteis quando todos os objetos precisam compartilhar a mesma informação.
+        \item \textbf{Exemplos comuns:}
+        \begin{itemize}
+            \item Contador de objetos criados.
+            \item Taxa de juros padrão de um banco.
+            \item Configurações globais do sistema.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{4. Exemplo: Atributo \texttt{static}}
+\begin{lstlisting}[language=Java, caption=Contador Global]
+class Carro {
+    static int totalCarros = 0; // Compartilhado
+    String modelo;
+
+    Carro(String modelo) {
+        this.modelo = modelo;
+        totalCarros++; // Incrementa para todos
+    }
+}
+
+// Uso:
+System.out.println(Carro.totalCarros); 
+\end{lstlisting}
+\end{frame}
+\begin{frame}{5. Métodos \texttt{static}}
+
+\begin{itemize}
+    \item Não dependem do estado de um objeto.
+    \item Pertencem à \textbf{classe}, não à instância.
+    \item \textbf{Restrição:} não acessam membros não-estáticos diretamente (não existe \texttt{this}).
+    \item Ideais para \textbf{métodos utilitários} (ex: cálculos).
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=2.5cm,
+    every node/.style={draw, rectangle, rounded corners, align=center, minimum width=3.2cm, minimum height=1cm}
+]
+
+% Classe
+\node (classe) {\textbf{Classe}\\ \texttt{static somar()}};
+
+% Objetos
+\node (obj1) [below left of=classe, xshift=-1cm] {Objeto A\\(\texttt{this})};
+\node (obj2) [below right of=classe, xshift=1cm] {Objeto B\\(\texttt{this})};
+
+% Chamadas
+\draw[->, thick] (obj1) -- (classe);
+\draw[->, thick] (obj2) -- (classe);
+
+% Acesso direto
+\node (acesso) [above of=classe] {\texttt{Classe.somar()}};
+\draw[->, dashed] (acesso) -- (classe);
+
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{block}{Ideia-chave}
+Métodos \texttt{static} são chamados pela classe e não utilizam \texttt{this}.
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]{6. Exemplo: Métodos \texttt{static}}
+
+\begin{lstlisting}[language=Java]
+class Calculadora {
+    // Metodo static: nao precisa de objeto
+    public static int somar(int a, int b) {
+        return a + b;
+    }
+}
+\end{lstlisting}
+
+\vspace{0.3cm}
+
+\begin{block}{Formas de Invocação}
+\begin{lstlisting}[language=Java]
+// Forma recomendada (pela classe)
+int total1 = Calculadora.somar(10, 20);
+
+// Funciona, mas NAO recomendado
+Calculadora calc = new Calculadora();
+int total2 = calc.somar(5, 3);
+\end{lstlisting}
+\end{block}
+
+\vspace{0.3cm}
+
+\begin{block}{Observação}
+Métodos \texttt{static} devem ser chamados pela classe, 
+pois não dependem de objetos.
+\end{block}
+
+\end{frame}
+\begin{frame}{10. Resumo: Membros de Classe vs Instância}
+    \centering
+    \small
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Característica} & \textbf{Sem Static} & \textbf{Com Static} \\ \hline
+        \textbf{Pertence a} & Ao objeto (instância) & À classe \\ \hline
+        \textbf{Cópia na Memória} & Uma por objeto & Única para todos \\ \hline
+        \textbf{Acesso via} & Referência (\texttt{obj.}) & Nome da classe (\texttt{Classe.}) \\ \hline
+        \textbf{Uso do \texttt{this}} & Permitido & Proibido \\ \hline
+    \end{tabular}
+\end{frame}
+\subsection{O Modificador final}
+\begin{frame}{7. O Modificador \texttt{final}}
+
+\begin{itemize}
+    \item Indica algo \textbf{imutável} ou que não pode ser modificado.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{block}{Aplicações do \texttt{final}}
+\begin{itemize}
+    \item \textbf{Atributo:} valor constante (não pode ser alterado)
+    \item \textbf{Método:} não pode ser sobrescrito (\texttt{@Override})
+    \item \textbf{Classe:} não pode ser herdada (\texttt{extends})
+\end{itemize}
+\end{block}
+
+\vspace{0.4cm}
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=2.8cm,
+    every node/.style={draw, rectangle, rounded corners, align=center, minimum width=3cm, minimum height=1cm}
+]
+
+% Nós principais
+\node (final) {\texttt{final}};
+\node (atributo) [below left of=final, xshift=-1cm] {Atributo\\\texttt{final int x}};
+\node (metodo) [below of=final] {Método\\\texttt{final void m()}};
+\node (classe) [below right of=final, xshift=1cm] {Classe\\\texttt{final class A}};
+
+% Setas
+\draw[->, thick] (final) -- (atributo);
+\draw[->, thick] (final) -- (metodo);
+\draw[->, thick] (final) -- (classe);
+
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.3cm}
+
+\begin{block}{Ideia-chave}
+\texttt{final} = não pode mudar, sobrescrever ou herdar.
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]{8. Atributos \texttt{final} (Constantes)}
+
+\begin{itemize}
+    \item Uma variável \texttt{final} só pode receber um valor \textbf{uma única vez}.
+    \item Se for \texttt{static final}, temos uma \textbf{constante global}.
+    \item Convenção: nomes em \textbf{MAIÚSCULO}.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=2.5cm,
+    every node/.style={draw, rectangle, rounded corners, align=center, minimum width=3cm, minimum height=1cm}
+]
+
+% Classe
+\node (classe) {\textbf{Classe}};\node (constante) [above of=classe] {\texttt{static final double PI}};
+
+% Objetos
+\node (obj1) [below left of=classe, xshift=-1cm] {Objeto A};
+\node (obj2) [below right of=classe, xshift=1cm] {Objeto B};
+
+% Setas
+\draw[->, thick] (obj1) -- (classe);
+\draw[->, thick] (obj2) -- (classe);
+\draw[->, dashed] (constante) -- (classe);
+
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.3cm}
+
+\begin{block}{Exemplo Prático}
+\begin{lstlisting}[language=Java]
+class Configuracoes {
+    public static final double PI = 3.14159;
+    public final int idUnico; // Definido no construtor
+
+    Configuracoes() {
+        this.idUnico = gerarId();
+    }
+}
+\end{lstlisting}
+\end{block}
+
+\vspace{0.3cm}
+
+\begin{block}{Observação}
+Atributos \texttt{final} garantem que valores críticos não sejam alterados acidentalmente.
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]{8.1. Erro: Alterar Atributo \texttt{final}}
+    \begin{itemize}
+        \item O compilador garante que uma variável \texttt{final} não seja modificada após a inicialização.
+        \item Tentar mudar o valor gera um erro de compilação (\textit{cannot assign a value to final variable}).
+    \end{itemize}
+
+\begin{block}{Exemplo de Erro}
+\begin{lstlisting}[language=Java]
+class Teste {
+    final int LIMITE = 100;
+
+    void mudar() {
+        LIMITE = 200; // ERRO: impossivel alterar!
+    }
+}
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{8.2. Erro: Herança e Sobrescrita \texttt{final}}
+    \begin{itemize}
+        \item Classes \texttt{final} bloqueiam a extensão (\texttt{extends}).
+        \item Métodos \texttt{final} bloqueiam o polimorfismo (\texttt{@Override}).
+    \end{itemize}
+
+\begin{block}{Exemplos de Bloqueio}
+\begin{lstlisting}[language=Java]
+// Erro na Classe
+final class Seguranca { }
+class Tentativa extends Seguranca { } // ERRO!
+
+// Erro no Metodo
+class Pai {
+    final void segredo() { }
+}
+class Filho extends Pai {
+    void segredo() { } // ERRO: impossivel sobrescrever!
+}
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+\begin{frame}{9. Métodos e Classes \texttt{final}}
+
+\begin{block}{Método \texttt{final}}
+Garante que a lógica do método não pode ser sobrescrita por subclasses.
+\end{block}
+
+\vspace{0.2cm}
+
+\begin{center}
+\begin{tikzpicture}
+\node (pai) at (0,0) {ClassePai: final metodo()};
+\node (filho) at (0,-1.5) {ClasseFilha: tenta override};
+
+\draw[->] (filho) -- (pai);
+\node at (0,-0.75) {X};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.3cm}
+
+\begin{block}{Classe \texttt{final}}
+A classe não pode ser herdada.
+\textbf{Exemplo:} \texttt{String}
+\end{block}
+
+\vspace{0.2cm}
+
+\begin{center}
+\begin{tikzpicture}
+\node (classe) at (0,0) {final class String};
+\node (sub) at (0,-1.5) {class MinhaString extends String};
+
+\draw[->] (sub) -- (classe);
+\node at (0,-0.75) {X};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{block}{Ideia-chave}
+\texttt{final} impede sobrescrita e herança.
+\end{block}
+
+\end{frame}
+
+
+
+\section{Fundamentos de Classes Abstratas}
+
+\subsection{Abstração e Sintaxe}
+\begin{frame}{1. Por que Classes Abstratas?}
+    \begin{itemize}
+        \item Frequentemente, em modelagens OO, criamos classes muito genéricas (ex: \texttt{Animal}, \texttt{FormaGeometrica}).
+        \item Faz sentido instanciar um objeto do tipo \texttt{"Animal"}? 
+        \item \textbf{Resposta:} Geralmente não. Instanciamos tipos específicos: \texttt{Cachorro}, \texttt{Gato}, \texttt{Circulo}.
+        \item \textbf{Classes Abstratas} existem para modelar esses conceitos abstratos que servem apenas como base para outros.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{2. Conceito Fundamental}
+    \begin{itemize}
+        \item Uma classe abstrata é declarada com a palavra-chave \texttt{abstract}.
+        \item \textbf{Não pode ser instanciada diretamente} (\texttt{new Animal()} gera erro de compilação).
+        \item Serve exclusivamente como \textbf{superclasse} para outras classes.
+    \end{itemize}
+    \begin{block}{Sintaxe Básica}
+        \texttt{abstract class Animal \{ ... \}}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{3. Exemplo: Impossibilidade de Instanciação}
+\begin{lstlisting}[language=Java, caption=Tentativa de instanciar classe abstrata]
+abstract class Animal {
+    abstract void emitirSom();
+}
+
+public class Teste {
+    public static void main(String[] args) {
+        // ERRO DE COMPILACAO: 
+        // Animal animal = new Animal(); 
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\subsection{Métodos Abstratos}
+\begin{frame}{4. Métodos Abstratos}
+    \begin{itemize}
+        \item São métodos declarados com \texttt{abstract} que \textbf{não possuem implementação} (sem corpo \texttt{\{\}}).
+        \item Definem \textbf{o que} deve ser feito, mas não \textbf{como}.
+        \item O corpo do método é substituído por um ponto e vírgula \texttt{;}.
+    \end{itemize}
+    \begin{exampleblock}{Assinatura}
+        \texttt{abstract void emitirSom();}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{5. Classes Concretas e Obrigatoriedade}
+    \begin{itemize}
+        \item Uma classe \textbf{concreta} (não abstrata) que herda de uma classe abstrata \textbf{deve obrigatoriamente} implementar todos os métodos abstratos da superclasse.
+        \item Caso não implemente, ela também deve ser declarada como \texttt{abstract}.
+        \item Isso garante que qualquer objeto instanciável tenha todos os métodos definidos.
+    \end{itemize}
+\end{frame}
+
+\section{Estrutura e Implementação}
+
+\subsection{UML e Implementação}
+\begin{frame}{6. Diagrama de Classes (UML)}
+    \centering
+    \begin{tikzpicture}[
+        node distance=2cm,
+        block/.style={rectangle, draw, fill=univSoftBlue!20, text width=4cm, text centered, minimum height=1.5cm, font=\small},
+        abstractBlock/.style={rectangle, draw, fill=univBlue!10, text width=4cm, text centered, minimum height=1.5cm, font=\small\itshape},
+        line/.style={draw, -{Triangle[open]}, thick}
+    ]
+        % Abstract Class
+        \node [abstractBlock] (animal) {\textbf{Animal} \\ \rule{3.8cm}{0.4pt} \\ + emitirSom() : void \\ + dormir() : void};
+        
+        % Concrete Class
+        \node [block, below of=animal, node distance=3.5cm] (cachorro) {\textbf{Cachorro} \\ \rule{3.8cm}{0.4pt} \\ + emitirSom() : void};
+        
+        % Inheritance Line
+        \draw [line] (cachorro) -- (animal);
+        
+        \node[right=0.5cm of animal, text width=3cm, font=\footnotesize, color=univBlue] {$\leftarrow$ Abstrata (itálico em UML)};
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{7. Métodos Concretos (Com Implementação)}
+    \begin{itemize}
+        \item Nem tudo em uma classe abstrata precisa ser abstrato.
+        \item Elas podem conter métodos com corpo (implementados).
+        \item \textbf{Vantagem:} Reaproveitamento de lógica comum a todas as subclasses.
+    \end{itemize}
+    \begin{exampleblock}{Exemplo}
+        Todos os animais "dormem" da mesma forma, mas "emitem som" de formas diferentes.
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{8. Código: Misturando Métodos}
+\begin{lstlisting}[language=Java]
+abstract class Animal {
+    // Metodo Abstrato (sem corpo)
+    abstract void emitirSom();
+
+    // Metodo Concreto (com corpo)
+    void dormir() {
+        System.out.println("Zzzzz...");
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{9. Atributos e Estado}
+    \begin{itemize}
+        \item Classes abstratas podem possuir atributos normalmente (\texttt{private}, \texttt{protected}, \texttt{public}).
+        \item Permitem encapsular o estado comum que será herdado.
+        \item Exemplo: Todo animal possui um \texttt{nome} e \texttt{idade}.
+    \end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}{10. Modificadores de Acesso e Herança}
+\centering\begin{tikzpicture}[
+    class/.style={
+        draw,
+        rectangle,
+        rounded corners,
+        minimum width=4cm,
+        align=left,
+        font=\small
+    },
+    arrow/.style={->, thick},
+    >=stealth
+]
+
+% Classe abstrata
+\node[class] (animal) {
+\textbf{Animal (abstrata)}\\
+
+\texttt{- nome : String}\\
+\texttt{\# idade : int}\\
+
+\texttt{+ emitirSom()}
+};
+
+% Classe Cachorro
+\node[class, below left=1cm and 0.1cm of animal] (cachorro) {
+\textbf{Cachorro}\\
+
+\textit{(herda atributos)}\\
+
+\texttt{+ emitirSom()}
+};
+
+% Classe Gato
+\node[class, below right=1cm and 0.1cm of animal] (gato) {
+\textbf{Gato}\\
+
+\textit{(herda atributos)}\\
+
+\texttt{+ emitirSom()}
+};
+
+% Setas de herança
+\draw[arrow] (cachorro) -- (animal);
+\draw[arrow] (gato) -- (animal);
+
+\end{tikzpicture}
+\vspace{0.3cm}
+
+\begin{itemize}
+    \item \texttt{- private}: acessível apenas dentro de \textbf{Animal}
+    \item \texttt{\# protected}: acessível em \textbf{Cachorro} e \textbf{Gato}
+    \item \texttt{+ public}: acessível por qualquer classe
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Necessidade de Métodos \texttt{private} em Classes Abstratas}
+    \begin{itemize}
+        \item Mesmo sendo projetadas para herança, classes abstratas também precisam \textbf{encapsular comportamentos internos}.
+        
+        \item Métodos \texttt{private} são utilizados para:
+        \begin{itemize}
+            \item \textbf{Ocultar lógica interna} que não deve ser exposta às subclasses.
+            \item \textbf{Evitar sobrescrita} (\textit{override}), garantindo comportamento fixo.
+            \item \textbf{Modularizar código}, dividindo algoritmos complexos em partes menores.
+        \end{itemize}
+        
+        \item Muito comum no padrão \textbf{Template Method}:
+        \begin{itemize}
+            \item Um método \texttt{public} ou \texttt{final} define o fluxo geral.
+            \item Métodos \texttt{private} implementam etapas internas do algoritmo.
+        \end{itemize}
+        
+        \item Exemplo conceitual:
+        \begin{itemize}
+            \item Classe abstrata define um processo geral.
+            \item Partes críticas do processo ficam em métodos \texttt{private}.
+            \item Subclasses apenas implementam os pontos de extensão necessários.
+        \end{itemize}
+        
+        \item Benefícios:
+        \begin{itemize}
+            \item Maior \textbf{segurança} e controle do comportamento.
+            \item Melhor \textbf{manutenibilidade}.
+            \item Redução de erros por uso indevido pelas subclasses.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+\subsection{Construtores e super()}
+\begin{frame}{10. Construtores em Classes Abstratas}
+    \begin{itemize}
+        \item \textbf{Dúvida Comum:} Se não posso instanciar, por que ter construtor?
+        \item \textbf{Resposta:} O construtor é usado pelas subclasses via \texttt{super()}.
+        \item Serve para inicializar os atributos definidos na classe abstrata de forma padronizada.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Erro Comum: Construtor em Classe Abstrata}
+\begin{itemize}
+    \item Não é possível instanciar diretamente uma classe abstrata.
+    \item Mesmo que ela tenha construtor, ele só pode ser chamado via \texttt{super()}.
+\end{itemize}
+
+
+\textbf{Exemplo com erro de compilação:}
+
+\begin{block}{Código}
+\begin{verbatim}
+abstract class Animal {
+    String nome;
+
+    public Animal(String nome) {
+        this.nome = nome;
+    }
+}
+
+public class Teste {
+    public static void main(String[] args) {
+        Animal a = new Animal("Rex"); // ERRO
+    }
+}
+\end{verbatim}
+\end{block}
+
+
+\textbf{Erro gerado:}
+\begin{itemize}
+    \item \texttt{Animal is abstract; cannot be instantiated}
+\end{itemize}
+
+\end{frame}
+\begin{frame}[fragile]{Uso de \texttt{super()} na Classe Filha}
+\begin{itemize}
+    \item O construtor da classe abstrata é invocado pela classe filha usando \texttt{super()}.
+    \item Isso garante que os atributos herdados sejam corretamente inicializados.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Exemplo correto:}
+
+\begin{block}{Código}
+\begin{verbatim}
+abstract class Animal {
+    String nome;
+
+    public Animal(String nome) {
+        this.nome = nome;
+    }
+}
+
+class Cachorro extends Animal {
+
+    public Cachorro(String nome) {
+        super(nome); // chamada ao construtor da classe abstrata
+    }
+}
+\end{verbatim}
+\end{block}
+
+\vspace{0.3cm}
+
+\textbf{Observação:}
+\begin{itemize}
+    \item A chamada a \texttt{super()} deve ser a \textbf{primeira instrução} do construtor.
+\end{itemize}
+
+\end{frame}
+% Seção reorganizada
+
+\begin{frame}[fragile]{11. Exemplo de Código: Tudo Junto}
+\begin{lstlisting}[language=Java]
+abstract class Animal {
+    String nome;
+    Animal(String nome) { this.nome = nome; }
+    
+    abstract void emitirSom();
+}
+
+class Cachorro extends Animal {
+    Cachorro(String nome) { super(nome); }
+
+    @Override
+    void emitirSom() {
+        System.out.println(nome + " diz: Au Au!");
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{12. Herança (extends)}
+    \begin{itemize}
+        \item Uma classe herda de uma classe abstrata usando \texttt{extends}.
+        \item Em Java, respeita-se a \textbf{herança simples}: uma classe só pode ter uma superclasse.
+        \item A relação é do tipo \textbf{"é um"} (is-a): Cachorro ENtende-se como UM Animal.
+    \end{itemize}
+\end{frame}
+
+\section{Polimorfismo e Casting}
+\subsection{Tipos de Referência}
+\begin{frame}{13. Polimorfismo com Tipos Abstratos}
+    \begin{itemize}
+        \item Podemos usar o tipo da classe abstrata como referência.
+        \item Isso permite tratar diversos objetos concretos de forma genérica.
+    \end{itemize}
+    \begin{block}{Flexibilidade}
+        \texttt{Animal a1 = new Cachorro("Rex");}\\
+        \texttt{Animal a2 = new Gato("Mimi");}\\
+        \texttt{a1.emitirSom(); // Au Au}\\
+        \texttt{a2.emitirSom(); // Miau}
+    \end{block}
+\end{frame}
+\begin{frame}[fragile]{Diferença: Tipos Abstratos vs Tipos Concretos}
+\begin{itemize}
+    \item Em Java, podemos declarar variáveis usando:
+    \begin{itemize}
+        \item \textbf{Tipo abstrato} (mais genérico)
+        \item \textbf{Tipo concreto} (mais específico)
+    \end{itemize}
+    
+    \item \textbf{Tipo Abstrato:}
+    \begin{itemize}
+        \item Referência usa a classe abstrata
+        \item Foca no \textbf{comportamento comum}
+        \item Permite maior \textbf{flexibilidade e polimorfismo}
+    \end{itemize}
+    
+    \item \textbf{Tipo Concreto:}
+    \begin{itemize}
+        \item Referência usa a classe específica
+        \item Foca na \textbf{implementação detalhada}
+        \item Menor flexibilidade para substituição
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{block}{Comparação}
+\begin{verbatim}
+// Tipo abstrato (recomendado)
+Animal a = new Cachorro("Rex");
+
+// Tipo concreto
+Cachorro c = new Cachorro("Rex");
+\end{verbatim}
+\end{block}
+
+\vspace{0.3cm}
+
+\begin{itemize}
+    \item Use tipos abstratos para \textbf{desacoplar} o código
+    \item Use tipos concretos quando precisar de \textbf{comportamentos específicos}
+\end{itemize}
+
+\end{frame}
+\begin{frame}[fragile]{Diferença na Invocação de Métodos}
+\begin{itemize}
+    \item O tipo da referência determina \textbf{quais métodos podem ser chamados}.
+    \item O tipo do objeto determina \textbf{qual implementação será executada}.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{block}{Exemplo}
+\begin{verbatim}
+abstract class Animal {
+    public abstract void emitirSom();
+}
+
+class Cachorro extends Animal {
+    public void emitirSom() {
+        System.out.println("Au Au");
+    }
+
+    public void abanarRabo() {
+        System.out.println("Abanando o rabo");
+    }
+}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Diferença na Invocação de Métodos}
+
+\begin{block}{Uso}
+\begin{verbatim}
+// Tipo abstrato
+Animal a = new Cachorro();
+a.emitirSom();    // OK
+// a.abanarRabo(); // ERRO de compilação
+
+// Tipo concreto
+Cachorro c = new Cachorro();
+c.emitirSom();    // OK
+c.abanarRabo();   // OK
+\end{verbatim}
+\end{block}
+
+\vspace{0.3cm}
+
+\begin{itemize}
+    \item \textbf{Polimorfismo:} o método chamado depende do objeto real
+    \item \textbf{Restrição:} só é possível acessar métodos do tipo da referência
+\end{itemize}
+
+\end{frame}
+\subsection{Casting e Conversão}
+\begin{frame}[fragile]{Casting (Conversão de Tipos)}
+\begin{itemize}
+    \item Ao usar um \textbf{tipo abstrato}, você só acessa os métodos definidos na superclasse.
+    \item Para acessar algo específico da subclasse, é necessário realizar o \textbf{casting}.
+\end{itemize}
+
+\begin{block}{Casting em Ação}
+\begin{verbatim}
+Animal a = new Cachorro();
+// a.abanarRabo(); // Erro de compilação
+((Cachorro) a).abanarRabo(); // OK: casting
+\end{verbatim}
+\end{block}
+
+\begin{itemize}
+    \item \textbf{Diferença importante:}
+    \begin{itemize}
+        \item \textbf{Com tipo abstrato:} pode precisar de casting para acessar o específico.
+        \item \textbf{Com tipo concreto:} não precisa, pois a visibilidade é total.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Riscos do Casting}
+\begin{itemize}
+    \item O compilador confia na indicação do programador durante o casting.
+    \item Se o objeto real não for compatível, ocorrerá um erro fatal.
+\end{itemize}
+
+\begin{alertblock}{Risco: Erro em tempo de execução}
+\begin{verbatim}
+Animal a = new Gato();
+
+// ERRO: Gato não pode ser convertido para Cachorro
+((Cachorro) a).abanarRabo(); // ClassCastException
+\end{verbatim}
+\end{alertblock}
+
+\begin{itemize}
+    \item Sempre valide o tipo com \texttt{instanceof} se houver dúvida sobre o objeto real.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Generalização vs Especialização}
+\begin{itemize}
+    \item \textbf{Tipo Abstrato} $\rightarrow$ Generalização (visão genérica).
+    \item \textbf{Tipo Concreto} $\rightarrow$ Especialização (visão detalhada).
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Exemplo Clássico (Java Collections):}
+\begin{block}{Boa Prática de Programação}
+\begin{verbatim}
+// Use a abstração (List) - Generalização
+List<String> lista = new ArrayList<>();
+\end{verbatim}
+\end{block}
+
+\begin{itemize}
+    \item \textbf{Vantagem:} Evita prender o sistema ao \texttt{ArrayList} (concreto).
+    \item Facilita a evolução para outras implementações de lista.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Facilidade de Manutenção}
+\begin{itemize}
+    \item O uso de tipos abstratos facilita a troca de implementações com impacto Zero.
+\end{itemize}
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{block}{Flexível (Desacoplado)}
+\begin{verbatim}
+Animal a = new Cachorro();
+
+// Posso mudar para gato
+// sem mexer no resto:
+Animal a = new Gato();
+\end{verbatim}
+\end{block}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{block}{Rígido (Acoplado)}
+\begin{verbatim}
+Cachorro c = new Cachorro();
+
+// Se precisar mudar para
+// Gato, terei que alterar 
+// todas as referências a 'c'.
+\end{verbatim}
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{SOLID e Boas Práticas}
+\subsection{Inversão de Dependência}
+\begin{frame}[fragile]{SOLID: O Problema do Acoplamento}
+\begin{itemize}
+    \item Quando dependemos de uma classe concreta, criamos um sistema rígido e difícil de evoluir.
+    \item Exemplo: Uma classe \texttt{Veterinario} que só aceita \texttt{Cachorro}.
+\end{itemize}
+
+\begin{block}{Código Acoplado (Ruim)}
+\begin{verbatim}
+class Veterinario {
+    // Só funciona para cachorros!
+    public void examinar(Cachorro c) { 
+        c.emitirSom();
+    }
+}
+\end{verbatim}
+\end{block}
+\begin{itemize}
+    \item \textbf{Problema:} Se precisarmos tratar um \texttt{Gato}, teremos que modificar a classe \texttt{Veterinario}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{SOLID: Inversão de Dependência}
+\begin{itemize}
+    \item Ao depender da classe abstrata (\texttt{Animal}), o código torna-se flexível a novos tipos.
+\end{itemize}
+
+\begin{block}{Código Desacoplado (Bom)}
+\begin{verbatim}
+class Veterinario {
+    // Funciona para QUALQUER animal!
+    public void examinar(Animal a) { 
+        a.emitirSom();
+    }
+}
+\end{verbatim}
+\end{block}
+\begin{itemize}
+    \item \textbf{Vantagem:} Podemos adicionar \texttt{Gato}, \texttt{Papagaio} ou \texttt{Leão} sem tocar em uma única linha da classe \texttt{Veterinario}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{SOLID - Letra D: Dependency Inversion}
+\begin{itemize}
+    \item O princípio nos orienta a inverter a lógica de dependência:
+    \item \textbf{Módulos de alto nível não devem depender de módulos de baixo nível (concreções).}
+    \item Ambos devem depender de \textbf{abstrações}.
+\end{itemize}
+
+\vspace{0.4cm}
+
+\begin{center}
+    \begin{minipage}{0.85\textwidth}
+        \begin{exampleblock}{Frase Central da Engenharia}
+            \centering
+            \Large \bfseries \itshape
+            ``Dependa de abstrações, não de classes concretas.''
+        \end{exampleblock}
+    \end{minipage}
+\end{center}
+\end{frame}
+\subsection{Modificadores e Regras de Design}
+\begin{frame}[fragile]{Incompatibilidade: \texttt{abstract} + \texttt{private}}
+\begin{itemize}
+    \item Métodos abstratos \textbf{exigem} ser implementados por uma subclasse.
+    \item Se o método for \texttt{private}, a subclasse não terá visibilidade nem acesso para implementá-lo.
+\end{itemize}
+
+\begin{alertblock}{Erro de Compilação}
+\begin{verbatim}
+abstract class Animal {
+    // ERRO: Modificadores incompatíveis
+    private abstract void emitirSom(); 
+}
+\end{verbatim}
+\end{alertblock}
+
+\begin{itemize}
+    \item \textbf{Conclusão:} Métodos abstratos devem ser \texttt{public}, \texttt{protected} ou ter visibilidade de pacote (\textit{default}).
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Incompatibilidade: \texttt{abstract} + \texttt{final}}
+\begin{itemize}
+    \item O modificador \texttt{final} impede a herança e a sobrescrita.
+    \item O modificador \texttt{abstract} obriga a herança e a sobrescrita.
+    \item São conceitos logicamente opostos.
+\end{itemize}
+
+\begin{alertblock}{Erro de Compilação}
+\begin{verbatim}
+// ERRO: Uma classe não pode ser abstract e final
+abstract final class Teste { } 
+
+abstract class Animal {
+    // ERRO: Um método não pode ser abstract e final
+    abstract final void emitirSom(); 
+}
+\end{verbatim}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{Permitido: Métodos \texttt{static}}
+
+\begin{block}{O que é \texttt{static}?}
+\begin{itemize}
+    \item \textbf{Atributo static:} pertence à classe e é compartilhado por todos os objetos.
+    \item \textbf{Método static:} pertence à classe e pode ser chamado sem criar um objeto.
+    \item Acesso direto usando o nome da classe.
+\end{itemize}
+\end{block}
+\begin{itemize}
+    \item Classes abstratas podem conter métodos estáticos normalmente.
+    \item Como métodos \texttt{static} pertencem à classe (e não ao objeto), eles podem ser chamados mesmo que a classe não possa ser instanciada.
+\end{itemize}
+
+\begin{block}{Exemplo: Métodos Utilitários}
+\begin{verbatim}
+abstract class Conversor {
+    public static double celsiusParaFahrenheit(double c) {
+        return (c * 9/5) + 32;
+    }
+}
+
+// Uso direto sem precisar de 'new':
+double f = Conversor.celsiusParaFahrenheit(25);
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Permitido: Métodos \texttt{final} (Concretos)}
+\begin{itemize}
+    \item Você pode definir um método concreto como \texttt{final} em uma classe abstrata.
+    \item Isso garante que a lógica daquele método seja \textbf{idêntica e imutável} para todas as subclasses.
+\end{itemize}
+
+\begin{block}{Exemplo: Fluxo de Processamento Fixo}
+\begin{verbatim}
+abstract class Relatorio {
+    // Cada subclasse decide o conteúdo
+    abstract void gerarCorpo();
+
+    // Nenhuma subclasse pode alterar o fechamento
+    public final void imprimirRodape() {
+        System.out.println("Relatorio gerado em: " + new java.util.Date());
+    }
+}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}{17. Quando usar Classe Abstrata?}
+    \begin{enumerate}
+        \item Existe uma relação hierárquica forte.
+        \item Deseja-se evitar a duplicação de atributos e métodos comuns.
+        \item Deseja-se definir um "esqueleto" de algoritmo (Template Method) onde partes são fixas e partes variam.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{18. Abstração em Cascata}
+    \begin{itemize}
+        \item É possível uma classe abstrata herdar de outra classe abstrata.
+        \item Nesse caso, a subclasse pode adicionar mais métodos abstratos ou implementar alguns dos herdados.
+    \end{itemize}
+    \begin{exampleblock}{Exemplo}
+        \texttt{Animal} (Abstrata) $\rightarrow$ \texttt{Mamifero} (Abstrata) $\rightarrow$ \texttt{Humano} (Concreta).
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{19. Boas Práticas}
+    \begin{itemize}
+        \item \textbf{Evite Abstração Vazia:} Não crie uma classe abstrata se ela não tiver comportamento comum ou métodos a serem forçados.
+        \item \textbf{Prefira Interfaces para Opcionais:} Se um comportamento não é comum a todos da hierarquia, coloque-o em uma interface.
+        \item \textbf{Liskov Substitution:} Garanta que uma subclasse possa substituir sua superclasse sem quebrar o sistema.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{20. Conclusão}
+    \begin{block}{Resumo}
+        \begin{itemize}
+            \item Classes abstratas são ferramentas de design poderosas.
+            \item Facilitam a manutenção ao centralizar lógica comum.
+            \item Garantem que programadores sigam um modelo (contrato) ao criar novas subclasses.
+            \item São o primeiro passo para um polimorfismo robusto e organizado.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\end{document}

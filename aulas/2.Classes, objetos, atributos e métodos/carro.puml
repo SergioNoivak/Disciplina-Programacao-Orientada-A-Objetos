@@ -1,0 +1,8 @@
+@startuml
+class Carro {
+    + marca : String
+    + modelo : String
+    + ano : int
+    + velocidade : double
+}
+@enduml

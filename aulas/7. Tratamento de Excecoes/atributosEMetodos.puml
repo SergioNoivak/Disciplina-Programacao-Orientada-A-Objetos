@@ -1,0 +1,66 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+hide stereotypes
+
+class Pessoa {
+    nome : String
+    cpf : String
+    idade : int
+    --
+    cadastrar() : void
+    atualizarDados(nome : String, idade : int) : void
+    exibirInformacoes() : void
+}
+
+class Endereco {
+    rua : String
+    numero : int
+    cidade : String
+    cep : String
+    --
+    atualizarEndereco(rua : String, numero : int) : void
+    exibirEndereco() : String
+}
+
+class Produto {
+    codigo : String
+    nome : String
+    preco : double
+    --
+    aplicarDesconto(percentual : double) : void
+    atualizarPreco(novoPreco : double) : void
+    exibirDetalhes() : String
+}
+
+class Pedido {
+    numero : String
+    data : Date
+    valorTotal : double
+    --
+    adicionarProduto(produto : Produto) : void
+    calcularTotal() : double
+    finalizarPedido() : void
+}
+
+class Funcionario {
+    matricula : String
+    cargo : String
+    salario : double
+    --
+    calcularBonus() : double
+    atualizarSalario(novoSalario : double) : void
+    exibirDados() : String
+}
+
+class Empresa {
+    razaoSocial : String
+    cnpj : String
+    faturamentoAnual : double
+    --
+    contratarFuncionario(funcionario : Funcionario) : void
+    calcularFaturamentoMensal() : double
+    exibirInformacoes() : String
+}
+
+@enduml

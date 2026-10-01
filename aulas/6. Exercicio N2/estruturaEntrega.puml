@@ -1,0 +1,71 @@
+@startuml
+top to bottom direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype ortho
+
+folder "NomeSobrenome_Lista1.zip" as ZIP
+
+folder "Exercicio1_Pessoa" as E1 {
+    file "Pessoa.java"
+    file "MainPessoa.java"
+}
+
+folder "Exercicio2_Carro" as E2 {
+    file "Carro.java"
+    file "MainCarro.java"
+}
+
+folder "Exercicio3_Livro" as E3 {
+    file "Livro.java"
+    file "MainLivro.java"
+}
+
+folder "Exercicio4_Aluno" as E4 {
+    file "Aluno.java"
+    file "MainAluno.java"
+}
+
+folder "Exercicio5_Produto" as E5 {
+    file "Produto.java"
+    file "MainProduto.java"
+}
+
+folder "Exercicio6_ContaSimples" as E6 {
+    file "ContaSimples.java"
+    file "MainContaSimples.java"
+}
+
+folder "Exercicio7_Retangulo" as E7 {
+    file "Retangulo.java"
+    file "MainRetangulo.java"
+}
+
+folder "Exercicio8_Funcionario" as E8 {
+    file "Funcionario.java"
+    file "MainFuncionario.java"
+}
+
+folder "Exercicio9_Lampada" as E9 {
+    file "Lampada.java"
+    file "MainLampada.java"
+}
+
+folder "Exercicio10_Termometro" as E10 {
+    file "Termometro.java"
+    file "MainTermometro.java"
+}
+
+' --- FORÇA ORGANIZAÇÃO VERTICAL ---
+ZIP -down-> E1
+E1 -down-> E2
+E2 -down-> E3
+E3 -down-> E4
+E4 -down-> E5
+E5 -down-> E6
+E6 -down-> E7
+E7 -down-> E8
+E8 -down-> E9
+E9 -down-> E10
+
+@enduml

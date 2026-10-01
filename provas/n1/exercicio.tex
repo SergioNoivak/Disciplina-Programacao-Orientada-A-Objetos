@@ -1,0 +1,218 @@
+\documentclass[12pt,a4paper]{article}
+
+% ------------------------------------------------
+% Pacotes
+% ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{mathptmx} % Times New Roman
+\usepackage{enumitem}\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric}
+\usepackage{listings}
+
+\lstset{
+    language=Java,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries,
+    showstringspaces=false,
+    breaklines=true,
+    frame=none,
+    numbers=none,
+    tabsize=2,
+    commentstyle=\itshape\color{gray},
+    morekeywords={this}
+}
+
+% ------------------------------------------------ 
+% Configuração de página
+% ------------------------------------------------
+\geometry{
+    a4paper,
+    left=2cm,
+    right=2cm,
+    top=2cm,
+    bottom=2cm,
+    headheight=15pt
+}
+
+% Caixa para resposta discursiva
+\newcommand{\resposta}[1]{
+\noindent
+\framebox[\textwidth]{
+\begin{minipage}{0.98\textwidth}
+\vspace{#1}
+\end{minipage}
+}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\setlength{\parindent}{0pt}
+
+% ------------------------------------------------
+% Comandos auxiliares
+% ------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ------------------------------------------------
+% Documento
+% ------------------------------------------------
+\begin{document}
+
+% ------------------------------------------------
+% Cabeçalho
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{@{} L{4cm} X @{}}
+    \raisebox{-0.5cm}{\includegraphics[width=4cm]{Universidade_de_Rio_Verde.jpg}} &
+    \hfill
+    \begin{tabular}{|>{\centering\arraybackslash}m{10cm}|>{\raggedright\arraybackslash}p{1.8cm}|}
+        \hline
+        \cellcolor{black}\color{white}\rule{0pt}{1.2cm}\textbf{EXERCÍCIOS — POO} 
+        & 
+        \scriptsize Nota \tabularnewline
+        \hline
+    \end{tabular} 
+\end{tabularx}
+\vspace{0.3cm}
+
+% ------------------------------------------------  
+% Tabela principal
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{|X|L{2cm}|}
+\hline
+\textbf{Curso} & \textbf{Campus} \\
+\textit{Engenharia de Software} & \textit{Rio Verde} \\
+\hline
+\multicolumn{2}{|l|}{ \textit{Programação Orientada a Objetos}} \\
+\hline
+\textbf{Nome do(a) acadêmico(a)} & \textbf{Valor} \\
+& \\
+\hline
+\textbf{Professor} & \textbf{Turma} \\
+\textit{ Sergio Souza Novak} & \textit{B} \\
+\hline
+\textbf{Data} & \textbf{Código} \\
+\textit{} & \textit{ESW448} \\
+\hline
+\end{tabularx}
+
+\vspace{0.5cm}
+
+\begin{center}
+    \rule{\textwidth}{0.4pt}
+    \textbf{QUESTÕES}
+\end{center}
+
+\vspace{0.5cm} 
+
+\begin{enumerate}
+
+% ================================================================
+% QUESTÃO 1 — Pátio de Caminhões (Plataforma Multimodal)
+% ================================================================
+    \item \textbf{Logística Multimodal — Pátio de Caminhões:} Em uma plataforma de logística multimodal, é necessário modelar um sistema para gerenciar a entrada, saída e permanência de caminhões em um pátio de triagem. Observe o diagrama da classe \textbf{PatioCaminhoes} abaixo e implemente-a em Java, respeitando todas as regras de negócio descritas a seguir.
+
+    \begin{center}
+    \begin{tikzpicture}[node distance=0cm, outer sep=0pt, every node/.style={draw, rectangle, minimum height=0.6cm, font=\small\ttfamily, anchor=north west}]
+        \node (header) [fill=white, minimum width=9cm, font=\small\bfseries] at (0,0) {PatioCaminhoes};
+        
+        \node (attrs) [minimum width=9cm, align=left] at (0,-0.6cm) {
+            - nome : String \\
+            - capacidadeMaxima : int \\
+            - caminhoesEstacionados : int \\
+            - tempoMedioEspera : double \\
+            - aberto : boolean \\
+            - totalCaminhoesAtendidos : int \\
+            + PatioCaminhoes(nome: String, capMax: int) \\
+            + abrirPatio() : void \\
+            + fecharPatio() : void \\
+            + receberCaminhao(qtd: int) : boolean \\
+            + liberarCaminhao(qtd: int) : boolean \\
+            + getOcupacaoAtual() : int \\
+            + patioLotado() : boolean \\
+            - atualizarTempoEspera(qtd: int) : void \\
+            - verificarCapacidade(qtd: int) : boolean
+        };
+    \end{tikzpicture}
+    \end{center}
+
+    \textbf{Regras de negócio:}
+    \begin{itemize}
+        \item O \textbf{construtor} recebe o nome do pátio e a capacidade máxima. O tempo médio de espera deve ser inicializado com \texttt{0.0}. Os demais atributos numéricos iniciam com seus valores padrão;
+        \item \texttt{abrirPatio()} e \texttt{fecharPatio()} alteram o estado do atributo \texttt{aberto};
+        \item \texttt{receberCaminhao(qtd)}: só pode receber caminhões se o pátio estiver \textbf{aberto} e se houver capacidade disponível (verificada pelo método privado \texttt{verificarCapacidade}). Se aceito, incrementa \texttt{caminhoesEstacionados} e \texttt{totalCaminhoesAtendidos} pela quantidade recebida, e chama o método privado \texttt{atualizarTempoEspera}. Retorna \texttt{true} se a operação for realizada, \texttt{false} caso contrário;
+        \item \texttt{liberarCaminhao(qtd)}: só permite liberar se a quantidade solicitada \textbf{não ultrapassar} o número de caminhões estacionados. Se permitido, decrementa \texttt{caminhoesEstacionados}. Retorna \texttt{true} ou \texttt{false};
+        \item \texttt{getOcupacaoAtual()}: retorna o número de caminhões estacionados;
+        \item \texttt{patioLotado()}: retorna \texttt{true} se \texttt{caminhoesEstacionados >= capacidadeMaxima};
+        \item \texttt{atualizarTempoEspera(qtd)} (\textbf{privado}): incrementa o tempo médio de espera em \texttt{qtd * 0.5};
+        \item \texttt{verificarCapacidade(qtd)} (\textbf{privado}): retorna \texttt{true} se \texttt{(caminhoesEstacionados + qtd) <= capacidadeMaxima}.
+    \end{itemize}
+
+    Implemente também uma classe \texttt{Main} com o método \texttt{main}, criando um pátio chamado \texttt{"Terminal Sul"} com capacidade para \texttt{200} caminhões, abrindo o pátio e recebendo \texttt{50} caminhões.
+
+    \resposta{22cm}
+
+\newpage
+
+% ================================================================
+% QUESTÃO 2 — Silo da Sementeira Comigo
+% ================================================================
+    \item \textbf{Agronegócio — Silo de Armazenamento (Sementeira Comigo):} No contexto de sistemas de gerenciamento agroindustrial da cooperativa Comigo, é necessário modelar um silo de grãos para controlar a entrada e saída de cargas, bem como as condições de umidade interna. Observe o diagrama da classe \textbf{SiloArmazenamento} abaixo e implemente-a em Java, respeitando todas as regras de negócio descritas a seguir.
+
+    \begin{center}
+    \begin{tikzpicture}[node distance=0cm, outer sep=0pt, every node/.style={draw, rectangle, minimum height=0.6cm, font=\small\ttfamily, anchor=north west}]
+        \node (header) [fill=white, minimum width=9cm, font=\small\bfseries] at (0,0) {SiloArmazenamento};
+        
+        \node (attrs) [minimum width=9cm, align=left] at (0,-0.6cm) {
+            - identificador : String \\
+            - capacidadeToneladas : double \\
+            - volumeAtual : double \\
+            - umidadeInterna : double \\
+            - umidadeMaxima : double \\
+            - ativo : boolean \\
+            - totalDescarregado : double \\
+            + SiloArmazenamento(id: String, capTon: double, uMax: double) \\
+            + ativarSilo() : void \\
+            + desativarSilo() : void \\
+            + receberCarga(toneladas: double) : boolean \\
+            + expedirCarga(toneladas: double) : boolean \\
+            + getVolumeAtual() : double \\
+            + siloEmAlerta() : boolean \\
+            - controlarUmidade(toneladas: double) : void \\
+            - verificarEspaco(toneladas: double) : boolean
+        };
+    \end{tikzpicture}
+    \end{center}
+
+    \textbf{Regras de negócio:}
+    \begin{itemize}
+        \item O \textbf{construtor} recebe o identificador do silo, a capacidade em toneladas e a umidade máxima permitida. A umidade interna deve ser inicializada com \texttt{10.0} (umidade ambiente controlada). Os demais atributos numéricos iniciam com seus valores padrão;
+        \item \texttt{ativarSilo()} e \texttt{desativarSilo()} alteram o estado do atributo \texttt{ativo};
+        \item \texttt{receberCarga(toneladas)}: só pode receber carga se o silo estiver \textbf{ativo} e se houver espaço disponível (verificado pelo método privado \texttt{verificarEspaco}). Se aceito, incrementa \texttt{volumeAtual} e \texttt{totalDescarregado} pelas toneladas recebidas, e chama o método privado \texttt{controlarUmidade}. Retorna \texttt{true} se a operação for realizada, \texttt{false} caso contrário;
+        \item \texttt{expedirCarga(toneladas)}: só permite expedir se a quantidade solicitada \textbf{não ultrapassar} o volume atualmente armazenado. Se permitido, decrementa \texttt{volumeAtual}. Retorna \texttt{true} ou \texttt{false};
+        \item \texttt{getVolumeAtual()}: retorna o volume atualmente armazenado no silo;
+        \item \texttt{siloEmAlerta()}: retorna \texttt{true} se \texttt{umidadeInterna > umidadeMaxima};
+        \item \texttt{controlarUmidade(toneladas)} (\textbf{privado}): incrementa a umidade interna em \texttt{toneladas * 0.3}. Se a umidade interna ultrapassar a umidade máxima, o silo deve ser \textbf{desativado automaticamente};
+        \item \texttt{verificarEspaco(toneladas)} (\textbf{privado}): retorna \texttt{true} se \texttt{(volumeAtual + toneladas) <= capacidadeToneladas}.
+    \end{itemize}
+
+    Implemente também uma classe \texttt{Main} com o método \texttt{main}, criando um silo com identificador \texttt{"SILO-07"}, capacidade de \texttt{5000.0} toneladas e umidade máxima de \texttt{60.0}. Ative o silo e receba uma carga de \texttt{1200.0} toneladas, exibindo o volume atual e se o silo está em alerta.
+
+    \resposta{22cm}
+
+\end{enumerate}
+
+\end{document}

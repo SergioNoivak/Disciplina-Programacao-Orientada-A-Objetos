@@ -1,0 +1,10 @@
+@startuml
+class Produto {
+    + nome : String
+    + preco : double
+    + quantidade : int
+
+    --
+    + Produto(nome : String, preco : double, quantidade : int)
+}
+@enduml

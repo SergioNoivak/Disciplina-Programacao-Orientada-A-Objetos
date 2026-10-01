@@ -1,0 +1,131 @@
+\documentclass[12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\definecolor{maincolor}{RGB}{0,100,50}
+\usepackage{fancyhdr}
+\definecolor{forestgreen}{RGB}{0,100,50}
+\usepackage[most]{tcolorbox}
+\newtcolorbox{block}[1]{%
+  colback=green!5,
+  colframe=maincolor,
+  coltitle=white,
+  title=#1,
+  fonttitle=\bfseries,
+  boxrule=1.5pt,
+  arc=3mm,
+  left=6pt,
+  right=6pt,
+  top=6pt,
+  bottom=6pt
+}
+
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{2pt}
+
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{forestgreen}\leaders\hrule height \headrulewidth\hfill}}
+
+\renewcommand{\footrule}{\hbox to\headwidth{%
+  \color{forestgreen}\leaders\hrule height \footrulewidth\hfill}}
+
+\setlength{\headheight}{32pt}
+
+\fancyhead[L]{%
+  \includegraphics[height=1.2cm]{Universidade_de_Rio_Verde.jpg}
+}
+
+\fancyhead[R]{%
+  \raggedleft
+  \textcolor{forestgreen}{%
+    \small
+    \textbf{Lista de Exercícios — Divisibilidade}\\
+    Me.~Sergio Souza Novak\\
+    \textit{Lógica para Engenharia de Software}
+  }
+}
+
+\fancyfoot[C]{%
+  \textcolor{forestgreen}{\thepage}
+}
+
+\begin{document}
+
+\vspace*{0.2cm}
+
+\section*{Instruções}
+
+\begin{block}{Utilize a definição formal de divisibilidade}
+Sejam $a,b \in \mathbb{Z}$, com $b \neq 0$. Dizemos que $b$ divide $a$ se existe
+$k \in \mathbb{Z}$ tal que
+\[
+a = bk.
+\]
+Neste caso, escrevemos $b \mid a$.
+\end{block}
+
+Justifique rigorosamente todas as afirmações utilizando apenas definições formais
+e propriedades dos números inteiros.
+% =======================
+% EXERCÍCIOS (SEM RESPOSTA)
+% =======================
+
+\section*{Exercícios}
+
+\begin{enumerate}
+
+\item Demonstre que, se $a \mid b$ e $a \mid c$, então $a \mid (b+c)$.
+
+\item Demonstre que, se $a \mid b$, então $a \mid (-b)$.
+
+\item Prove que, se $a \mid b$ e $b \mid c$, então $a \mid c$.
+
+
+
+\end{enumerate}
+
+\newpage
+
+% =======================
+% GABARITO
+% =======================
+
+\section*{Gabarito — Respostas}
+\begin{block}{1. Soma preserva divisibilidade}
+Suponha que $a \mid b$ e $a \mid c$. Pela definição de divisibilidade, existem
+inteiros $k,m \in \mathbb{Z}$ tais que $b = ak$ e $c = am$. Somando essas
+igualdades, obtemos $b + c = ak + am = a(k+m)$
+Como $k+m \in \mathbb{Z}$, segue diretamente da definição que
+$a \mid (b+c)$, concluindo a demonstração.
+\end{block}
+
+\begin{block}{2. Divisibilidade pelo oposto}
+Suponha que $a \mid b$. Então, pela definição de divisibilidade, existe
+$k \in \mathbb{Z}$ tal que $b = ak$. Multiplicando ambos os lados da igualdade
+por $-1$, temos
+$-b = a(-k).$
+Como $-k \in \mathbb{Z}$, conclui-se que $a \mid (-b)$, conforme a definição
+formal de divisibilidade.
+\end{block}
+
+\begin{block}{3. Transitividade da divisibilidade}
+Suponha que $a \mid b$ e $b \mid c$. Pela definição, existem inteiros
+$k,m \in \mathbb{Z}$ tais que $b = ak$ e $c = bm$. Substituindo a expressão
+de $b$ na igualdade que define $c$, obtemos
+$
+c = (ak)m = a(km).
+$
+Como $km \in \mathbb{Z}$, segue pela definição de divisibilidade que
+$a \mid c$, o que demonstra a transitividade da relação de divisibilidade.
+\end{block}
+\end{document}
+
